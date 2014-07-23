@@ -1,0 +1,1944 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MT.DataAccess</name>
+    </assembly>
+    <members>
+        <member name="T:MT.DataAccess.Column">
+            <summary>
+            Description of a database table column
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.Column.#ctor(System.String,System.Object)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">Name of the field in the database. (exact match)</param>
+            <param name="columnValue">the columns value as stored in the database (or to be stored).</param>
+        </member>
+        <member name="M:MT.DataAccess.Column.Instantiate(System.String,System.Object)">
+            <summary>
+            Instantiate a new column with all required details.
+            </summary>
+            <param name="columnName">Name of the field in the database. (exact match)</param>
+            <param name="columnValue">the columns value as stored in the database (or to be stored).</param>
+        </member>
+        <member name="F:MT.DataAccess.Column._name">
+            <summary>
+            Gets the name of the column.
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.Column._value">
+            <summary>
+            The columns value.
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.Column.Name">
+            <summary>
+            Gets the name of the column.
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.Column.Value">
+            <summary>
+            Gets the value of the column.
+            </summary>
+        </member>
+        <member name="T:MT.DataAccess.ColumnCollection">
+            <summary>
+            Collection of database table columns.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ColumnCollection.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ColumnCollection.Instantiate">
+            <summary>
+            Instantiate a new empty Column Collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.ColumnCollection.GetColumn(System.String)">
+            <summary>
+            Gets the column from the collection with the given name.
+            </summary>
+            <remarks>Returns null if the column does not exist in the collection.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.ColumnCollection.Add(MT.DataAccess.Column)">
+            <summary>
+            Add a column the collection.
+            </summary>
+            <param name="column"></param>
+        </member>
+        <member name="P:MT.DataAccess.ColumnCollection.Item(System.Int32)">
+            <summary>
+            Gets the column from the collection that is at the given ordinal position.
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.ColumnCollection.Item(System.String)">
+            <summary>
+            Gets the column from the collection with the given name.
+            </summary>
+            <remarks>Throws an exception if the column does not exist in the collection.</remarks>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.IPAddress">
+            <summary>
+            IPAddress class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.IPAddress.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.OrderRelease(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            IP address order release
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="workstation">The workstaction</param>
+            <param name="productType"></param>
+            <param name="addressType"></param>
+            <param name="prefixLength"></param>
+            <param name="specificAddress"></param>
+            <param name="withinSubnet"></param>
+            <param name="billable"></param>
+            <param name="justification"></param>
+            <param name="transaction"></param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.GetError(System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets the error message
+            </summary>
+            
+            <param name="user">The user</param>
+            <param name="error">The error</param>
+            <param name="transaction">The transaction</param>
+            
+            <returns>string</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.OrderCheck(System.Int32,System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Check if product has all the needed information for reservation
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="type">The type</param>
+            <param name="transaction">The transaction</param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.GetAddressType(System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Get all possible Address type for the specified product
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="transaction">The transaction</param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.OrderActivate(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            IP address order activate
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="workstation">The workstaction</param>
+            <param name="productType"></param>
+            <param name="addressType"></param>
+            <param name="prefixLength"></param>
+            <param name="specificAddress"></param>
+            <param name="withinSubnet"></param>
+            <param name="billable"></param>
+            <param name="justification"></param>
+            <param name="transaction"></param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.OrderReleaseSet(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Set result for Reservation
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="workstation">The workstaction</param>
+            <param name="productType"></param>
+            <param name="addressType"></param>
+            <param name="prefixLength"></param>
+            <param name="specificAddress"></param>
+            <param name="withinSubnet"></param>
+            <param name="billable"></param>
+            <param name="justification"></param>
+            <param name="transaction"></param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.OrderReserve(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            IP reservation core SP
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="workstation">The workstaction</param>
+            <param name="productType"></param>
+            <param name="addressType"></param>
+            <param name="prefixLength"></param>
+            <param name="specificAddress"></param>
+            <param name="withinSubnet"></param>
+            <param name="billable"></param>
+            <param name="justification"></param>
+            <param name="broadcastAddr"></param>
+            <param name="firstHostAddr"></param>
+            <param name="ipAddress"></param>
+            <param name="ipJust"></param>
+            <param name="secondHostAddr"></param>
+            <param name="subnetMask"></param>
+            <param name="transaction"></param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.OrderReserveeSet(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Set result for Reservation
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="workstation">The workstaction</param>
+            <param name="productType"></param>
+            <param name="addressType"></param>
+            <param name="prefixLength"></param>
+            <param name="specificAddress"></param>
+            <param name="withinSubnet"></param>
+            <param name="billable"></param>
+            <param name="justification"></param>
+            <param name="broadcastAddr"></param>
+            <param name="firstHostAddr"></param>
+            <param name="ipAddress"></param>
+            <param name="ipJust"></param>
+            <param name="secondHostAddr"></param>
+            <param name="subnetMask"></param>
+            <param name="transaction"></param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.IPAddress.OrderReserveSet(System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            IP reservation core SP
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="workstation">The workstaction</param>
+            <param name="productType"></param>
+            <param name="addressType"></param>
+            <param name="prefixLength"></param>
+            <param name="specificAddress"></param>
+            <param name="withinSubnet"></param>
+            <param name="billable"></param>
+            <param name="justification"></param>
+            <param name="broadcastAddr"></param>
+            <param name="firstHostAddr"></param>
+            <param name="ipAddress"></param>
+            <param name="ipJust"></param>
+            <param name="secondHostAddr"></param>
+            <param name="subnetMask"></param>
+            <param name="transaction"></param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.Lookups">
+            <summary>
+            Lookups class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.Lookups.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupAccessList(System.Int32)">
+            <summary>
+            Retrieves the lookup values for Access List
+            </summary>
+            
+            <param name="AccountID">Account</param>
+            
+            <remarks>Property Type = "A"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupProperties(System.String,System.Int32)">
+            <summary>
+            Retrieves the lookup values for property
+            </summary>
+            
+            <param name="Code">Property Code</param>
+            <param name="OrderID">Order</param>
+            
+            <remarks>Property Type = "C", "L"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupCharges(System.String)">
+            <summary>
+            Retrieves the lookup values for Access List
+            </summary>
+            
+            <param name="Code">Charge Code</param>
+            
+            <remarks>Property Type = "L"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupSiteAddress(System.Int32,System.Int32,System.String)">
+            <summary>
+            Retrieves the lookup values for Access List
+            </summary>
+            
+            <param name="AccountID">Account</param>
+            <param name="OrderProdID">Order Product</param>
+            <param name="PropCode">Property code</param>
+            
+            <remarks>Property Type = "S"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupSiteContacts(System.Int32)">
+            <summary>
+            Retrieves the lookup values for Site Contacts
+            </summary>
+            
+            <param name="AccountID">Account</param>
+            
+            <remarks>Property Type = "X"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupCostCentres(System.Int32)">
+            <summary>
+            Retrieves the lookup values for Cost Centres
+            </summary>
+            
+            <param name="SiteID">Site</param>
+            
+            <remarks>Property Type = "BILLING COST CENTRE"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupSites(System.Int32)">
+            <summary>
+            Retrieves the lookup values for Sites
+            </summary>
+            
+            <param name="AccountID">Account</param>
+            
+            <remarks>Property Type = "BILLING SITE"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupMANISDNServices(System.Int32,System.String,System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Retrieves the lookup values for MAN ISDN Services
+            </summary>
+            
+            <param name="accountID">The Account ID</param>
+            <param name="elemCode">The element code</param>
+            <param name="orderID">The order id</param>
+            <param name="transaction"></param>
+            
+            <remarks>Property Type = "MAN ISDN SERVICES"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupMANISDNAccesses(System.Int32,System.Int32)">
+            <summary>
+            Retrieves the lookup values for MAN ISDN Accesses
+            </summary>
+            
+            <param name="accountID">The account</param>
+            <param name="uniqueServiceProdID">The service product to get all 
+            available accesses</param>
+            
+            <remarks>Property Type = "MAN ISDN Accesses"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupMANVoiceProvisioners">
+            <summary>
+            Retrieves the lookup values for MAN Voice Provisioners
+            </summary>
+            
+            <remarks>Property Type = "MAN VOICE PROVISIONER"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetLookupReservedNoRange(System.Int32)">
+            <summary>
+            Retrieves the lookup values for Reservced 100 number ranges
+            </summary>
+            
+            <remarks>Property Type = "RESERVED 100 NUMBER RANGE"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetServiceIDAggregation(System.Int32)">
+            <summary>
+            Retrieves the lookup values for Service ID Aggregation
+            </summary>
+            
+            <remarks>Property Type = "RESERVED 100 NUMBER RANGE"</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetActiveNumberRanges(System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets lookup of active number ranges
+            </summary>
+            
+            <param name="mainBillingNo">Main billing number</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetActiveIndividualNumbers(System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets lookup of active individual numbers
+            </summary>
+            
+            <param name="mainBillingNo">Main billing number</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetAllowedStatuses(System.String,System.Int32,System.Int32)">
+            <summary>
+            Gets all the allowed statuses for the specified id and type
+            </summary>
+            
+            <remarks>objectType : 1 = order, 2 = product</remarks>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetAllReps">
+            <summary>
+            Retrieves the lookup values for all reps
+            </summary>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetServiceIDAllocation(System.String,System.String)">
+            <summary>
+            Gets the service id allocation
+            </summary>
+            
+            <param name="productCode">The product code</param>
+            <param name="elementCode">The element code</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetAggregationIDs(System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets the aggregation of service ids
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Lookups.GetDataServiceLink(System.Int32,System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets the linked data service if any
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="installedProdID">The installed product</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.Macbill">
+            <summary>
+            Lookups class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.Macbill.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Macbill.GetMacbillCustomerName(System.String)">
+            <summary>
+            Retrieves the macbill customer for the id
+            </summary>
+            
+            <param name="MacbillID">The macbill id</param>
+            
+            <returns>string</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Macbill.GetMacbillInvoicingEntities(System.Int32)">
+            <summary>
+            Retrieves the macbill invoicing entities for the account
+            </summary>
+            
+            <param name="accountID">The account id</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Macbill.GetMacbillIDFromElementID(System.Int32)">
+            <summary>
+            Gets the macbill id by unique element id
+            </summary>
+            
+            <param name="uniqueElementID">The product unique id</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Macbill.GetMacbillIDFromElementID(System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets the macbill id by unique element id
+            </summary>
+            
+            <param name="uniqueElementID">The product unique id</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.OrderForms">
+            <summary>
+            OrderForms class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.OrderForms.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetChargesDataSet(System.Int32,System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Retrieves the charges for an order
+            </summary>
+            
+            <param name="OrderProdID">Order Product</param>
+            <param name="ElemCode">Element Code</param>
+            <param name="ProdCode">Product Code</param>
+            <param name="user">The user</param>
+            <param name="productStatus">The product status</param>
+            <param name="changeTypeID">Needed if no product</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetChargesDataSet(System.Int32,System.String,System.String,System.String,System.Int32,System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Retrieves the charges for an order
+            </summary>
+            
+            <param name="OrderProdID">Order Product</param>
+            <param name="ElemCode">Element Code</param>
+            <param name="ProdCode">Product Code</param>
+            <param name="user">The user</param>
+            <param name="productStatus">The product status</param>
+            <param name="changeTypeID">Needed if no product</param>
+            <param name="transaction">Sql transaction the data retrieval is to be included in.</param>
+            
+            <returns>DataSet containing all charges for the order product.</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetPropertiesDataSet(System.Int32,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Retrieves the properties for an order
+            </summary>
+            
+            <param name="orderProdID">Order Product</param>
+            <param name="elemCode">Element Code</param>
+            <param name="prodCode">Product Code</param>
+            <param name="user">The user</param>
+            <param name="productStatus">The product status</param>
+            <param name="orderID">For bitmask</param>
+            <param name="installedProdID">The installed prodid</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetPropertiesDataSet(System.Int32,System.String,System.String,System.String,System.Int32,System.Int32,System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Retrieves the properties for an order
+            </summary>
+            
+            <param name="orderProductID">Order Product</param>
+            <param name="elementCode">Element Code</param>
+            <param name="productCode">Product Code</param>
+            <param name="user">The user</param>
+            <param name="productStatus">The product status</param>
+            <param name="changeTypeID">Used for bitmask</param>
+            <param name="installedProdID">The installed prodid</param>
+            <param name="transaction">Sql transaction the data retrieval is to be included in.</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetServiceAccessToggle(System.Int32)">
+            <summary>
+            Gets the service/access toggle for product
+            </summary>
+            
+            <remarks>No transaction</remarks>
+            
+            <param name="orderProdID">The product to toggle</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetServiceAccessToggle(System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets the service/access toggle for product
+            </summary>
+            
+            <param name="orderProdID">The product to toggle</param>
+            <param name="transaction">The active transaction</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetNotes(System.Int32)">
+            <summary>
+            Gets the notes for a product - legacy
+            </summary>
+            
+            <param name="orderProdID">The product to get notes for</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetNotes(System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets the notes for a product - legacy
+            </summary>
+            
+            <param name="orderProdID">The product to get notes for</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.SaveNotes(System.Int32,System.String)">
+            <summary>
+            Saves the notes
+            </summary>
+            
+            <param name="orderProdID">The product to get notes for</param>
+            <param name="notes">The notes to insert/update</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.SaveNotes(System.Int32,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Saves the notes
+            </summary>
+            
+            <param name="orderProdID">The product to get notes for</param>
+            <param name="notes">The notes to insert/update</param>
+            <param name="transaction">Transaction</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.PostSaveProductLogic(System.Int32)">
+            <summary>
+            Logic to occur after the product has saved
+            </summary>
+            
+            <param name="orderProdID">Product id</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.PostSaveProductLogic(System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Logic to occur after the product has saved
+            </summary>
+            
+            <param name="orderProdID">Product id</param>
+            <param name="transaction">The transaction</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderForms.GetMANVoicePricing(System.String,System.String,System.Int32,System.String,System.String,System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets specific man voice pricing for access
+            </summary>
+            
+            <param name="prodCode"></param>
+            <param name="elemCode"></param>
+            <param name="accountID"></param>
+            <param name="serviceType"></param>
+            <param name="dataSpeed"></param>
+            <param name="installBaseID"></param>
+            <param name="transaction"></param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.OrderProducts">
+            <summary>
+            Order Products class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.OrderProducts.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetProvisioningStatus(System.Int32)">
+            <summary>
+            Retrieves the provisioning status for a product element
+            </summary>
+            
+            <param name="OrderProdID">Product IS</param>
+            
+            <remarks>Legacy support</remarks>
+            
+            <returns>string</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetMissingFieldText(System.Int32)">
+            <summary>
+            Returns if product has missing fields
+            </summary>
+            
+            <param name="OrderProdID">Product ID</param>
+            
+            <remarks>Legacy support</remarks>
+            
+            <returns>int</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetMonthlySpend(System.Int32,System.String)">
+            <summary>
+            Gets the monthly spend for the order
+            </summary>
+            
+            <param name="OrderID">OrderID for order</param>
+            <param name="LOB">Line of business</param>
+            
+            <remarks>Legacy support</remarks>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetMonthlyCharge(System.Int32)">
+            <summary>
+            Gets the monthly charge for an order product
+            </summary>
+            
+            <param name="OrderProdID">Order Product</param>
+            
+            <remarks>Legacy support</remarks>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetInstallTotal(System.Int32,System.String)">
+            <summary>
+            Gets the install total for the order
+            </summary>
+            
+            <param name="OrderID">OrderID for order</param>
+            <param name="LOB">Line of business</param>
+            
+            <remarks>Legacy support</remarks>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.CreateProvReq(System.Int32,System.String)">
+            <summary>
+            Legacy to create provisioning request
+            </summary>
+            
+            <param name="OrderProductID">Product ID</param>
+            <param name="REP">Rep Name</param>
+            
+            <returns>string</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.DeleteProduct(System.Int32)">
+            <summary>
+            Performs a delete of a product element
+            </summary>
+            
+            <param name="OrderProductID">Product ID</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.UpdateOrderTotalSpend(System.Int32,System.String,System.Int32,System.Boolean,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Performs a delete of a product element
+            </summary>
+            
+            <remarks>Legacy support</remarks>
+            
+            <param name="OrderID">OrderID</param>
+            <param name="LOB">Line of business</param>
+            <param name="PriceChange">Price Change</param>
+            <param name="isVoiceProvisioning"></param>
+            <param name="transaction">Transaction</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.CopyProduct(System.Int32,System.String)">
+            <summary>
+            Performs a copy of a order product
+            </summary>
+            
+            <param name="OrderProductID">Product ID</param>
+            <param name="Rep">Rep</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.BulkUpdateDates(System.String,System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+            Run bulk updates for products to set the dates
+            </summary>
+            
+            <param name="OrderProductIDs">Comma Seperated string of PRoduct ID's</param>
+            <param name="StartBillingDate">Billing date start</param>
+            <param name="CompletionDate">the completion date</param>
+            <param name="ForecastDate">the forecase date</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetAllOrderProducts(System.Int32,System.String)">
+            <summary>
+            Returns all order products for specified orderID and LOB code into
+            a grid array
+            </summary>
+            
+            <param name="OrderID">The OrderID to get all products for</param>
+            <param name="LOB">The LOB Code for Order - pass empty if you want all</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetAllCrossOrderProducts(System.String,System.Int32,System.Int32)">
+            <summary>
+            Returns all order products for assigned to specified user
+            </summary>
+            
+            <param name="UserID">The user</param>
+            <param name="AccountID">The account id</param>
+            <param name="TerminatingStatus">Open or closed</param>
+            
+            <returns>DataTable</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetOrderProductsProvStatus(System.Int32)">
+            <summary>
+            Gets the provisioning error status for order product
+            </summary>
+            
+            <param name="OrderProdID">The OrderProdID</param>
+            
+            <returns>string</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetAllCrossOrderProductsCustom(System.String,System.Int32,System.Int32,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.DateTime,System.DateTime)">
+            <summary>
+            Returns all order products for assigned to specified user
+            </summary>
+            
+            <param name="UserID">The user</param>
+            <param name="AccountID">The account id</param>
+            <param name="TerminatingStatus">Open or closed</param>
+            <param name="AssRep"></param>
+            <param name="ChangeType"></param>
+            <param name="Element"></param>
+            <param name="OrderID"></param>
+            <param name="OrdStatus"></param>
+            <param name="ProdGroup"></param>
+            <param name="ProdStatus"></param>
+            <param name="Product"></param>
+            <param name="RFSEnd"></param>
+            <param name="RFSStart"></param>
+            <param name="ServiceID"></param>
+            <param name="SiteID"></param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetPrerequisitesForProduct(System.String,System.String)">
+            <summary>
+            Creates a new order product - Legacy
+            </summary>
+            
+            <remarks>Legacy</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.CopyInstallBaseValuesForCancelProduct(System.Int32,System.Int32)">
+            <summary>
+            Copies the install base values for a cancel product
+            </summary>
+            
+            <param name="OrderProdID">The product id</param>
+            <param name="InstalledProdID">The installed product to get values from</param>
+            
+            <remarks>Legacy</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.UpdateResignProdStatus(System.Int32,System.Int32)">
+            <summary>
+            Cancels the existing resign product after a tech replace
+            </summary>
+            
+            <param name="OrderProdID">The product id</param>
+            <param name="OrderID">The order id</param>
+            
+            <remarks>Legacy</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.CanUserModifyProduct(System.Int32,System.String,System.String)">
+            <summary>
+            Checks if user can modify product - Legacy
+            </summary>
+            
+            <param name="orderProdID">The product id</param>
+            <param name="rep">The rep to check</param>
+            <param name="lobCode">The lob of the product</param>
+            
+            <remarks>Legacy</remarks>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.CheckIfFirstAccessForAddress(System.String,System.String,System.Int32,System.String)">
+            <summary>
+            Checks if an access product already exists for the same qualified
+            site address
+            </summary>
+            
+            <remarks>Defaults a true value "1" so don't create new service</remarks>
+            
+            <param name="prodCode">Product code - 30004</param>
+            <param name="elemCode">Elem code - 30086</param>
+            <param name="orderID">Current order</param>
+            <param name="qualSiteAddressValue">Value to check</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.CheckDuplicateAccessForService(System.String,System.String)">
+            <summary>
+            Checks if an access product already exists for the same service at a 
+            differetn address
+            </summary>
+            
+            <remarks>Defaults a false value "0" so no warning</remarks>
+            
+            <param name="ServiceID">The linked service id - 10000047</param>
+            <param name="AddressID">The address id - 47</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetServiceElements(System.String,System.Int32)">
+            <summary>
+            Gets the service elements
+            </summary>
+            
+            <param name="prodCode">Product code</param>
+            <param name="orderType">The order type</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetVoiceOrderProducts(System.Int32)">
+            <summary>
+            Returns Voice order products for specified orderID and LOB=Voice
+            </summary>
+            
+            <param name="OrderID">Order Id</param>
+            
+            <returns>DataTable</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.updateNoticesPrinted(System.Int32,System.DateTime,System.DateTime)">
+            <summary>
+            Update whether Voice Notices have been printed
+            </summary>
+            
+            <param name="OrderProdID">ordProd ID</param>
+            <param name="ConfirmationDate">Confirmation Date</param>
+            <param name="CompletionDate">Completion Date</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.CanCancelProduct(System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Determines if can cancel product
+            </summary>
+            
+            <param name="orderProdID">The product to check</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>ActionResult</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.OrderProducts.GetServiceIDAggregationForCancel(System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Checks if service being cancelled has aggregated services.  If so, returns
+            a string of services to alert billing
+            </summary>
+            
+            <param name="serviceID">Service id</param>
+            <param name="transaction">Transaction</param>
+            
+            <returns>string</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.PageNavigator">
+            <summary>
+            Lookups class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.PageNavigator.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.PageNavigator.GetPage(System.Guid,System.String)">
+            <summary>
+            Retrieves the page
+            </summary>
+            
+            <param name="pageID">Page ID</param>
+            <param name="user">The user</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.PageNavigator.GetAllPages(System.Int32,System.String)">
+            <summary>
+            Retrieves all the page
+            </summary>
+            
+            <param name="siteID">The site to get all pages for</param>
+            <param name="user">The user</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.PageNavigator.GetSite(System.Int32)">
+            <summary>
+            Gets the site details from db
+            </summary>
+            
+            <param name="siteID">The site id</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.Provisioning">
+            <summary>
+            Provisioning class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.Provisioning.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Provisioning.GetProdResources(System.Int32,System.String)">
+            <summary>
+            Get the list of all resources allocated to the order
+            </summary>
+            
+            <param name="orderProdID">The order product</param>
+            <param name="user">The user</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Provisioning.GetProdResources(System.Int32,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Get the list of all resources allocated to the order
+            </summary>
+            
+            <param name="orderProdID">The order product</param>
+            <param name="user">The user</param>
+            <param name="transaction">The transaction</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Provisioning.FreeLucentResource(System.Int32,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Free lucent resource
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="transaction">The transaction</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Provisioning.ULLHandback(System.Int32,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Executes ULL Handback
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="transaction">The transaction</param>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Provisioning.FreeLucentServices(System.Int32,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Free lucent services
+            </summary>
+            
+            <param name="orderProdID">The product</param>
+            <param name="user">The user</param>
+            <param name="transaction">The transaction</param>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.SearchMANVoice">
+            <summary>
+            SearchMANVoice class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.SearchMANVoice.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.SearchMANVoice.SearchMainBillingByNo(System.String,System.Int32)">
+            <summary>
+            Retrieves the main billing number and description
+            </summary>
+            
+            <param name="number">User Number</param>
+            <param name="type">Type of param: 0 cust no, 1 main no</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.SearchMANVoice.GetVoiceServiceByMainBillingNo(System.String)">
+            <summary>
+            Retrieves the services of a given Main Billing number
+            </summary>
+            
+            <param name="mainno">Main Billing no</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.SearchMANVoice.GetVoiceFeaturesByMainBillingNo(System.String)">
+            <summary>
+            Retrieves the features of a given Main Billing number
+            </summary>
+            
+            <param name="mainno">Main Billing no</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.SearchMANVoice.GetVoiceAccessByMainBillingNo(System.String)">
+            <summary>
+            Retrieves the accesses of a given Main Billing number
+            </summary>
+            
+            <param name="mainno">Main Billing no</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.Security">
+            <summary>
+            Lookups class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.Security.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Security.HasValidSession(System.String,System.Guid,System.Int32,System.Int32)">
+            <summary>
+            Checks user has a valid session
+            </summary>
+            
+            <param name="user">The user</param>
+            <param name="sessionKey">The session key</param>
+            <param name="sessionTimeout">The expiry in minutes of the session key</param>
+            <param name="ticketID">The associated ticket - for DCC</param>
+            
+            <returns>bool</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Security.UpdateSession(System.String,System.Guid)">
+            <summary>
+            Updates the users session key
+            </summary>
+            
+            <param name="user">The user</param>
+            <param name="sessionKey">The current session key</param>
+            
+            <returns>bool</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Security.IsDCCUser(System.String)">
+            <summary>
+            Checks if user is dcc
+            </summary>
+            
+            <param name="user">The user</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Security.IsVoiceProvisioner(System.String)">
+            <summary>
+            Checks if user is a voice provisioner
+            </summary>
+            
+            <remarks>
+            The biz objects need to incorporate all groups so not need
+            custom sprocs
+            </remarks>
+            
+            <param name="user">The user</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Security.CanUserPerformAction(System.Int32,System.Int32,System.String,System.Int32,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Checks if user can perform action
+            </summary>
+            
+            <remarks>
+            Legacy - Should be placed in security model eventually
+            </remarks>
+            
+            <param name="objectID">OrderID or OrderProdID</param>
+            <param name="objectType">Order or Product</param>
+            <param name="user">The user</param>
+            <param name="actionID">Performing action</param>
+            <param name="transaction">The transaction</param>
+            
+            <returns>bool</returns>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.User">
+            <summary>
+            Lookups class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.User.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.User.GetEmailAddress(System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Retrieves the rep's email address
+            </summary>
+            
+            <param name="user">The rep id</param>
+            <param name="transaction">The transaction</param>
+            
+            <returns>object</returns>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.User.SaveEmailAddress(System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Saves the rep's email address
+            </summary>
+            
+            <param name="user">The rep id</param>
+            <param name="emailAddress">The email address</param>
+            <param name="transaction">The transaction</param>
+        </member>
+        <member name="T:MT.DataAccess.DataServices.Validation">
+            <summary>
+            Validation class to handle custom data
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.DataServices.Validation.DB">
+            <summary>
+            Global DB instance
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DataServices.Validation.GetValidationRules(System.String,System.String,System.String)">
+            <summary>
+            Gets the validation rules
+            </summary>
+            
+            <param name="elementCode">Element code</param>
+            <param name="code">Code to get rules for</param>
+            <param name="value">Value to get rules for</param>
+            
+            <returns>IDataReader</returns>
+        </member>
+        <member name="T:MT.DataAccess.IPrimaryKey">
+            <summary>
+            Summary description for IPrimaryKey.
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.IPrimaryKey.WhereClause">
+            <summary>
+            Gets the primary key as a where clause
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.IPrimaryKey.Columns">
+            <summary>
+            Gets the collection of columns that make up the Primary Key
+            </summary>
+        </member>
+        <member name="T:MT.DataAccess.PrimaryKeys.PrimaryKeyFactory">
+            <summary>
+            Summary description for PrimaryKeyFactory.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeys.PrimaryKeyFactory.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeys.PrimaryKeyFactory.Instantiate(System.String,System.Object)">
+            <summary>
+            Instantiate a primary key object for a table that has only one field as it's key.
+            </summary>
+            <param name="columnName"></param>
+            <param name="primaryKeyValue"></param>
+            <returns>An IPrimary key, typed based on the data type of the primary keys value.</returns>
+        </member>
+        <member name="T:MT.DataAccess.PrimaryKeyInt">
+            <summary>
+            Summary description for PrimaryKeyInt.
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.PrimaryKeyInt._columns">
+            <summary>
+            Value of the Primary Key
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeyInt.#ctor(MT.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with the value of the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeyInt.Instantiate(MT.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeyInt.Instantiate(System.String,System.Object)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columnName">Name of the primary key column.
+            May NOT be null.</param>
+            <param name="primaryKeyValue">Value of the records primary key.
+            Value may be null.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="P:MT.DataAccess.PrimaryKeyInt.MT#DataAccess#IPrimaryKey#WhereClause">
+            <summary>
+            Gets the primary key as a where clause
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.PrimaryKeyInt.MT#DataAccess#IPrimaryKey#Columns">
+            <summary>
+            Gets the collection of columns that make up the Primary Key
+            </summary>
+        </member>
+        <member name="T:MT.DataAccess.PrimaryKeyVarchar">
+            <summary>
+            Summary description for VarcharPrimaryKey.
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.PrimaryKeyVarchar._columns">
+            <summary>
+            Value of the Primary Key
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeyVarchar.#ctor(MT.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with the value of the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeyVarchar.Instantiate(MT.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="M:MT.DataAccess.PrimaryKeyVarchar.Instantiate(System.String,System.Object)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columnName">Name of the primary key column.
+            May NOT be null.</param>
+            <param name="primaryKeyValue">Value of the records primary key.
+            Value may be null.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="P:MT.DataAccess.PrimaryKeyVarchar.MT#DataAccess#IPrimaryKey#WhereClause">
+            <summary>
+            Gets the primary key as a where clause
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.PrimaryKeyVarchar.MT#DataAccess#IPrimaryKey#Columns">
+            <summary>
+            Gets the collection of columns that make up the Primary Key
+            </summary>
+        </member>
+        <member name="T:MT.DataAccess.ActiveTransaction">
+            <summary>
+            Class to manage transactions across multiple databases plus
+            considers testing.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.#ctor">
+            <summary>
+            Private constructor so cannot instantiate...
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.CheckEnvironment">
+            <summary>
+            Check the environment is ok to run tests against.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.BeginTesting">
+            <summary>
+            Sets up Active transaction for testing.
+            </summary>
+            <remarks>For test transactions it just uses the Configuration Name of the database 
+            plus 'TEST' for the name of the transaction. This is fine for TESTING use only, anything
+            else it's just too dangerous if the name of the transaction is not unique.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.InternalGetTestingTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database)">
+            <summary>
+            Gets the test transaction, if one is active.
+            If testing is in progress and there isn't a transaction for the database we create one.
+            </summary>
+            <returns>Returns null if testing is not in progress, otherwise a testing transaction</returns>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.GetTestTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database)">
+            <summary>
+            Gets the test transaction if there is one.
+            </summary>
+            <param name="database">The database the test is being run against (one test may go over multiple db's)</param>
+            <remarks>Returns null if testing is not in progress, otherwise a testing transaction</remarks>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.GetActiveTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.String)">
+            <summary>
+            Gets the initialised database.
+            </summary>
+            <param name="database">The database to start the transaction against.</param>
+            <param name="transactionName">Very important that the name of the transaction will
+            be unique across sessions because of the web envirnment.</param>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.FindActiveTransaction(System.String)">
+            <summary>
+            Gets the testTransaction from the hashtable if it has been previously set.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.CreateAndBeginActiveTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.String)">
+            <summary>
+            Start a transaction for the given database.
+            Call 'FindExistingTestTransaction' first to ensure a transaction doesn't exist.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.CommitActiveTransaction(System.String)">
+            <summary>
+            Commit an Active Transaction
+            </summary>
+            <param name="transactionName">Name of the transaction to COMMIT.</param>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.RollbackActiveTransaction(System.String)">
+            <summary>
+            Commit an Active Transaction
+            </summary>
+            <param name="transactionName">Name of the transaction to COMMIT.</param>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.FinishTesting">
+            <summary>
+            Rollback all transactions and clear the cache.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.GetTestTransactionName(Microsoft.Practices.EnterpriseLibrary.Data.Database)">
+            <summary>
+            Get the name to use for a TESTING ONLY transaction.
+            </summary>
+            <param name="database">Database where we want to run tests in a transaction.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransaction.GetUniqueName">
+            <summary>
+            Gets a unique name for the transaction
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MT.DataAccess.ActiveTransaction.ActiveTransactions">
+            <summary>
+            Gets the hashtable that contains all open test transactions
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.ActiveTransaction.IsTestingInProgress">
+            <summary>
+            Returns true if tests are in progress.
+            </summary>
+        </member>
+        <member name="T:MT.DataAccess.ActiveTransactionException">
+            <summary>
+            Summary description for ActiveTransactionException.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransactionException.#ctor">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransactionException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class with a specified error message. 
+            </summary>
+            <param name="message">A message that describes the error.</param>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransactionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class with a specified error message and a reference to the inner exception that is the cause of this exception.  
+            </summary>
+            <param name="message">A message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception. 
+            If the innerException parameter is not a null reference, 
+            the current exception is raised in a catch block that handles the inner exception.</param>
+        </member>
+        <member name="M:MT.DataAccess.ActiveTransactionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class with serialized data.
+            </summary>
+            <param name="info">The object that holds the serialized object data.</param>
+            <param name="context">The contextual information about the source or destination.</param>
+        </member>
+        <member name="T:MT.DataAccess.DatabaseTable">
+            <summary>
+            Summary description for DALBase.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Load">
+            <summary>
+            Load the data from the database using the primary key info.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Load(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Load the data from the database using the primary key info.
+            </summary>
+            <param name="transaction">Load the item using this transaction.
+            May be null, if it is the record is loaded without a transaction.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Delete">
+            <summary>
+            DELETE the record from the database using the primary key info.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Delete(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            DELETE the record from the database using the primary key info.
+            </summary>
+            <param name="transaction">DELETE the item using this transaction.
+            May be null, if it is the record is loaded without a transaction.</param>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.ToString">
+            <summary>
+            Return the details of the object as a string, i.e. the value 
+            of all public properties.
+            </summary>
+            <returns>Data in the object as a string.</returns>
+        </member>
+        <member name="F:MT.DataAccess.DatabaseTable._primaryKey">
+            <summary>
+            The primary key of the record.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.ExistsInTheDatabase">
+            <summary>
+            Determines if this record exists in the database.
+            </summary>
+            <remarks>Actively queries the database each time it is called.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.ExistsInTheDatabase(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Determines if this record exists in the database.
+            </summary>
+            <remarks>Actively queries the database each time it is called.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.GetDatabase(System.String)">
+            <summary>
+            Returns the default database object (from DataAccess block)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:MT.DataAccess.DatabaseTable._database">
+            <summary>
+            Database object, initialised with the default database.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.OverrideTheConnectedToDatabase(Microsoft.Practices.EnterpriseLibrary.Data.Database)">
+            <summary>
+            Override the database the we are connected to.
+            </summary>
+            <remarks>This has mainly been provided for database update.</remarks>
+            <param name="database"></param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.SetDatabaseName">
+            <summary>
+            Sets the name of the database that the table is in.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.SaveAfter(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            A chance to do something after a Save()
+            This saves everything that depends on this - this is for
+            the order/orderitems scenario where you hit save on the 
+            order, and all of the individual items point back to the
+            original order, so we must save the order, then the item
+            </summary>
+            <remarks>REMEMBER, this record's new id needs to get into 
+            each of those child items</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.SaveBefore(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            A chance to do something before a Save()
+            This saves everything that this object depends on.
+            This is used typically when you have common types that
+            are grouped together in a table, but used by a number of
+            other tables.
+            For instance - if you had an addresss record in a customer
+            record, then you'd first save off the address record
+            </summary>
+            <param name="transaction">The Save transaction</param>
+            <remarks>REMEMBER, their id's need to get back into this record! somehow</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Save(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Save the record.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Save">
+            <summary>
+            Save the record.
+            </summary>
+            <remarks>Save is performed outside of a transactiion.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Refresh">
+            <summary>
+            Reloads the data from the database.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.InitialisePrimaryKey">
+            <summary>
+            Initialises the primary key object
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.FillFromRow(System.Data.DataRow)">
+            <summary>
+            Fill the data from the data row into the properties.
+            </summary>
+            <param name="row">The row that contains the data.</param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.Validate">
+            <summary>
+            Verifies if the data is valid and 
+            therefore OK to save.
+            </summary>
+            <returns>'Successful' if the data is valid or an error message if not.</returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.FillUpdateOutputParameters(Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper)">
+            <summary>
+            Fill all of the output parameter values returned from the UPDATE stored procedure
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.FillInsertOutputParameters(Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper)">
+            <summary>
+            Fill all of the output parameter values returned from the INSERT stored procedure
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.CreateNew(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Insert a new record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.CreateNew">
+            <summary>
+            Insert a new record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.UpdateExisting(System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Update an existing record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.UpdateExisting">
+            <summary>
+            Update an existing record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.InternalExecuteNonQuery(Microsoft.Practices.EnterpriseLibrary.Data.Database,Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper,System.Data.IDbTransaction)">
+            <summary>
+            Executes the given command as a non query, within the given transaction
+            (if the transaction is not null). Executed without a transaction if it is null.
+            </summary>
+            <param name="database">database that this is to be run against (enterprise library)</param>
+            <param name="command">The DBCommandWrapper to execute</param>
+            <param name="transaction">may be null, otherwise, the transaction the command is to be executed within.</param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.InternalExecuteScalar(Microsoft.Practices.EnterpriseLibrary.Data.Database,Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper,System.Data.IDbTransaction)">
+            <summary>
+            Executes the given command as a Scalar query, within the given transaction
+            (if the transaction is not null). Executed without a transaction if it is null.
+            </summary>
+            <param name="database">database that this is to be run against (enterprise library)</param>
+            <param name="command">The DBCommandWrapper to execute</param>
+            <param name="transaction">may be null, otherwise, the transaction the command is to be executed within.</param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.InternalExecuteDataSet(Microsoft.Practices.EnterpriseLibrary.Data.Database,Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper,System.Data.IDbTransaction)">
+            <summary>
+            Executes the given command as an ExecuteDataSet, within the given transaction
+            (if the transaction is not null). Executed without a transaction if it is null.
+            </summary>
+            <param name="database">database that this is to be run against (enterprise library)</param>
+            <param name="command">The DBCommandWrapper to execute</param>
+            <param name="transaction">may be null, otherwise, the transaction the command is to be executed within.</param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.GetSelectCommand">
+            <summary>
+            Get the DB command wrapper for selecting a record from the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.GetUpdateCommand">
+            <summary>
+            Get the DB command wrapper for updating a record in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.GetDeleteCommand">
+            <summary>
+            Get the DB command wrapper for DELETING a record in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.GetInsertCommand">
+            <summary>
+            Get the DB command wrapper for updating a record in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.GetStoredProcedureName(System.String)">
+            <summary>
+            Gets the stored procedure name for the given action.
+            </summary>
+            <param name="type">The 'type' of stored procedure to run, e.g. Insert, Update or ForDropDown</param>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.CleanTableName(System.String)">
+            <summary>
+            Returns the table in a 'clean' format.
+            </summary>
+            <remarks>All non alpha numeric characters (including underscores) are removed as well
+            as the cc_ that prefixes most table names.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.AddParametersForPrimaryKey(Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper)">
+            <summary>
+            Add 'In' parameters to the wrapper using details from the primary key.
+            </summary>
+            <param name="wrapper"></param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.AddParametersForInsert(Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper)">
+            <summary>
+            Adds the parameters for each field in the table to the command wrapper.
+            </summary>
+            <remarks>Used only for inserting a record into the table.</remarks>
+            <param name="wrapper">The command wrapper, should be for a stored procedure.</param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.AddParametersForUpdate(Microsoft.Practices.EnterpriseLibrary.Data.DBCommandWrapper)">
+            <summary>
+            Adds the parameters for each field in the table to the command wrapper.
+            </summary>
+            <remarks>Used only for inserting a record into the table.</remarks>
+            <param name="wrapper">The command wrapper, should be for a stored procedure.</param>
+        </member>
+        <member name="M:MT.DataAccess.DatabaseTable.GetRecordCount(System.String,System.String,System.Data.SqlClient.SqlTransaction)">
+            <summary>
+            Gets the count of the items in the table
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:MT.DataAccess.DatabaseTable.PrimaryKey">
+            <summary>
+            Gets the primary key of the record.
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.DatabaseTable.Database">
+            <summary>
+            Database object, initialised with the default database.
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.DatabaseTable.DatabaseName">
+            <summary>
+            Gets the name of the database this table in is.
+            Used to create the Database object.
+            </summary>
+        </member>
+        <member name="P:MT.DataAccess.DatabaseTable.TableName">
+            <summary>
+            Gets the name of the table this object reflects.
+            </summary>
+        </member>
+        <member name="T:MT.DataAccess.InvalidDataException">
+            <summary>
+            Summary description for InvalidDataException.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.InvalidDataException.#ctor">
+            <summary>
+            Initializes a new instance of the InvalidDataException class.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.InvalidDataException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the InvalidDataException class with a specified error message. 
+            </summary>
+            <param name="message">A message that describes the error.</param>
+        </member>
+        <member name="M:MT.DataAccess.InvalidDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the InvalidDataException class with a specified error message and a reference to the inner exception that is the cause of this exception.  
+            </summary>
+            <param name="message">A message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception. 
+            If the innerException parameter is not a null reference, 
+            the current exception is raised in a catch block that handles the inner exception.</param>
+        </member>
+        <member name="M:MT.DataAccess.InvalidDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the InvalidDataException class with serialized data.
+            </summary>
+            <param name="info">The object that holds the serialized object data.</param>
+            <param name="context">The contextual information about the source or destination.</param>
+        </member>
+        <member name="T:MT.DataAccess.MTDatabase">
+            <summary>
+            Singleton class to manage which database we are connected to.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.MTDatabase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="F:MT.DataAccess.MTDatabase._uniqueInstance">
+            <summary>
+            The unique instance of the database
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.MTDatabase.GetInstance">
+            <summary>
+            Get the instance of the singleton class
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.MTDatabase.GetDatabase(System.String)">
+            <summary>
+            Gets the initialised database.
+            </summary>
+            <param name="databaseName">Name of the database (excluding the environment, e.g. Development)</param>
+        </member>
+        <member name="M:MT.DataAccess.MTDatabase.GetConnectionString(System.String)">
+            <summary>
+            Gets the connection string for the given database.
+            </summary>
+            <param name="databaseName">Name of the database (excluding the environment, e.g. Development)</param>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.MTDatabase.FindExistingDatabase(System.String)">
+            <summary>
+            Gets the database from the hashtable if it has been previously set.
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.MTDatabase.InstantiateTheDatabase(System.String)">
+            <summary>
+            Instantiates the database from the database name and the current environment
+            then adds it to the hashtable and returns it.
+            </summary>
+            <param name="databaseName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MT.DataAccess.MTDatabase.Notify(System.Object)">
+            <summary>
+            Notification is received when the environment gets changed.
+            </summary>
+            <param name="state"></param>
+        </member>
+        <member name="T:MT.DataAccess.MultipleRecordsFoundException">
+            <summary>
+            Summary description for MultipleRecordsFoundException.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.MultipleRecordsFoundException.#ctor(MT.DataAccess.IPrimaryKey,System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the MultipleRecordsFoundException class with a specified error message. 
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+            <param name="rowCount">Number of rows actually found</param>
+        </member>
+        <member name="M:MT.DataAccess.MultipleRecordsFoundException.#ctor(MT.DataAccess.IPrimaryKey,System.String,System.Int32,System.Exception)">
+            <summary>
+            Initializes a new instance of the MultipleRecordsFoundException class with a specified error message and a reference to the inner exception that is the cause of this exception.  
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+            <param name="rowCount">Number of rows actually found</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:MT.DataAccess.MultipleRecordsFoundException.CreateMessage(MT.DataAccess.IPrimaryKey,System.String,System.Int32)">
+            <summary>
+            Create a message from these
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+            <param name="rowCount">Number of rows actually found</param>
+            <returns>the error message</returns>
+        </member>
+        <member name="T:MT.DataAccess.RecordNotFoundException">
+            <summary>
+            Summary description for RecordNotFoundException.
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.RecordNotFoundException.#ctor(MT.DataAccess.IPrimaryKey,System.String)">
+            <summary>
+            Initializes a new instance of the RecordNotFoundException class with a specified error message. 
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+        </member>
+        <member name="M:MT.DataAccess.RecordNotFoundException.#ctor(MT.DataAccess.IPrimaryKey,System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the RecordNotFoundException class with a specified error message and a reference to the inner exception that is the cause of this exception.  
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+            <param name="innerException">The exception that is the cause of the current exception.</param>
+        </member>
+        <member name="M:MT.DataAccess.RecordNotFoundException.CreateMessage(MT.DataAccess.IPrimaryKey,System.String)">
+            <summary>
+            Create a message from these
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+            <returns>the error message</returns>
+        </member>
+        <member name="T:MT.DataAccess.TransactedTestBase">
+            <summary>
+            Base class used for testing against a database.
+            Begins a transaction in the setup, rolls back the transaction
+            in the teardown.
+            </summary>
+            <remarks>Removes the need to cleanup data changes during database
+            tests.</remarks>
+        </member>
+        <member name="M:MT.DataAccess.TransactedTestBase.BaseSetup">
+            <summary>
+            Setup for testing
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.TransactedTestBase.BaseTeardown">
+            <summary>
+            Setup for testing
+            </summary>
+        </member>
+        <member name="M:MT.DataAccess.TransactedTestBase.Setup">
+            <summary>
+            Override when the sub class needs to do more in the teardown.
+            </summary>
+            <remarks>DO NOT put the attribute on the method in the sub class!</remarks>
+        </member>
+        <member name="M:MT.DataAccess.TransactedTestBase.Teardown">
+            <summary>
+            Override when the sub class needs to do more in the teardown.
+            </summary>
+            <remarks>DO NOT put the attribute on the method in the sub class!</remarks>
+        </member>
+    </members>
+</doc>

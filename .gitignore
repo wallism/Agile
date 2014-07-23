@@ -1,0 +1,19 @@
+# NuGet
+packages/
+
+## Visual Studio
+*.suo
+*.user
+
+# Bin and Obj
+obj/
+bin/
+
+# Resharper
+_ReSharper*
+
+## WP
+*.userprefs
+
+## logs
+app.log

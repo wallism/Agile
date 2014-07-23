@@ -1,0 +1,932 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Agile.DataAccess</name>
+    </assembly>
+    <members>
+        <member name="T:Agile.DataAccess.ActiveTransaction">
+            <summary>
+            Class to manage transactions across multiple databases plus
+            considers testing.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.CheckEnvironment">
+            <summary>
+            Check the environment is ok to run tests against.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.BeginTesting">
+            <summary>
+            Sets up Active transaction for testing.
+            </summary>
+            <remarks>For test transactions it just uses the Configuration Name of the database 
+            plus 'TEST' for the name of the transaction. This is fine for TESTING use only, anything
+            else it's just too dangerous if the name of the transaction is not unique.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.InternalGetTestingTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database)">
+            <summary>
+            Gets the test transaction, if one is active.
+            If testing is in progress and there isn't a transaction for the database we create one.
+            </summary>
+            <returns>Returns null if testing is not in progress, otherwise a testing transaction</returns>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.GetTestTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database)">
+            <summary>
+            Gets the test transaction if there is one.
+            </summary>
+            <param name="database">The database the test is being run against (one test may go over multiple db's)</param>
+            <remarks>Returns null if testing is not in progress, otherwise a testing transaction</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.GetActiveTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.String)">
+            <summary>
+            Gets the initialised database.
+            </summary>
+            <param name="database">The database to start the transaction against.</param>
+            <param name="transactionName">Very important that the name of the transaction will
+            be unique across sessions because of the web envirnment.</param>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.FindActiveTransaction(System.String)">
+            <summary>
+            Gets the testTransaction from the hashtable if it has been previously set.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.CreateAndBeginActiveTransaction(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.String)">
+            <summary>
+            Start a transaction for the given database.
+            Call 'FindExistingTestTransaction' first to ensure a transaction doesn't exist.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.CommitActiveTransaction(System.String)">
+            <summary>
+            Commit an Active Transaction
+            </summary>
+            <param name="transactionName">Name of the transaction to COMMIT.</param>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.RollbackActiveTransaction(System.String)">
+            <summary>
+            Commit an Active Transaction
+            </summary>
+            <param name="transactionName">Name of the transaction to COMMIT.</param>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.FinishTesting">
+            <summary>
+            Rollback all transactions and clear the cache.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.GetTestTransactionName(Microsoft.Practices.EnterpriseLibrary.Data.Database)">
+            <summary>
+            Get the name to use for a TESTING ONLY transaction.
+            </summary>
+            <param name="database">Database where we want to run tests in a transaction.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransaction.GetUniqueName">
+            <summary>
+            Gets a unique name for the transaction
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.DataAccess.ActiveTransaction.ActiveTransactions">
+            <summary>
+            Gets the hashtable that contains all open test transactions
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.ActiveTransaction.IsTestingInProgress">
+            <summary>
+            Returns true if tests are in progress.
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.ActiveTransactionException">
+            <summary>
+            Summary description for ActiveTransactionException.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransactionException.#ctor">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransactionException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class with a specified error message. 
+            </summary>
+            <param name="message">A message that describes the error.</param>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransactionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class with a specified error message and a reference to the inner exception that is the cause of this exception.  
+            </summary>
+            <param name="message">A message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception. 
+            If the innerException parameter is not a null reference, 
+            the current exception is raised in a catch block that handles the inner exception.</param>
+        </member>
+        <member name="M:Agile.DataAccess.ActiveTransactionException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the ActiveTransactionException class with serialized data.
+            </summary>
+            <param name="info">The object that holds the serialized object data.</param>
+            <param name="context">The contextual information about the source or destination.</param>
+        </member>
+        <member name="T:Agile.DataAccess.AgileDatabase">
+            <summary>
+            Singleton class to manage which database we are connected to.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.AgileDatabase.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="F:Agile.DataAccess.AgileDatabase.uniqueInstance">
+            <summary>
+            The unique instance of the database
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.AgileDatabase.GetInstance">
+            <summary>
+            Get the instance of the singleton class
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.AgileDatabase.GetDatabase(System.String)">
+            <summary>
+            Gets the initialised database.
+            </summary>
+            <param name="databaseName">Name of the database (excluding the environment, e.g. Development)</param>
+        </member>
+        <member name="M:Agile.DataAccess.AgileDatabase.GetConnectionString(System.String)">
+            <summary>
+            Gets the connection string for the given database.
+            </summary>
+            <param name="databaseName">Name of the database (excluding the environment, e.g. Development)</param>
+        </member>
+        <member name="M:Agile.DataAccess.AgileDatabase.FindExistingDatabase(System.String)">
+            <summary>
+            Gets the database from the hashtable if it has been previously set.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.AgileDatabase.InstantiateTheDatabase(System.String)">
+            <summary>
+            Instantiates the database from the database name and the current environment
+            then adds it to the hashtable and returns it.
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.Column">
+            <summary>
+            Description of a database table column
+            </summary>
+        </member>
+        <member name="F:Agile.DataAccess.Column._name">
+            <summary>
+            Gets the name of the column.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.Column.#ctor(System.String,System.Object)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">Name of the field in the database. (exact match)</param>
+            <param name="columnValue">the columns value as stored in the database (or to be stored).</param>
+        </member>
+        <member name="M:Agile.DataAccess.Column.Build(System.String,System.Object)">
+            <summary>
+            Instantiate a new column with all required details.
+            </summary>
+            <param name="columnName">Name of the field in the database. (exact match)</param>
+            <param name="columnValue">the columns value as stored in the database (or to be stored).</param>
+        </member>
+        <member name="P:Agile.DataAccess.Column.Name">
+            <summary>
+            Gets the name of the column.
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.Column.Value">
+            <summary>
+            Gets the value of the column.
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.ColumnCollection">
+            <summary>
+            Collection of database table columns.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ColumnCollection.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.ColumnCollection.Build">
+            <summary>
+            Instantiate a new empty Column Collection.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.ColumnCollection.GetColumn(System.String)">
+            <summary>
+            Gets the column from the collection with the given name.
+            </summary>
+            <remarks>Returns null if the column does not exist in the collection.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.ColumnCollection.Add(Agile.DataAccess.Column)">
+            <summary>
+            Add a column the collection.
+            </summary>
+            <param name="column"></param>
+        </member>
+        <member name="P:Agile.DataAccess.ColumnCollection.Item(System.Int32)">
+            <summary>
+            Gets the column from the collection that is at the given ordinal position.
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.ColumnCollection.Item(System.String)">
+            <summary>
+            Gets the column from the collection with the given name.
+            </summary>
+            <remarks>Throws an exception if the column does not exist in the collection.</remarks>
+        </member>
+        <member name="T:Agile.DataAccess.DatabaseTable">
+            <summary>
+            Summary description for DALBase.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.#ctor">
+            <summary>
+            Constructor.
+            </summary>
+        </member>
+        <member name="F:Agile.DataAccess.DatabaseTable._primaryKey">
+            <summary>
+            The primary key of the record.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.InternalLoad">
+            <summary>
+            Load the data from the database using the primary key info.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.InternalLoad(System.Data.Common.DbTransaction)">
+            <summary>
+            Load the data from the database using the primary key info.
+            </summary>
+            <param name="transaction">Load the item using this transaction.
+            May be null, if it is the record is loaded without a transaction.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.LoadWith(System.Int64,System.Data.Common.DbTransaction)">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.SetId(System.Int64)">
+            <summary>
+            Set the id 
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.Load(System.Data.Common.DbTransaction,System.Boolean)">
+            <summary>
+            Load the data from the database using the primary key info.
+            </summary>
+            <param name="transaction">Load the item using this transaction.
+            May be null, if it is the record is loaded without a transaction.</param>
+            <param name="dodgyForceTestTransactionToNOTBeUsed">don't use, to be removed</param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.LoadFromDb(System.Data.IDataReader,System.Data.Common.DbTransaction)">
+            <summary>
+            Create a generic list from the reader
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.CreateRecordNotFoundMessage(Agile.DataAccess.IPrimaryKey,System.String)">
+            <summary>
+            Create a message from these
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+            <returns>the error message</returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.CreateMultipleRecordMessage(Agile.DataAccess.IPrimaryKey,System.String,System.Int32)">
+            <summary>
+            Create a message from these
+            </summary>
+            <param name="primaryKey">Primary key of the record we failed to find.</param>
+            <param name="tableName">Name of the table we looked in.</param>
+            <param name="rowCount">Number of rows actually found</param>
+            <returns>the error message</returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.Delete">
+            <summary>
+            DELETE the record from the database using the primary key info.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.Delete(System.Data.Common.DbTransaction)">
+            <summary>
+            DELETE the record from the database using the primary key info.
+            </summary>
+            <param name="transaction">DELETE the item using this transaction.
+            May be null, if it is the record is loaded without a transaction.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.DeleteAfter(System.Data.Common.DbTransaction)">
+            <summary>
+            A chance to do something after a Delete()
+            </summary>
+            <remarks>E.g. Delete the Party record after deleting a Trader or Person.
+            NOTE: make sure you document in the comments of Delete() what else gets deleted when delete gets called on an item.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.DeleteBefore(System.Data.Common.DbTransaction)">
+            <summary>
+            A chance to do something before a Delete()
+            </summary>
+            <remarks>E.g. Delete all children records (i.e. developer implemented cascade delete.)
+            NOTE: make sure you document in the comments of Delete() what else gets deleted when delete gets called on an item.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.ToString">
+            <summary>
+            Return the details of the object as a string, i.e. the value 
+            of all public properties.
+            </summary>
+            <returns>Data in the object as a string.</returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.ExistsInTheDatabase">
+            <summary>
+            Determines if this record exists in the database.
+            </summary>
+            <remarks>Actively queries the database each time it is called.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.ExistsInTheDatabase(System.Data.Common.DbTransaction)">
+            <summary>
+            Determines if this record exists in the database.
+            </summary>
+            <remarks>Actively queries the database each time it is called.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.SaveBefore(System.Data.Common.DbTransaction)">
+            <summary>
+            A chance to do something before a Save()
+            This saves everything that this object depends on.
+            This is used typically when you have common types that
+            are grouped together in a table, but used by a number of
+            other tables.
+            For instance - if you had an addresss record in a customer
+            record, then you'd first save off the address record
+            </summary>
+            <param name="transaction">The Save transaction</param>
+            <remarks>REMEMBER, their id's need to get back into this record! somehow</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.Save(System.Data.Common.DbTransaction)">
+            <summary>
+            Save the record.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetIsNewItem">
+            <summary>
+            Returns true if the item has never been saved, i.e. the id  is 0 (or equivalent)
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetId">
+            <summary>
+            Gets the PK Id value
+            </summary>
+            <remarks>assumes id field is a long</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.Save">
+            <summary>
+            Save the record.
+            </summary>
+            <remarks>Save is performed outside of a transactiion.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.Refresh">
+            <summary>
+            Reloads the data from the database.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetRecordCount(System.String,System.String,System.Data.Common.DbTransaction)">
+            <summary>
+            Gets the count of the items in the table
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.InitialisePrimaryKey">
+            <summary>
+            Initialises the primary key object
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.FillFromReader(System.Data.IDataReader)">
+            <summary>
+            Fill the data from the data row into the properties.
+            </summary>
+            <param name="reader">The datareader that contains the data.</param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.Validate">
+            <summary>
+            Verifies if the data is valid and 
+            therefore OK to save.
+            </summary>
+            <returns>'Successful' if the data is valid or an error message if not.</returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.FillUpdateOutputParameters(System.Data.Common.DbCommand)">
+            <summary>
+            Fill all of the output parameter values returned from the UPDATE stored procedure
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.FillInsertOutputParameters(System.Data.Common.DbCommand)">
+            <summary>
+            Fill all of the output parameter values returned from the INSERT stored procedure
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.CreateNew(System.Data.Common.DbTransaction)">
+            <summary>
+            Insert a new record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.CreateNew">
+            <summary>
+            Insert a new record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.UpdateExisting(System.Data.Common.DbTransaction)">
+            <summary>
+            Update an existing record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.UpdateExisting">
+            <summary>
+            Update an existing record.
+            </summary>
+            <remarks>Implementation needs some work but is basically functional atm.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.InternalExecuteNonQuery(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.Data.Common.DbCommand,System.Data.Common.DbTransaction)">
+            <summary>
+            Executes the given command as a non query, within the given transaction
+            (if the transaction is not null). Executed without a transaction if it is null.
+            </summary>
+            <param name="database">database that this is to be run against (enterprise library)</param>
+            <param name="command">The dbCommand to execute</param>
+            <param name="transaction">may be null, otherwise, the transaction the command is to be executed within.</param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.InternalExecuteScalar(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.Data.Common.DbCommand,System.Data.Common.DbTransaction)">
+            <summary>
+            Executes the given command as a Scalar query, within the given transaction
+            (if the transaction is not null). Executed without a transaction if it is null.
+            </summary>
+            <param name="database">database that this is to be run against (enterprise library)</param>
+            <param name="command">The dbCommand to execute</param>
+            <param name="transaction">may be null, otherwise, the transaction the command is to be executed within.</param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.InternalExecuteDataReader``1(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.Data.Common.DbCommand,System.Data.Common.DbTransaction,System.Func{System.Data.IDataReader,System.Data.Common.DbTransaction,``0})">
+            <summary>
+            Executes the given command as an ExecuteDataSet, within the given transaction
+            (if the transaction is not null). Executed without a transaction if it is null.
+            </summary>
+            <param name="database">database that this is to be run against (enterprise library)</param>
+            <param name="command">The dbCommand to execute</param>
+            <param name="transaction">may be null, otherwise, the transaction the command is to be executed within.</param>
+            <param name="func"></param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.InternalExecuteDataReader``1(Microsoft.Practices.EnterpriseLibrary.Data.Database,System.Data.Common.DbCommand,System.Data.Common.DbTransaction,System.Boolean,System.Func{System.Data.IDataReader,System.Data.Common.DbTransaction,``0})">
+            <summary>
+            Executes the given command as an ExecuteDataSet, within the given transaction
+            (if the transaction is not null). Executed without a transaction if it is null.
+            </summary>
+            <param name="database">database that this is to be run against (enterprise library)</param>
+            <param name="command">The dbCommand to execute</param>
+            <param name="transaction">may be null, otherwise, the transaction the command is to be executed within.</param>
+            <param name="dodgyForceTestTransactionToBeNOTUsed"></param>
+            <param name="func"></param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetSelectCommand">
+            <summary>
+            Get the DB command command for selecting a record from the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetUpdateCommand">
+            <summary>
+            Get the DB command command for updating a record in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetDeleteCommand">
+            <summary>
+            Get the DB command command for DELETING a record in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetInsertCommand">
+            <summary>
+            Get the DB command command for updating a record in the table.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.GetStoredProcedureName(System.String)">
+            <summary>
+            Gets the stored procedure name for the given action.
+            </summary>
+            <param name="type">The 'type' of stored procedure to run, e.g. Insert, Update or ForDropDown</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.CleanTableName(System.String)">
+            <summary>
+            Returns the table in a 'clean' format.
+            </summary>
+            <remarks>All non alpha numeric characters (including underscores) are removed.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.AddParametersForPrimaryKey(System.Data.Common.DbCommand)">
+            <summary>
+            Add 'In' parameters to the command using details from the primary key.
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.AddParametersForInsert(System.Data.Common.DbCommand)">
+            <summary>
+            Adds the parameters for each field in the table to the command.
+            </summary>
+            <remarks>Used only for inserting a record into the table.</remarks>
+            <param name="command">The command command, should be for a stored procedure.</param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.AddParametersForUpdate(System.Data.Common.DbCommand)">
+            <summary>
+            Adds the parameters for each field in the table to the command.
+            </summary>
+            <remarks>Used only for inserting a record into the table.</remarks>
+            <param name="command">The command command, should be for a stored procedure.</param>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.CreateList``1(System.Data.IDataReader,System.Data.Common.DbTransaction)">
+            <summary>
+            Create a generic list from the reader
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.CreateFromDb``1(System.Data.IDataReader,System.Data.Common.DbTransaction)">
+            <summary>
+            Create a generic list from the reader
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.DatabaseTable.Database">
+            <summary>
+             Gets the (enterprise library) database object that this table is in.
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.DatabaseTable.PrimaryKey">
+            <summary>
+            Gets the primary key of the record.
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.DatabaseTable.LastLoadResult">
+            <summary>
+            Get the actionResult for the last load. i.e. did it fail and why
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.DatabaseTable.TableName">
+            <summary>
+            Gets the name of the table this object reflects.
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.DatabaseTable.PersistenceStoreName">
+            <summary>
+            Gets the name of the database the table is in.
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.InvalidDataException">
+            <summary>
+            Summary description for InvalidDataException.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.InvalidDataException.#ctor">
+            <summary>
+            Initializes a new instance of the InvalidDataException class.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.InvalidDataException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the InvalidDataException class with a specified error message. 
+            </summary>
+            <param name="message">A message that describes the error.</param>
+        </member>
+        <member name="M:Agile.DataAccess.InvalidDataException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the InvalidDataException class with a specified error message and a reference to the inner exception that is the cause of this exception.  
+            </summary>
+            <param name="message">A message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception. 
+            If the innerException parameter is not a null reference, 
+            the current exception is raised in a catch block that handles the inner exception.</param>
+        </member>
+        <member name="M:Agile.DataAccess.InvalidDataException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the InvalidDataException class with serialized data.
+            </summary>
+            <param name="info">The object that holds the serialized object data.</param>
+            <param name="context">The contextual information about the source or destination.</param>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyUniqueidentifier">
+            <summary>
+            Summary description for VarcharPrimaryKey.
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.IPrimaryKey">
+            <summary>
+            Summary description for IPrimaryKey.
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.IPrimaryKey.WhereClause">
+            <summary>
+            Gets the primary key as a where clause
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.IPrimaryKey.Columns">
+            <summary>
+            Gets the collection of columns that make up the Primary Key
+            </summary>
+        </member>
+        <member name="F:Agile.DataAccess.PrimaryKeyUniqueidentifier._columns">
+            <summary>
+            Value of the Primary Key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyUniqueidentifier.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with the value of the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyUniqueidentifier.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyUniqueidentifier.Build(System.String,System.Object)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columnName">Name of the primary key column.
+            May NOT be null.</param>
+            <param name="primaryKeyValue">Value of the records primary key.
+            Value may be null.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="P:Agile.DataAccess.PrimaryKeyUniqueidentifier.Agile#DataAccess#IPrimaryKey#WhereClause">
+            <summary>
+            Gets the primary key as a where clause
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.PrimaryKeyUniqueidentifier.Agile#DataAccess#IPrimaryKey#Columns">
+            <summary>
+            Gets the collection of columns that make up the Primary Key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeys.PrimaryKeyFactory">
+            <summary>
+            Summary description for PrimaryKeyFactory.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeys.PrimaryKeyFactory.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeys.PrimaryKeyFactory.Build(System.String,System.Object)">
+            <summary>
+            Instantiate a primary key object for a table that has only one field as it's key.
+            </summary>
+            <param name="columnName"></param>
+            <param name="primaryKeyValue"></param>
+            <returns>An IPrimary key, typed based on the data type of the primary keys value.</returns>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyInt">
+            <summary>
+            Summary description for PrimaryKeyInt.
+            </summary>
+        </member>
+        <member name="F:Agile.DataAccess.PrimaryKeyInt._columns">
+            <summary>
+            Value of the Primary Key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyInt.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with the value of the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyInt.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyInt.Build(System.String,System.Object)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columnName">Name of the primary key column.
+            May NOT be null.</param>
+            <param name="primaryKeyValue">Value of the records primary key.
+            Value may be null.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="P:Agile.DataAccess.PrimaryKeyInt.Agile#DataAccess#IPrimaryKey#WhereClause">
+            <summary>
+            Gets the primary key as a where clause
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.PrimaryKeyInt.Agile#DataAccess#IPrimaryKey#Columns">
+            <summary>
+            Gets the collection of columns that make up the Primary Key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeySmallint">
+            <summary>
+            PrimaryKeySmallint.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeySmallint.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeySmallint.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyTinyint">
+            <summary>
+            PrimaryKeyTinyint.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyTinyint.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyTinyint.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyBigint">
+            <summary>
+            PrimaryKeyBigint.
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyBigint.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyBigint.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyVarchar">
+            <summary>
+            Summary description for VarcharPrimaryKey.
+            </summary>
+        </member>
+        <member name="F:Agile.DataAccess.PrimaryKeyVarchar._columns">
+            <summary>
+            Value of the Primary Key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyVarchar.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with the value of the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyVarchar.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columns">Columns that make up the primary key.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyVarchar.Build(System.String,System.Object)">
+            <summary>
+            Instantiate a new varchar primary key with columns that make up the key.
+            </summary>
+            <param name="columnName">Name of the primary key column.
+            May NOT be null.</param>
+            <param name="primaryKeyValue">Value of the records primary key.
+            Value may be null.</param>
+            <returns>VarcharPrimaryKey</returns>
+        </member>
+        <member name="P:Agile.DataAccess.PrimaryKeyVarchar.Agile#DataAccess#IPrimaryKey#WhereClause">
+            <summary>
+            Gets the primary key as a where clause
+            </summary>
+        </member>
+        <member name="P:Agile.DataAccess.PrimaryKeyVarchar.Agile#DataAccess#IPrimaryKey#Columns">
+            <summary>
+            Gets the collection of columns that make up the Primary Key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyNvarchar">
+            <summary>
+            PrimaryKeyNvarchar
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyNvarchar.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyNvarchar.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyNchar">
+            <summary>
+            PrimaryKeyNchar
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyNchar.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyNchar.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.PrimaryKeyChar">
+            <summary>
+            PrimaryKeyChar
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyChar.#ctor(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.PrimaryKeyChar.Build(Agile.DataAccess.ColumnCollection)">
+            <summary>
+            Instantiate a new primary key
+            </summary>
+        </member>
+        <member name="T:Agile.DataAccess.TransactedTestBase">
+            <summary>
+            Base class used for testing against a database.
+            Begins a transaction in the setup, rolls back the transaction
+            in the teardown.
+            </summary>
+            <remarks>Removes the need to cleanup data changes during database
+            tests.</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.BaseSetup">
+            <summary>
+            Setup for testing
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.BaseTeardown">
+            <summary>
+            Teardown test
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.BaseTestFixtureSetup">
+            <summary>
+            Setup Fixture for testing
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.BaseTestFixtureTeardown">
+            <summary>
+            Teardown Fixture
+            </summary>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.Setup">
+            <summary>
+            Override when the sub class needs to do more in the setup.
+            </summary>
+            <remarks>DO NOT put the attribute on the method in the sub class!</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.Teardown">
+            <summary>
+            Override when the sub class needs to do more in the teardown.
+            </summary>
+            <remarks>DO NOT put the attribute on the method in the sub class!</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.TestFixtureSetup">
+            <summary>
+            Override when the sub class needs to do more in the Fixture setup.
+            </summary>
+            <remarks>DO NOT put the attribute on the method in the sub class!</remarks>
+        </member>
+        <member name="M:Agile.DataAccess.TransactedTestBase.TestFixtureTeardown">
+            <summary>
+            Override when the sub class needs to do more in the Fixture teardown.
+            </summary>
+            <remarks>DO NOT put the attribute on the method in the sub class!</remarks>
+        </member>
+    </members>
+</doc>

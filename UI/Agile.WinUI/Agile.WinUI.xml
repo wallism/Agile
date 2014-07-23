@@ -1,0 +1,1326 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Agile.WinUI</name>
+    </assembly>
+    <members>
+        <member name="T:Agile.WinUI.AgileDirectoryInfoGUIFactory">
+            <summary>
+            Factory pattern object used to create GUI items for agile directory info types.
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileGUIFactoryBase">
+            <summary>
+            Windows forms GUI factory interace.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileGUIFactoryBase.#ctor(System.Object)">
+            <summary>
+            Construct with an object
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Agile.WinUI.AgileGUIFactoryBase.#ctor">
+            <summary>
+            Instantiate without an object
+            (viewers etc will not be loaded)
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileGUIFactoryBase.GetMenuItemsFor(System.Object[])">
+            <summary>
+            Gets the menu items for the given object.
+            </summary>
+            <param name="details">Details for the factory to use to create the menus</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileGUIFactoryBase.DisplaySelectedItem">
+            <summary>
+            Loads and returns the appropriate viewer for the currently selected object.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileGUIFactoryBase.FindEditor(Agile.Common.Reflections.AgileType)">
+            <summary>
+            Find the appropriate Viewer for the currently selected item using reflection
+            </summary>
+            <param name="type">Type to search for an editor for.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.WinUI.AgileGUIFactoryBase.AgileEditors">
+            <summary>
+            Gets the cached collection of all classes that are Editor Controls
+            (Classes that define the AgileEditorAttribute).
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileGUIFactoryBase.SelectedItem">
+            <summary>
+            Gets the object that was selected and made this gui factory active.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileGUIFactoryBase.MenuItemFactories">
+            <summary>
+            Gets the cached collection of menu item factories.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileGUIFactoryBase.AgileMenuItemTypes">
+            <summary>
+            Gets the cached collection of all classes that are decendant from AgileMenuItem.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileDirectoryInfoGUIFactory.#ctor(System.Object)">
+            <summary>
+            Private Constructor. Use the Instantiate method to instantiate.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileDirectoryInfoGUIFactory.#ctor">
+            <summary>
+            Private Constructor. Use the Instantiate method to instantiate.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileDirectoryInfoGUIFactory.Build(System.Object)">
+            <summary>
+            Instantiates a new AgileDirectoryInfoGUIFactory.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileDirectoryInfoGUIFactory.Build">
+            <summary>
+            Instantiates a new AgileDirectoryInfoGUIFactory.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.WinUI.AgileEditorControl">
+            <summary>
+            Base class for editor controls
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileUserControl">
+            <summary>
+            Summary description for AgileUserControl.
+            </summary>
+        </member>
+        <member name="F:Agile.WinUI.AgileUserControl._factories">
+            <summary>
+            Classes that implement AgileGUIFactoryBase
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileUserControl.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="F:Agile.WinUI.AgileUserControl._contextMenu">
+            <summary>
+            The context menu 
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileUserControl._contextMenu_Popup(System.Object,System.EventArgs)">
+            <summary>
+            Handler for the context menu Popup event.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileUserControl.SetGuiFactory(Agile.WinUI.AgileGUIFactoryBase)">
+            <summary>
+            Set the GUI factory that is to be used.
+            </summary>
+            <param name="factory">GUI factory to use. May be null.</param>
+        </member>
+        <member name="M:Agile.WinUI.AgileUserControl.SetGuiFactory(Agile.Common.Reflections.AgileType)">
+            <summary>
+            Uses reflection to find the GUI factory for the 
+            given type.
+            </summary>
+            <param name="factoryForThisType">Find the appropriate GUI factory for this
+            type and set it to that factory.</param>
+        </member>
+        <member name="M:Agile.WinUI.AgileUserControl.FindGuiFactory(Agile.Common.Reflections.AgileType)">
+            <summary>
+            Find the GUI factory for the given Type using reflection
+            </summary>
+            <remarks>Currently this is name based, i.e. string based.
+            The name of the GUI Factories must be in the format:
+            <para> ClassName + GUIFactory</para>   
+            If we fail to find a factory for the given type we try to find one
+            for its base type, then the base types base type and so on.
+            </remarks>
+            <param name="forThisType">Find the appropriate GUI factory for this type.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.WinUI.AgileUserControl.GuiFactory">
+            <summary>
+            Gets and sets the gui factory for the tree view.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileUserControl.GUIFactories">
+            <summary>
+            Gets all classes that implement AgileGUIFactoryBase
+            </summary>
+            <remarks>Lazy loading used.</remarks>
+        </member>
+        <member name="P:Agile.WinUI.AgileUserControl.ParametersForInvoke">
+            <summary>
+            Gets the parameters for invoking a method (using reflection), from the node
+            </summary>
+            <remarks>because this is a user control it can't be abstract (at least without 
+            doing so affecting the designer), otherwise this would be abstract
+            because it should be implemented by all concrete derivates</remarks>
+        </member>
+        <member name="E:Agile.WinUI.AgileUserControl.OnMenuItemClick">
+            <summary>
+            Event for when any menu item is clicked.
+            </summary>
+        </member>
+        <member name="E:Agile.WinUI.AgileUserControl.GuiFactoryBeingSet">
+            <summary>
+            Event for when the GUI factory is changed
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileUserControl.GuiFactoryChangeEventHandler">
+            <summary>
+            Delegate for when the GUI factory is changed
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileUserControl.MenuItemClickHandler">
+            <summary>
+            Handler for when a context menu item is clicked.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:Agile.WinUI.AgileEditorControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileEditorControl.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileEditorControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileEditorControl.Populate(System.Object)">
+            <summary>
+            Initialize the control with the specific type of object
+            </summary>
+            <remarks>Must be called by any concrete classes</remarks>
+        </member>
+        <member name="M:Agile.WinUI.AgileEditorControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileEditorControl.ParametersForInvoke">
+            <summary>
+            Gets the parameters for invoking a method (using reflection), from the node
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileForm">
+            <summary>
+            Summary description for AgileForm.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileForm.SetActiveGuiFactory(Agile.WinUI.AgileGUIFactoryBase)">
+            <summary>
+            Set the GUI factory that is to be used.
+            </summary>
+            <param name="factory">GUI factory to use. May be null.</param>
+        </member>
+        <member name="P:Agile.WinUI.AgileForm.ActiveGUIFactory">
+            <summary>
+            Gets the currently active GUI factory for the form.
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileMenuItem">
+            <summary>
+            Summary description for AgileMenuItem.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.#ctor">
+            <summary>
+            Default constructor required for designer
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.#ctor(System.String)">
+            <summary>
+            Instantiate a new agile menu item.
+            </summary>
+            <param name="text">Dispaly text of the menu item.</param>
+            <remarks>Only use when you really want to override or manually set the 
+            display text.</remarks>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.#ctor(System.String,Agile.WinUI.AgileMenuItem[])">
+            <summary>
+            Instantiate a new agile menu item.
+            </summary>
+            <param name="text">DisplayValue text of the menu item.</param>
+            <param name="childItems">Child menu items.</param>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.#ctor(System.Type)">
+            <summary>
+            Instantiate a new agile menu item.
+            </summary>
+            <param name="type">System Type we are instantiating a menu item for.</param>
+            <remarks>This constructor (and other overloads that have Type as the parameter,
+            is the best one to use when creating menu's that inherit from AgileMenuItem.
+            The reason is, if you provide the Type then if the Type defines the GUIDetailsAttribute
+            then it will get it's display value from that attribute.</remarks>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.#ctor(System.Type,Agile.WinUI.AgileMenuItem[])">
+            <summary>
+            Instantiate a new agile menu item.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.#ctor(Agile.Common.UI.IAgileControlDetails,Agile.WinUI.AgileMenuItem[])">
+            <summary>
+            Instantiate a new agile menu item with an object 
+            that implements IAgileControlDetails.
+            </summary>
+            <param name="details">Any object that implements IAgileControlDetails, provide
+            required display details.</param>
+            <param name="childItems">Child menu items.</param>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.#ctor(Agile.Common.UI.IAgileControlDetails)">
+            <summary>
+            Instantiate a new agile menu item with an object 
+            that implements IAgileControlDetails.
+            </summary>
+            <param name="details">Any object that implements IAgileControlDetails, provide
+            required display details.</param>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.SetOnClickEventHandler(System.Action)">
+            <summary>
+            Set the function that is to be run when the on click event is triggered.
+            </summary>
+            <param name="runOnClick"></param>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.AgileMenuItem_Click(System.Object,System.EventArgs)">
+            <summary>
+            Handler for the on click event
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItem.GetDisplayValue(System.Type)">
+            <summary>
+            Get the text to use as the display value.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.WinUI.AgileMenuItemCollection">
+            <summary>
+            AgileMenuItemCollection
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItemCollection.AddRange(Agile.WinUI.AgileMenuItemCollection)">
+            <summary>
+            Adds a collection of Agile menu items to the collection
+            </summary>
+            <param name="menus">the collection of menu items to add.</param>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItemCollection.ContainsMenuItemIncludingChildItems(Agile.WinUI.AgileMenuItem)">
+            <summary>
+            Searches this collection for the menu item AND also
+            seaches any child menu items of each menu item (and their child items etc). 
+            </summary>
+            <param name="itemToFind">Search for this menu item.</param>
+            <returns>True if the item is found.</returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItemCollection.ContainsMenuItem(System.Windows.Forms.Menu.MenuItemCollection,Agile.WinUI.AgileMenuItem)">
+            <summary>
+            Searches the given collection for the menu item AND also
+            seaches any child menu items of each menu item (and their child items etc). 
+            </summary>
+            <param name="itemsToSearch">Array of items to search</param>
+            <param name="itemToFind">Search for this menu item.</param>
+            <returns>True if the item is found.</returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItemCollection.FindMenuItemByText(System.String)">
+            <summary>
+            Searches this collection for a menu item with the given Text value.
+            NOTE: Also seaches any child menu items of each menu item 
+            (and their child items etc). 
+            </summary>
+            <remarks>Case Sensitive!</remarks>
+            <param name="text">Search for a menu item that has this text.</param>
+            <returns>The menu item that has the given text or null if not found.</returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItemCollection.FindMenuItemByText(System.Windows.Forms.Menu.MenuItemCollection,System.String)">
+            <summary>
+            Searches the given collection for the menu item AND also
+            seaches any child menu items of each menu item (and their child items etc). 
+            </summary>
+            <remarks>Case Sensitive!</remarks>
+            <param name="itemsToSearch">Array of items to search</param>
+            <param name="text">Search for a menu item that has this text.</param>
+            <returns>The menu item that has the given text or null if not found.</returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileMenuItemCollection.Build">
+            <summary>
+            Instantiate a new AgileMenuItemCollection
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileTreeNode">
+            <summary>
+            Tree nodes for use in the AgileTreeView.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeNode.#ctor(Agile.Common.UI.IAgileControlDetails)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeNode.#ctor(Agile.Common.UI.IAgileControlDetails,Agile.WinUI.AgileTreeNode[])">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeNode.Build(Agile.Common.UI.IAgileControlDetails,Agile.WinUI.AgileTreeNode[])">
+            <summary>
+            Instantiates a new AgileTreeNode.
+            </summary>
+            <param name="details">Details for the node</param>
+            <param name="children">Child nodes</param>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeNode.Details">
+            <summary>
+            Gets the object containing the details associated with
+            the node.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeNode.ParametersForInvoke">
+            <summary>
+            Gets the parameters for invoking a method (using reflection), from the node
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeNode.IsLeafNode">
+            <summary>
+            Returns true if this node is a Leaf node, 
+            i.e. it does not have any child nodes.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeNode.IsParentNode">
+            <summary>
+            Returns true if this node is a Parent node, 
+            i.e. it DOES have child nodes.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeNode.IsRootNode">
+            <summary>
+            Returns true if this node is a Root node, 
+            i.e. it does not have any Parent nodes.
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileTreeView">
+            <summary>
+            Wrapper for the TreeView control.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeView.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeView.CreateNodesFrom(System.Collections.IList)">
+            <summary>
+            Create nodes for the given collection
+            </summary>
+            <remarks>The items in the collection must implement IAgileControlDetails.</remarks>
+            <param name="items"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeView._treeView_AfterSelect(System.Object,System.Windows.Forms.TreeViewEventArgs)">
+            <summary>
+            Handles when a node is selected.
+            Sets the GUI factory for the Type of object in the node.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeView.InitializeWith(System.Collections.IList)">
+            <summary>
+            Initializes the tree view with the given set of items.
+            </summary>
+            <param name="items">The collection of items to display in the tree.</param>
+            <remarks>The items MUST implement IAgileControlDetails.</remarks>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeView.AddNodes(System.Collections.IList)">
+            <summary>
+            Adds the items as extra nodes in the tree view.
+            </summary>
+            <param name="items">The collection of items to add to the tree.</param>
+            <remarks>The items MUST implement IAgileControlDetails.</remarks>
+        </member>
+        <member name="M:Agile.WinUI.AgileTreeView.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeView.Tree">
+            <summary>
+            The encapsulated Tree view control
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeView.ParametersForInvoke">
+            <summary>
+            Gets the parameters for invoking a method (using reflection), from the node
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.AgileTreeView.SelectedNode">
+            <summary>
+            Gets the node that is currently selected.
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.AgileTypeGUIFactory">
+            <summary>
+            Factory pattern object used to create GUI items for DatabaseTable types.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTypeGUIFactory.#ctor">
+            <summary>
+            Private Constructor. Use the Instantiate method to instantiate.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTypeGUIFactory.#ctor(System.Object)">
+            <summary>
+            Private Constructor. Use the Instantiate method to instantiate.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.AgileTypeGUIFactory.Build">
+            <summary>
+            Instantiates a new DatabaseTableGUIFactory.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.WinUI.AgileTypeGUIFactory.Build(System.Object)">
+            <summary>
+            Instantiates a new DatabaseTableGUIFactory.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.WinUI.CommandLine">
+            <summary>
+            Description of CommandLine...
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.CommandLine.RunExternalProcessAndWaitToComplete(System.String,System.Int32,System.Diagnostics.DataReceivedEventHandler)">
+            <summary>
+            Run a batchfile in an external process
+            </summary>
+            <param name="batchProgramFullPath">full path of the batch program</param>
+            <param name="timeoutSeconds">timeout after n seconds</param>
+            <param name="outputDataHandler">handler for the dataoutput stream</param>
+        </member>
+        <member name="M:Agile.WinUI.CommandLine.RunExternalProcessAndWaitToComplete(System.String,System.Int32,System.Diagnostics.DataReceivedEventHandler,System.String)">
+            <summary>
+            Run a batchfile in an external process 
+            NOTE: currently only ONE AT A TIME processing!
+            </summary>
+            <param name="runThis">path to the batch file to run or just anything that will run on a single command line.</param>
+            <param name="timeoutSeconds">timeout after n seconds</param>
+            <param name="outputDataHandler">handler for the dataoutput stream</param>
+            <param name="workingDirectory">External process will be set with this as the working directory</param>
+        </member>
+        <member name="M:Agile.WinUI.CommandLine.GetNewHiddenProccess(System.String)">
+            <summary>
+            Returns a new Process, setup to be hidden
+            with all Redirections set to true. 
+            NOT Started and events NOT hooked up!
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.CommandLine.isStillProcessing">
+            <summary>
+            Get and set if the process is still working
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.CommandLine.internalErrorOccured">
+            <summary>
+            Returns true if an internal error has occurred.
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.Common.LookupComboBox">
+            <summary>
+            Common combo box for displaying lookup records.
+            </summary>
+            <summary>
+            Common combo box for displaying lookup records.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.Common.LookupComboBox.#ctor">
+            <summary>
+            Common combo box for displaying lookup records.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.Common.LookupComboBox.OnLoad(System.EventArgs)">
+            <summary>
+            OnLoad override
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.Common.LookupComboBox.Populate``1(System.Collections.Generic.List{``0})">
+            <summary>
+            Populate the combo with a List of objects that implement IAgileLookup
+            </summary>
+        </member>
+        <member name="F:Agile.WinUI.Common.LookupComboBox.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.Common.LookupComboBox.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Agile.WinUI.Common.LookupComboBox.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:Agile.WinUI.Common.LookupComboBox.SelectedItem">
+            <summary>
+            Gets or sets the selected item in the combo box
+            </summary>
+        </member>
+        <member name="T:Agile.WinUI.IAgileMenuItemsFactory">
+            <summary>
+            Interface for creating AgileMenuItemss
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.IAgileMenuItemsFactory.CreateMenuItems">
+            <summary>
+            Create the menu items.
+            </summary>
+            <returns>Collection of AgileMenuItems.</returns>
+        </member>
+        <member name="T:Agile.WinUI.ObjectGUIFactory">
+            <summary>
+            GUI factory that is used when no other GUI factory can be found.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.ObjectGUIFactory.#ctor">
+            <summary>
+            Private Constructor. Use the Instantiate method to instantiate.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.ObjectGUIFactory.#ctor(System.Object)">
+            <summary>
+            Private Constructor. Use the Instantiate method to instantiate.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.ObjectGUIFactory.Build">
+            <summary>
+            Instantiates a new ObjectGUIFactory.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.WinUI.ObjectGUIFactory.Build(System.Object)">
+            <summary>
+            Instantiates a new ObjectGUIFactory.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.WinUI.ObjectViewer">
+            <summary>
+            Summary description for ObjectViewer.
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.ObjectViewer.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.ObjectViewer.Build(System.Object)">
+            <summary>
+            Construct with an object to view
+            </summary>
+        </member>
+        <member name="M:Agile.WinUI.ObjectViewer.Populate(System.Object)">
+            <summary>
+            Initialize the viewer with any object.
+            </summary>
+            <param name="item"></param>
+        </member>
+        <member name="M:Agile.WinUI.ObjectViewer.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Agile.Common.Reflections.AgileAssembly">
+            <summary>
+            AgileAssembly is a wrapper for System.Reflection.Assembly.
+            </summary>
+        </member>
+        <member name="T:Agile.Common.UI.IAgileControlDetails">
+            <summary>
+            Make your class implement this interface to fit in the
+            'Agile' GUI architecture.
+            </summary>
+            <remarks>Provides details from your class that are commonly used
+            by GUI components</remarks>
+        </member>
+        <member name="P:Agile.Common.UI.IAgileControlDetails.DisplayValue">
+            <summary>
+            Gets the value to display in the control
+            </summary>
+        </member>
+        <member name="P:Agile.Common.UI.IAgileControlDetails.ChildObjects">
+            <summary>
+            Gets any child objects.
+            </summary>
+            <example>A database table should return its collection of columns.</example>
+            <remarks>Returns NULL if there are not any child objects.</remarks>
+        </member>
+        <member name="P:Agile.Common.UI.IAgileControlDetails.ForeColor">
+            <summary>
+            Gets the color to use for the fore color
+            </summary>
+            <remarks>Must be an existing color, may be null</remarks>
+        </member>
+        <member name="P:Agile.Common.UI.IAgileControlDetails.BackColor">
+            <summary>
+            Gets the color to use for the back color
+            </summary>
+            <remarks>Must be an existing color, may be null</remarks>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileAssembly.#ctor(System.Reflection.Assembly)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileAssembly.ToString">
+            <summary>
+            override of ToString to show the contained item
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileAssembly.Build(System.Reflection.Assembly)">
+            <summary>
+            Instantiate a new AgileAssembly with the given Assembly.
+            </summary>
+            <param name="assembly">The System.Reflection.Assembly to wrap</param>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileAssembly.Assembly">
+            <summary>
+            Gets the internal System.Reflection.Assembly
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileAssembly.Agile#Common#UI#IAgileControlDetails#DisplayValue">
+            <summary>
+            Gets the value to display in the control
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileAssembly.Agile#Common#UI#IAgileControlDetails#ChildObjects">
+            <summary>
+            Gets any child objects.
+            </summary>
+            <example>A database table should return its collection of columns.</example>
+            <remarks>Returns NULL if there are not any child objects.</remarks>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileAssembly.ForeColor">
+            <summary>
+            Gets the color to use for the fore color
+            </summary>
+            <remarks>Must be an existing color, may be null</remarks>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileAssembly.BackColor">
+            <summary>
+            Gets the color to use for the back color
+            </summary>
+            <remarks>Must be an existing color, may be null</remarks>
+        </member>
+        <member name="T:Agile.Common.Reflections.AgileType">
+            <summary>
+            AgileType is a wrapper for System.Type.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.#ctor(System.Type)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.Build(System.Type)">
+            <summary>
+            Instantiate a new AgileType with the given System type.
+            </summary>
+            <param name="systemType">The System.Type to wrap</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.GetSubSystemNameWhenRootNamespaceNotSet">
+            <summary>
+            Determines the sub system name when the root namespace
+            has not been set.
+            Essentially returns everything to the left of the ProjectName.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.ToString">
+            <summary>
+            override of ToString to show the contained item
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.CompareTo(System.Object)">
+            <summary>
+            Implementation of IComparable
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.ImplementsInterface(System.Type)">
+            <summary>
+            Check if the given interface is implemented by this Type.
+            </summary>
+            <param name="thisInterface">Check if this interface is implemented by this Type.</param>
+            <returns>Returns true if this Type implements the given interface.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.ImplementsInterface(System.String)">
+            <summary>
+            Check if the given interface is implemented by this Type.
+            </summary>
+            <param name="interfaceName">Check if this interface is implemented by this Type.</param>
+            <returns>Returns true if this Type implements the given interface.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.InstantiateMethodExistsFor(Agile.Common.Reflections.MethodParameterDetails)">
+            <summary>
+            Determines if an instantiate method exists in this type for the 
+            given set of method parameters.
+            </summary>
+            <param name="parameterDetails">Method Parameters.</param>
+            <returns>True if an Instantiate method exists for the parameter set.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.InstantiateMethodExistsFor(System.Type[])">
+            <summary>
+            Determines if an instantiate method exists in this type for the 
+            given set of method parameters.
+            </summary>
+            <param name="types">Types in the signature of the instantiate method.</param>
+            <returns>True if an Instantiate method exists with that signature.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileType.InstantiateConcreteClass(Agile.Common.Reflections.MethodParameterDetails)">
+            <summary>
+            Instantiate one of these Types with the given parameters.
+            </summary>
+            <param name="parameterDetails">Parameters required for instantiation.
+            NOTE: The signature MUST map directly to the signature of one of the 
+            Instantiate methods on the class.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.SystemType">
+            <summary>
+            Gets the System.Type that is being wrapped.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.SubSystemName">
+            <summary>
+            Gets the Sub System name from the given assembly.
+            </summary>
+            <remarks>WARNING: This property makes some assumptions about naming
+            conventions for namespaces</remarks>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.RootNameSpace">
+            <summary>
+            The root namespace to use for all Namespaces.
+            i.e The first element of the namespace for all of OUR classes.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.AssemblyName">
+            <summary>
+            Gets the Name of the Assembly that the type is in.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.Name">
+            <summary>
+            Gets the Name of the Type.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.ProjectName">
+            <summary>
+            Gets the Project name from the given assembly.
+            </summary>
+            <remarks>WARNING: This property makes some assumptions about naming
+            conventions for namespaces</remarks>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.ProjectSubFolder">
+            <summary>
+            Gets the sub folders of the project (if there are any.)
+            </summary>
+            <example>'Agile.Common.Testing'
+            would return 'Testing'</example>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.Agile#Common#UI#IAgileControlDetails#ChildObjects">
+            <summary>
+            Gets any child objects.
+            </summary>
+            <example>A database table should return its collection of columns.</example>
+            <remarks>Returns NULL if there are not any child objects.</remarks>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.Agile#Common#UI#IAgileControlDetails#DisplayValue">
+            <summary>
+            Gets the value to display in the control
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.ForeColor">
+            <summary>
+            Gets the color to use for the fore color
+            </summary>
+            <remarks>Must be an existing color, may be null</remarks>
+        </member>
+        <member name="P:Agile.Common.Reflections.AgileType.BackColor">
+            <summary>
+            Gets the color to use for the back color
+            </summary>
+            <remarks>Must be an existing color, may be null</remarks>
+        </member>
+        <member name="T:Agile.Common.Reflections.AgileTypeCollection">
+            <summary>
+            AgileTypeCollection
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileTypeCollection.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileTypeCollection.Build">
+            <summary>
+            Instantiate a new TypeCollection
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileTypeCollection.AddRange(System.Type[])">
+            <summary>
+            Add an array of system types to the list (a new AgileType will be created for each)
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileTypeCollection.Contains(System.Type)">
+            <summary>
+            Returns true if the given system type has a corresponding AgileType in the list.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.AgileTypeCollection.AddUnique(Agile.Common.Reflections.AgileType)">
+            <summary>
+            Add a new Type to the collection, ensures that duplicates are not added.
+            </summary>
+            <param name="type">type to add to the collection.</param>
+        </member>
+        <member name="T:Agile.Common.Reflections.Assemblies">
+            <summary>
+            Singleton class used to cache and retrieve Assembly info
+            </summary>
+        </member>
+        <member name="F:Agile.Common.Reflections.Assemblies._uniqueInstance">
+            <summary>
+            The unique instance of the Assemblies object.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.#ctor">
+            <summary>
+            Private constructor to lock down instantiation
+            </summary>
+        </member>
+        <member name="F:Agile.Common.Reflections.Assemblies._loadedAssemblies">
+            <summary>
+            Cached copy of loaded assemblies
+            </summary>
+        </member>
+        <member name="F:Agile.Common.Reflections.Assemblies._ourLoadedAssemblies">
+            <summary>
+            Cached copy of loaded assemblies
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.InvalidateCache">
+            <summary>
+            Invalidate the cache and cause everything to be reloaded again
+            next time it is accessed.
+            </summary>
+            <remarks>Make sure you know what you're doing when you call this!</remarks>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.LoadAllAssemblies">
+            <summary>
+            Load all of the standard assemblies.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.LoadOurAssemblies">
+            <summary>
+            Loads our assemblies (fills the array of Assemblies)
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.IsOneOfOurs(System.Reflection.Assembly)">
+            <summary>
+            Returns true if the assembly is one of our assemblies
+            </summary>
+            <param name="assembly">the assembly to check</param>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.IsOneOfOurs(System.String)">
+            <summary>
+            Returns true if the assembly is one of our assemblies
+            </summary>
+            <param name="assemblyName">Name of the assembly to check</param>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.AddUnloadedAssembliesIn(System.String)">
+            <summary>
+            Search all dlls in the path.
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.AddUnloadedAssemblies(System.String)">
+            <summary>
+            Adds any already unloaded assemblies from the given path to AllLoadedAssemblies
+            </summary>
+            <param name="fullPath"></param>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.ContainsAssemblyNamed(System.Collections.Generic.List{Agile.Common.Reflections.AgileAssembly},System.String)">
+            <summary>
+            Returns true if an assembly of the given name is in the given set of assemblies.
+            </summary>
+            <param name="assembliesToSearch">Collection of assemblies to search through</param>
+            <param name="nameOfAssemblyToFind">Full Name of the assembly to look for.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.GetAssemblyNamed(System.Collections.Generic.List{Agile.Common.Reflections.AgileAssembly},System.String)">
+            <summary>
+            Gets the assembly of the given name from the given set of assemblies.
+            </summary>
+            <remarks>CASE sensitive</remarks>
+            <param name="assembliesToSearch">Collection of assemblies to search through</param>
+            <param name="nameOfAssemblyToFind">Full Name of the assembly to look for.</param>
+            <returns>null if the assembly is not found, otherwise the Assembly.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.GetFileStream(System.Reflection.Assembly,System.String)">
+            <summary>
+            Get a file resource as a stream
+            </summary>
+            <param name="theAssembly">the assembly we are looking in</param>
+            <param name="fileName">the filename</param>
+            <returns>the resource as a stream</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Assemblies.FindResource(System.Reflection.Assembly,System.String)">
+            <summary>
+            Goes through the list of resource names, and finds the resource
+            name corresponding to this file.
+            </summary>
+            <remarks>An exception is thrown if the resource is not found.</remarks>
+            <param name="theAssembly">Assembly to search.</param>
+            <param name="fileName">Name of the file to find.</param>
+            <returns>The resource</returns>
+        </member>
+        <member name="P:Agile.Common.Reflections.Assemblies.Instance">
+            <summary>
+            Get the instance of the Assemblies object
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.Common.Reflections.Assemblies.AllLoadedAssemblies">
+            <summary>
+            Gets all of the loaded assemblies.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.Assemblies.OurAssemblies">
+            <summary>
+            Gets all of our loaded assemblies.
+            </summary>
+        </member>
+        <member name="T:Agile.Common.Reflections.MethodParameterDetails">
+            <summary>
+            When we invoke methods using reflection, we need to know the parameter
+            types to get the method and we need the actual parameter values when
+            we call Invoke. 
+            This class encapsulates those parameter details.
+            </summary>
+        </member>
+        <member name="F:Agile.Common.Reflections.MethodParameterDetails._parameters">
+            <summary>
+            Stores the parameter details
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.MethodParameterDetails.#ctor(System.Object[])">
+            <summary>
+            Construct with the parameters
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.MethodParameterDetails.Build(System.Object[])">
+            <summary>
+            Instantiate the required parameters. 
+            </summary>
+            <param name="parameters">All of the parameters required for the method.
+            NOTE: Must be in the correct order!</param>
+            <returns></returns>
+        </member>
+        <member name="P:Agile.Common.Reflections.MethodParameterDetails.NumberOfParameters">
+            <summary>
+            Gets the number of parameters that have been provided for the Instantiation method.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.MethodParameterDetails.HasNoParameters">
+            <summary>
+            Returns true if there are no parameters defined.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.MethodParameterDetails.Signature">
+            <summary>
+            Gets the signature (not return type tho) details.
+            Essentially the Types of the parameters that were provided on
+            instantiation.
+            </summary>
+        </member>
+        <member name="P:Agile.Common.Reflections.MethodParameterDetails.Parameters">
+            <summary>
+            Gets the parameter values.
+            </summary>
+        </member>
+        <member name="T:Agile.Common.Reflections.PluginFinder">
+            <summary>
+            Summary description for PluginFinder.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.PluginFinder.SearchPath(System.String)">
+            <summary>
+            Search all dlls in the path.
+            
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.PluginFinder.IsAgilePluginType(System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.Common.Reflections.ResourceNotFoundException">
+            <summary>
+            Exception for when a particular resource wasn't found
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.ResourceNotFoundException.#ctor(System.Reflection.Assembly,System.String)">
+            <summary>
+            Instantiate the exception.
+            </summary>
+            <param name="theAssembly">Assembly in which to look for the resource.</param>
+            <param name="fileName">Name of the resource file.</param>
+        </member>
+        <member name="T:Agile.Common.Reflections.Types">
+            <summary>
+            Summary description for Types.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.#ctor">
+            <summary>
+            Do not contruct
+            </summary>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.ContainsTypeNamed(System.Reflection.Assembly,System.String)">
+            <summary>
+            Returns true if a Type of the given name is in the given Assembly.
+            </summary>
+            <param name="assemblyToSearch">Assembly to search through</param>
+            <param name="nameOfTypeToFind">Name of the type to look for.</param>
+            <returns>True if there is a Type of the given name in the Assembly.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetTypeNamed(System.Collections.Generic.List{Agile.Common.Reflections.AgileAssembly},System.String)">
+            <summary>        
+            Gets the Type of the given name from the given Assemblies.
+            </summary>
+            <remarks>CASE sensitive and will get the first Type found.</remarks>
+            <param name="assembliesToSearch">Assemblies to search through</param>
+            <param name="nameOfTypeToFind">Name of the type to look for.</param>
+            <returns>null if the type is not found, otherwise the Type.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetTypeNamed(System.Reflection.Assembly,System.String)">
+            <summary>        
+            Gets the Type of the given name from the given Assembly.
+            </summary>
+            <remarks>CASE sensitive</remarks>
+            <param name="assemblyToSearch">Assembly to search through</param>
+            <param name="nameOfTypeToFind">Name of the type to look for.</param>
+            <returns>null if the type is not found, otherwise the Type.</returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.IsDecendantOf(System.Type,System.Type)">
+            <summary>
+            Returns true if the child types inheritance tree eventually
+            leads to the base type.
+            </summary>
+            <param name="childType">Check the inheritance of this type</param>
+            <param name="baseType">Is this Type in the Childs inheritance tree</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.IsDirectDecendantOf(System.Type,System.Type)">
+            <summary>
+            Returns true if the child type DIRECTLY inherits from
+            the base type.
+            </summary>
+            <param name="childType">Check the inheritance of this type</param>
+            <param name="baseType">Check if the child type directly inherits from this type</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetAllSubClassesOf(System.Collections.Generic.List{Agile.Common.Reflections.AgileAssembly},System.Type,System.Boolean)">
+            <summary>
+            Retrieves all sub classes of a particular type. i.e. All classes
+            that either directly or indirectly inherit from the super type.
+            </summary>
+            <param name="assembliesToSearch">Search these assemblies for all sub types.</param>
+            <param name="baseType">The base (super) type that returned types must inherit from.</param>
+            <param name="includeAbstractClasses">Set to true if you want to also include Abstract classes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetAllSubClassesOf(System.Reflection.Assembly,System.Type,System.Boolean)">
+            <summary>
+            Retrieves all sub classes of a particular type. i.e. All classes
+            that either directly or indirectly inherit from the super type.
+            </summary>
+            <param name="assemblyToSearch">Search this assembly for all sub types.</param>
+            <param name="baseType">Base the base (super) type that returned types must inherit from.</param>
+            <param name="includeAbstractClasses">Set to true if you want to also include Abstract classes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetDirectDecendantsOf(System.Reflection.Assembly,System.Type,System.Boolean)">
+            <summary>
+            Retrieves all direct decendants of a particular type. i.e. All classes
+            that directly inherit from the super type.
+            </summary>
+            <param name="assemblyToSearch">Search this assembly.</param>
+            <param name="baseType">The base (super) type that returned types must inherit from.</param>
+            <param name="includeAbstractClasses">Set to true if you want to also include Abstract classes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetDirectDecendantsOf(System.Collections.Generic.List{Agile.Common.Reflections.AgileAssembly},System.Type,System.Boolean)">
+            <summary>
+            Retrieves the direct decendants of a particular type. i.e. All classes
+            that directly inherit from the super type.
+            </summary>
+            <param name="assembliesToSearch">Search these assemblies.</param>
+            <param name="baseType">The base (super) type that returned types must inherit directly from.</param>
+            <param name="includeAbstractClasses">Set to true if you want to also include Abstract classes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetAllTypesIn(System.Reflection.Assembly)">
+            <summary>
+            Returns the collection of Types that are in the given assembly.
+            </summary>
+            <param name="assembly">Assembly to get the contained types from.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetClassesImpementing(System.Collections.Generic.List{Agile.Common.Reflections.AgileAssembly},System.Type)">
+            <summary>
+            Returns a collection of Types that implement the given interface
+            </summary>
+            <param name="assembliesToSearch">Search these assemblies.</param>
+            <param name="interfaceImplemented">The interface that Types must implement to be included in the returned collection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetClassesImpementing(System.Reflection.Assembly,System.Type)">
+            <summary>
+            Returns a collection of Types that implement the given interface
+            </summary>
+            <param name="assembly">The assembly to search.</param>
+            <param name="interfaceImplemented">The interface that Types must implement to be included in the returned collection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetClassesWithAttribute(System.Collections.Generic.List{Agile.Common.Reflections.AgileAssembly},System.Type)">
+            <summary>
+            Returns a collection of Types that declare a specific Attribute
+            </summary>
+            <param name="assembliesToSearch">Search these assemblies.</param>
+            <param name="attributeType">The Type of the attribute that classes must have
+            declared to be included in the returned collection.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.Reflections.Types.GetClassesWithAttribute(System.Reflection.Assembly,System.Type)">
+            <summary>
+            Returns a collection of Types that declare a specific Attribute
+            </summary>
+            <param name="assembly">The assembly to search.</param>
+            <param name="attributeType">The Attribute Type that Types must declare 
+            to be included in the returned collection.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.Common.UI.AgileControlReverseSorter">
+            <summary>
+            Implementation of IComparer for 
+            objects that implement IAgileControlDetails.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.UI.AgileControlReverseSorter.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.Common.UI.AgileControlReverseSorter.Compare(System.Object,System.Object)">
+            <summary>
+            Compare one object with the other for sorting.
+            </summary>
+            <param name="x">any object but must implement IAgileControlDetails.</param>
+            <param name="y">any object but must implement IAgileControlDetails.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.UI.AgileControlReverseSorter.Build">
+            <summary>
+            Instantiate a new AgileControlReverseSorter.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.Common.UI.AgileControlSorter">
+            <summary>
+            Implementation of IComparer for 
+            objects that implement IAgileControlDetails.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.UI.AgileControlSorter.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Agile.Common.UI.AgileControlSorter.Compare(System.Object,System.Object)">
+            <summary>
+            Compare one object with the other for sorting.
+            </summary>
+            <param name="x">any object but must implement IAgileControlDetails.</param>
+            <param name="y">any object but must implement IAgileControlDetails.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Agile.Common.UI.AgileControlSorter.Build">
+            <summary>
+            Instantiate a new AgileControlSorter.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Agile.Common.UI.AgileEditorAttribute">
+            <summary>
+            Summary description for AgileEditorAttribute.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.UI.AgileEditorAttribute.#ctor(System.Type)">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="P:Agile.Common.UI.AgileEditorAttribute.EditType">
+            <summary>
+            Gets the Type that this Editor edits
+            </summary>
+        </member>
+        <member name="T:Agile.Common.UI.GUIDetailsAttribute">
+            <summary>
+            Summary description for GeneratorDescriptionAttribute.
+            </summary>
+        </member>
+        <member name="M:Agile.Common.UI.GUIDetailsAttribute.#ctor(System.String)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="display">Value to display in things such as context menu's</param>
+        </member>
+        <member name="P:Agile.Common.UI.GUIDetailsAttribute.Display">
+            <summary>
+            Value to display in things such as context menu's
+            </summary>
+        </member>
+    </members>
+</doc>

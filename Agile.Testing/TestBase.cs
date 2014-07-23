@@ -1,0 +1,91 @@
+﻿using System;
+using Agile.Diagnostics.Logging;
+using Agile.Shared;
+using Agile.Shared.IoC;
+using NSubstitute;
+using NUnit.Framework;
+
+namespace Agile.Testing
+{
+    public abstract class TestBase
+    {
+
+        /// <summary>
+        /// fixture setup
+        /// </summary>
+        [TestFixtureSetUp]
+        public virtual void TestFixtureSetUp()
+        {
+            Logger.Debug("TestFixtureSetUp...");
+
+        }
+
+        /// <summary>
+        /// fixture teardown
+        /// </summary>
+        [TestFixtureTearDown]
+        public virtual void TestFixtureTearDown()
+        {
+            Container.Reset();
+
+            Logger.Debug("TestFixtureTearDown...");
+        }
+
+        /// <summary>
+        /// setup
+        /// </summary>
+        [SetUp]
+        public virtual void SetUp()
+        {
+            Logger.Debug("SetUp...");
+        }
+
+        /// <summary>
+        /// teardown
+        /// </summary>
+        [TearDown]
+        public virtual void TearDown()
+        {
+            Logger.Debug("TearDown...");
+        }
+
+        /// <summary>
+        /// Register NLog loggers for testing
+        /// </summary>
+        protected static void RegisterLoggers()
+        {
+        }
+
+        protected void AssertContains(string contains, string message)
+        {
+            Assert.IsNotNull(message, "message cannot be null");
+            Logger.Debug(@"ASSERT:-
+Value: {0} 
+Contains: {1}", message, contains);
+            Assert.IsTrue(message.Contains(contains));
+        }
+        
+        protected static void SetNowToFuture(int addHours)
+        {
+            var dateProvider = Substitute.For<IDateTimeProvider>();
+            dateProvider.Now.Returns(DateTime.Now.AddHours(addHours));
+            dateProvider.UtcNow.Returns(DateTime.UtcNow.AddHours(addHours));
+            AgileDateTime.SetProvider(dateProvider);
+        }
+
+        protected static void SetNowToFutureMin(int addMins)
+        {
+            var dateProvider = Substitute.For<IDateTimeProvider>();
+            dateProvider.Now.Returns(DateTime.Now.AddMinutes(addMins));
+            dateProvider.UtcNow.Returns(DateTime.UtcNow.AddMinutes(addMins));
+            AgileDateTime.SetProvider(dateProvider);
+        }
+
+        public string GetUniqueIshStringId(string prefix = "Test")
+        {
+            var suffix = AgileDateTime.Now.ToString("HHmmssffff");
+            var accession = string.Format("{0}{1}", prefix, suffix);
+            return accession;
+        }
+    }
+}
