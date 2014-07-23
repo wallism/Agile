@@ -68,10 +68,10 @@ namespace Agile.DataAccess
             if (!IsTestingInProgress)
                 return null;
             // we don't use transactions for Oracle.
-            if (database is OracleDatabase)
-                return null;
+//            if (database is OracleDatabase)
+//                return null;
 
-            DbTransaction transaction = FindActiveTransaction(GetTestTransactionName(database)) 
+            var transaction = FindActiveTransaction(GetTestTransactionName(database)) 
                 ?? CreateAndBeginActiveTransaction(database, GetTestTransactionName(database));
             return transaction;
         }
