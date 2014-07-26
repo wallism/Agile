@@ -55,7 +55,7 @@
     <Compile Include="DAL\SQLiteTableTestBase.cs" />
     <Compile Include="DAL\SQLiteTestBase.cs" />
     <Compile Include="Web\HttpTestBase.cs" />
-    <Compile Include="Web\IndexHttpServiceTests.cs" />
+    <Compile Include="Web\MainHttpServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

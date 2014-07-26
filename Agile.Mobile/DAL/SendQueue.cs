@@ -22,7 +22,7 @@ namespace Agile.Mobile.DAL
         /// </summary>
         public SendQueue()
         {
-            Method = HttpServiceBase.POST;
+            Method = HttpHelper.POST;
             ContentType = ContentTypes.JSON;
             Succeeded = false;
         }

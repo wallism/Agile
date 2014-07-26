@@ -67,13 +67,13 @@ namespace Agile.Mobile.Web
         }
 
         protected SendQueue BuildQueueRecord<T>(T value
-            , string url = "")
+            , string url = "") where T : class
         {
             var record = new SendQueue();
-            record.Data = HttpServiceBase.Create(value);
+            record.Data = HttpHelper.SerializeToJsonThenByteArray(value);
             record.Url = url;
 
-            record.Method = HttpServiceBase.POST;
+            record.Method = HttpHelper.POST;
             record.ContentType = ContentTypes.JSON;
             record.DataType = GetDataTypeName(typeof (T));
             record.Created = AgileDateTime.UtcNow;

@@ -22,6 +22,7 @@ namespace Agile.Mobile
         public virtual void Startup()
         {
             Logger.Info("Agile.Bootstrapper");
+            HttpHelper.RegisterHubSubscriptions();
 
             RegisterFileHelper();
         }

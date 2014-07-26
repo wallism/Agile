@@ -7,15 +7,16 @@ using Agile.Diagnostics.Logging;
 using Agile.Mobile.Web;
 using Agile.Mobile.Web.Logging;
 using Agile.Shared;
+using Agile.Shared.IoC;
 
 namespace Agile.Mobile.Logging
 {
     public class ServerErrorLogger : ILogger
     {
-        private IMainHttpService service;
+        private ISystemHttpService service;
 
-        private IMainHttpService Service {
-            get { return service ?? (service = new MainHttpService());}
+        private ISystemHttpService Service {
+            get { return service ?? (service = Container.Resolve<ISystemHttpService>());}
         }
 
         public void Write(string message, LogLevel level, LogCategory category, Type exType = null)

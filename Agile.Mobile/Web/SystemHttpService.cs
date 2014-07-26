@@ -8,17 +8,25 @@ using Agile.Mobile.Web.Logging;
 
 namespace Agile.Mobile.Web
 {
-    public interface IMainHttpService : IHttpServiceBase
+    public interface ISystemHttpService : IHttpServiceBase<ErrorLog>
     {
         void PostError(ErrorLog log);
+        Task<string> GetVersion();
     }
 
     /// <summary>
     /// Hits the default nancy module in the server.
     /// Used for things like error logging, getting the server version etc.
     /// </summary>
-    public class MainHttpService : HttpServiceBase, IMainHttpService
+    public class SystemHttpService : HttpServiceBase<ErrorLog>, ISystemHttpService
     {
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public SystemHttpService(string serviceName)
+            : base(serviceName)
+        {            
+        }
 
         // Main module does not change the path base, so no override for GeUrlBase...
 
@@ -29,6 +37,12 @@ namespace Agile.Mobile.Web
         public void PostError(ErrorLog log)
         {
             PostAsync(log, "/logerror");
+        }
+
+        public async Task<string> GetVersion()
+        {
+            var result = await GetAsync<string>(string.Format("{0}/version", GetUrlBase()));
+            return result.WasSuccessful ? result.Value : "Error";
         }
     }
 }

@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Agile.Diagnostics.Logging;
+using Agile.Framework;
 using Agile.Framework.Web;
 using Agile.Mobile.DAL;
+using Agile.Mobile.Environments;
 using Agile.Shared.IoC;
 using Agile.Shared.PubSub;
 using AutoMapper;
@@ -13,11 +17,25 @@ using Newtonsoft.Json;
 
 namespace Agile.Mobile.Web
 {
-    public abstract class HttpServiceBase : IHttpServiceBase
+    public abstract class HttpServiceBase<T> : IHttpServiceBase<T>
+        where T : class
     {
-        public const string POST = "POST";
+        /// <summary>
+        /// ctor
+        /// </summary>
+        protected HttpServiceBase(string serviceName)
+        {
+            ServiceName = serviceName;
+
+            Logger.Debug("HttpServiceBase: ctor *** {0} Environment ***", Environment.Name);
+
+        }
+
+        private string ServiceName { get; set; }
+
 
         private INetworkConnectionManager connectionManager;
+
         private INetworkConnectionManager ConnectionManager
         {
             get
@@ -26,52 +44,69 @@ namespace Agile.Mobile.Web
             }
         }
 
-        /// <summary>
-        /// ctor
-        /// </summary>
-        protected HttpServiceBase()
-        {
-            Logger.Debug("HttpServiceBase: ctor *** {0} ***"
-                , IsDev ? "DEVELOPMENT" : "PRODUCTION");
+        private IMobileEnvironment environment;
 
-            Hub.Subscribe(HubEvents.LoginCompletedSuccessfully
-                , delegate(string userName, string password)
+        private IMobileEnvironment Environment
+        {
+            get { return environment ?? (environment =  Container.Resolve<IMobileEnvironment>()); }
+        }
+
+        private EndpointDetail endpoint;
+        private EndpointDetail Endpoint
+        {
+            get 
             {
-                UserName = userName;
-                Password = password;
-            }, GetType().Name);
-        }
-
-        public static string Platform { get; set; }
-        private static string UserName { get; set; }
-        private static string Password { get; set; }
-
-        #region temp solution to point to different environment
-
-        private const string Dev = "http://192.168.1.8/Acoustie";
-        private const string Prod = "http://www.acoustie.com/Acoustie";
-        private const bool IsDev = true;
-
-        #endregion
-        /// <summary>
-        /// Gets the web host address (essentially the 'base' address for calls)
-        /// </summary>
-        /// <returns></returns>
-        protected virtual string GetUrlBase()
-        {
-            return IsDev ? Dev : Prod;
-        }
-
-        protected Task<ServiceCallResult<T>> GetAsync<T>(string url)
-        {
-            Logger.Debug("GetAsync:{0}", url);
-            var request = WebRequest.Create(GetUrlBase() + url);
-            
-            var result = MakeServerRequest<T>(request);
-            return result;
+                if (endpoint == null)
+                {
+                    endpoint = Environment.Services.FirstOrDefault(s => s.Name.Equals(ServiceName, StringComparison.CurrentCultureIgnoreCase));
+                    if (endpoint == null)
+                    {
+                        const string message = "Failed to find endpoint for REST call, probably a problem with environment configuration";
+                        Logger.Warning(message);
+                        throw new Exception(message);
+                    }
+                }
+                return endpoint; 
+            }
         }
 
         
+
+        #region temp solution to point to different environment
+
+
+
+        #endregion
+
+        /// <summary>
+        /// Gets the web host address (essentially the 'base' address for calls)
+        /// </summary>
+        /// <remarks>each inheritor would override and suffix with the required route</remarks>
+        protected virtual string GetUrlBase()
+        {
+            return Endpoint.BaseUrl;
+        }
+
+
+        public Task<ServiceCallResult<T>> GetAsync(long id)
+        {
+            return GetAsync<T>(string.Format("/{0}", id));
+        }
+
+        public Task<ServiceCallResult<T>> GetAsync(long id, IList<DeepLoader> loaders)
+        {
+            return GetAsync<T>(string.Format("/{0}", id));
+        }
+
+        protected Task<ServiceCallResult<TP>> GetAsync<TP>(string url)
+        {
+            Logger.Debug("GetAsync:{0}", url);
+            var request = WebRequest.Create(GetUrlBase() + url);
+
+            var result = MakeServerRequest<TP>(request);
+            return result;
+        }
+
         /// <summary>
         /// Make a server request, GET or POST or whatever.
         /// This method adds all other required bits for all calls, e.g. Headers and authorization stuff
@@ -85,9 +120,9 @@ namespace Agile.Mobile.Web
 
             Logger.Debug("{0}: {1}", request.Method, request.RequestUri);
             var authorizationHeader = string.Format("Basic {0}"
-                , Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", UserName, Password))));
+                , Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", HttpHelper.UserName, HttpHelper.Password))));
             request.Headers["Authorization"] = authorizationHeader;
-            request.Headers["client"] = Platform;
+            request.Headers["client"] = HttpHelper.Platform;
             ServiceCallResult<TR> result;
 
             try
@@ -106,6 +141,7 @@ namespace Agile.Mobile.Web
             }
             return result;
         }
+
 
         /// <summary>
         /// Post the given object (type TR) but map it into a new instance of type TP type first 
@@ -131,7 +167,7 @@ namespace Agile.Mobile.Web
         /// <param name="instance"></param>
         /// <param name="url"></param>
         /// <returns>The new version of the object returned by the server</returns>
-        public Task<ServiceCallResult<T>> PostAsync<T>(T instance, string url = "") where T : class
+        public Task<ServiceCallResult<T>> PostAsync(T instance, string url = "")
         {
             return Post<T, T>(url, instance);
         }
@@ -159,8 +195,8 @@ namespace Agile.Mobile.Web
         protected async Task<ServiceCallResult<TR>> Post<TP, TR>(string url, TP instance) 
             where TP : class // TP should be a Dto (doesn't have to be but it is recommended)
         {
-            byte[] data = Create(instance);
-            return await Post<TR>(data, POST, ContentTypes.JSON, url);
+            byte[] data = HttpHelper.SerializeToJsonThenByteArray(instance);
+            return await Post<TR>(data, HttpHelper.POST, ContentTypes.JSON, url);
         }
 
         protected async Task<ServiceCallResult<TR>> Post<TR>(
@@ -184,51 +220,7 @@ namespace Agile.Mobile.Web
             var result = await MakeServerRequest<TR>(request);
             return result;
         }
+        
 
-
-        /// <summary>
-        /// Make sure you're serializing the right type (you usually want to serialize a dto
-        /// , which means mapping it before calling this method)
-        /// </summary>
-        public static byte[] Create<T>(T value)
-        {
-            return Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(value));
-        }
-
-        /// <summary>
-        /// Result of this should be Json
-        /// </summary>
-        private static string DeSerialize(byte[] data)
-        {
-            try
-            {
-                return Encoding.UTF8.GetString(data, 0, data.Length);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "DeSerialize to string");
-                return string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// Deserialize to the given type
-        /// </summary>
-        public static T DeSerialize<T>(byte[] data)
-            where T : class
-        {
-            var json = DeSerialize(data);
-            if (string.IsNullOrEmpty(json))
-                return null;
-            try
-            {
-                return JsonConvert.DeserializeObject<T>(json);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "DeSerialize to {0}", typeof(T).Name);
-                return null;
-            }
-        }
     }
 }
