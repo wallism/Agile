@@ -87,23 +87,18 @@ namespace Agile.DataAccess
         /// </summary>
         private Database InstantiateTheDatabase(string databaseName)
         {
-            // don't change if it has been pre-set
-            if (string.IsNullOrEmpty(ApplicationEnvironment.Name))
-            { // try to set it from the app settings (different applications set this value in different ways)
-                try
-                {
-                    ApplicationEnvironment.Name = ConfigurationManager.AppSettings["AgileEnvironment"];
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex);
-                }
+            try
+            {
+                var factory = new DatabaseProviderFactory();
+                var database = factory.Create(string.Format("{0}{1}", databaseName, ApplicationEnvironment.Name));
+                Databases[databaseName] = database;
+                return database;
             }
-
-            var database = DatabaseFactory.CreateDatabase(string.Format("{0}{1}"
-                , databaseName, ApplicationEnvironment.Name));
-            Databases[databaseName] = database;
-            return database;
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "InstantiateTheDatabase");
+                throw;
+            }
         }
 
 	}
