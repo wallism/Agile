@@ -15,12 +15,12 @@ namespace Agile.Framework
         public string PropertyName { get; set; }
 
         /// <summary>
-        /// Name of the property to be loaded
+        /// for loading delta changes
         /// </summary>
         public DateTimeOffset? LastUpdated { get; set; }
 
         /// <summary>
-        /// Load strageies for the property
+        /// Load strategies for the property
         /// </summary>
         public DeepLoader[] DeepLoaders { get; set; }
         

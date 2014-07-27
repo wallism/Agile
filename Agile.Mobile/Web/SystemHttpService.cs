@@ -41,7 +41,7 @@ namespace Agile.Mobile.Web
 
         public async Task<string> GetVersion()
         {
-            var result = await GetAsync<string>(string.Format("{0}/version", GetUrlBase()));
+            var result = await GET<string>(string.Format("{0}/version", GetUrlBase()));
             return result.WasSuccessful ? result.Value : "Error";
         }
     }

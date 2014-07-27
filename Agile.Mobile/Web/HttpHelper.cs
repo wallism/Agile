@@ -30,7 +30,9 @@ namespace Agile.Mobile.Web
                 }, "HttpHelper");
         }
 
-        public const string POST = "POST";
+
+        public const string POST = "POST"; 
+        public const string GET = "GET";
 
         public static string Platform { get; set; }
         public static string UserName { get; set; }

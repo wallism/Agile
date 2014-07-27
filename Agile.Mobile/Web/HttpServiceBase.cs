@@ -90,23 +90,46 @@ namespace Agile.Mobile.Web
 
         public Task<ServiceCallResult<T>> GetAsync(long id)
         {
-            return GetAsync<T>(string.Format("/{0}", id));
+            return GET<T>(string.Format("/{0}", id));
         }
 
         public Task<ServiceCallResult<T>> GetAsync(long id, IList<DeepLoader> loaders)
         {
-            return GetAsync<T>(string.Format("/{0}", id));
+            return GET<T>(string.Format("/Load/{0}", id), loaders);
         }
 
-        protected Task<ServiceCallResult<TP>> GetAsync<TP>(string url)
+        protected async Task<ServiceCallResult<TP>> GET<TP>(string url, IList<DeepLoader> loaders = null)
         {
             Logger.Debug("GetAsync:{0}", url);
             var request = WebRequest.Create(GetUrlBase() + url);
+            if (loaders != null)
+            {
+                Logger.Debug("add deepLoaders");
+                // must be sent as POST because cannot add body to GET request
+                request.Method = HttpHelper.POST;
+                request.ContentType = ContentTypes.JSON;
+                await AddBodyToRequest(HttpHelper.SerializeToJsonThenByteArray(loaders), request);
+            }
 
-            var result = MakeServerRequest<TP>(request);
+            var result = await MakeServerRequest<TP>(request);
             return result;
         }
 
+        private static async Task AddBodyToRequest(byte[] data, WebRequest request)
+        {
+            try
+            {
+                using (Stream stream = await Task<Stream>.Factory.FromAsync(request.BeginGetRequestStream, request.EndGetRequestStream, null))
+                {
+                    stream.Write(data, 0, data.Length);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "AddBodyToRequest");
+
+            }
+        }
         /// <summary>
         /// Make a server request, GET or POST or whatever.
         /// This method adds all other required bits for all calls, e.g. Headers and authorization stuff
@@ -208,19 +231,15 @@ namespace Agile.Mobile.Web
             if (!ConnectionManager.CanSend)
                 return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
 
-            var request = WebRequest.Create(GetUrlBase() + url);
+            var request = WebRequest.CreateHttp(GetUrlBase() + url);
             request.Method = method;
             request.ContentType = contentType;
 
-            using (Stream stream = await Task<Stream>.Factory.FromAsync(request.BeginGetRequestStream, request.EndGetRequestStream, null))
-            {
-                stream.Write(data, 0, data.Length);
-            }
+            await AddBodyToRequest(data, request);
 
             var result = await MakeServerRequest<TR>(request);
             return result;
         }
-        
 
     }
 }

@@ -72,11 +72,20 @@ namespace Acoustie.Mobile.DAL
         {
             if (source == null)
                 return 0; // nothing to save, not necessarily an error...
+            MakeSureIdIsNotZero<T, TR>(source);
+
             // map to a 'Record' 
             var record = Mapper.DynamicMap<T, TR>(source);
             var result = Db.InsertOrReplace(record);
-            Logger.Debug("Save result={1} [{0}]", result, source.ToString());
+            Logger.Debug("Save result={0} [{1}]", result, source.ToString());
             return result;
+        }
+
+        private void MakeSureIdIsNotZero<T, TR>(T source) where T : BaseBiz where TR : LocalDbRecord
+        {
+            // Don't save anything with an id of 0!
+            if (source.GetId() == 0)
+                source.SetId(GetNextLocalId<TR>());
         }
 
         /// <summary>
@@ -90,10 +99,13 @@ namespace Acoustie.Mobile.DAL
         {
             if (source == null)
                 return 0; // nothing to save, not necessarily an error...
+            if (source.GetId() == 0) // throw an exception if we are doing an Update, Id can't be 0 if we we're updating!
+                throw new Exception("Id cannot be 0! If it is a new record make sure Id is set using GetNextLocalId first.");
+
             // map to a 'Record' 
             var record = Mapper.DynamicMap<T, TR>(source);
             var result = Db.Update(record);
-            Logger.Debug("Update result={1} [{0}]", result, source.ToString());
+            Logger.Debug("Update result={0} [{1}]", result, source.ToString());
             return result;
         }
 
@@ -120,7 +132,7 @@ namespace Acoustie.Mobile.DAL
             var record = Mapper.DynamicMap<T, TR>(source);
             var result = Db.Delete(record);
 
-            Logger.Debug("Delete result={1} [{0}]", result, source.ToString());
+            Logger.Debug("Delete result={0} [{1}]", result, source.ToString());
             return result;
         }
 

@@ -27,6 +27,7 @@ namespace Agile.Mobile.Environments
         }
 
         public const string DEV = "DEV";
+        public const string DEVFromMobile = "DEVFromMobile";
         public const string PROD = "PROD";
         public const string UAT = "UAT";
 
