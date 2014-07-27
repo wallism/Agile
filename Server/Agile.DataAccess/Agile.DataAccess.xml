@@ -156,6 +156,12 @@
             </summary>
             <param name="databaseName">Name of the database (excluding the environment, e.g. Development)</param>
         </member>
+        <member name="M:Agile.DataAccess.AgileDatabase.GetDatabaseFromFullInstanceName(System.String)">
+            <summary>
+            Gets the initialised database.
+            </summary>
+            <param name="databaseInstanceName">Full Name of the database instance (INCLUDING the environment, e.g. Development)</param>
+        </member>
         <member name="M:Agile.DataAccess.AgileDatabase.GetConnectionString(System.String)">
             <summary>
             Gets the connection string for the given database.
@@ -167,7 +173,7 @@
             Gets the database from the hashtable if it has been previously set.
             </summary>
         </member>
-        <member name="M:Agile.DataAccess.AgileDatabase.InstantiateTheDatabase(System.String)">
+        <member name="M:Agile.DataAccess.AgileDatabase.InstantiateTheDatabase(System.String,System.String)">
             <summary>
             Instantiates the database from the database name and the current environment
             then adds it to the hashtable and returns it.

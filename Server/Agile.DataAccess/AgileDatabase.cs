@@ -52,12 +52,19 @@ namespace Agile.DataAccess
 		/// <param name="databaseName">Name of the database (excluding the environment, e.g. Development)</param>
 		public Database GetDatabase(string databaseName)
 		{
-			Database database = FindExistingDatabase(databaseName);
-			if (database != null)
-				return database;
-
-			return InstantiateTheDatabase(databaseName);
+			var database = FindExistingDatabase(databaseName);
+            return database ?? InstantiateTheDatabase(databaseName, ApplicationEnvironment.Name);
 		}
+
+        /// <summary>
+        /// Gets the initialised database.
+        /// </summary>
+        /// <param name="databaseInstanceName">Full Name of the database instance (INCLUDING the environment, e.g. Development)</param>
+        public Database GetDatabaseFromFullInstanceName(string databaseInstanceName)
+        {
+            var database = FindExistingDatabase(databaseInstanceName);
+            return database ?? InstantiateTheDatabase(databaseInstanceName);
+        }
 
         /// <summary>
         /// Gets the connection string for the given database.
@@ -85,12 +92,12 @@ namespace Agile.DataAccess
         /// Instantiates the database from the database name and the current environment
         /// then adds it to the hashtable and returns it.
         /// </summary>
-        private Database InstantiateTheDatabase(string databaseName)
+        private Database InstantiateTheDatabase(string databaseName, string environment = "")
         {
             try
             {
                 var factory = new DatabaseProviderFactory();
-                var database = factory.Create(string.Format("{0}{1}", databaseName, ApplicationEnvironment.Name));
+                var database = factory.Create(string.Format("{0}{1}", databaseName, environment));
                 Databases[databaseName] = database;
                 return database;
             }
