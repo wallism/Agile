@@ -42,7 +42,7 @@ namespace Agile.Mobile.Web
 
             if (WebException == null)
             {
-                Logger.Warning("Was not a WebException was null");
+                Logger.Warning("WebException was null");
                 return;
             }
 
@@ -53,7 +53,6 @@ namespace Agile.Mobile.Web
         {
             if (response == null)
                 throw new Exception("Response cannot be null");
-
             SetWebResponseDetails(response);
         }
 
@@ -67,6 +66,20 @@ namespace Agile.Mobile.Web
 
             Logger.Debug("Deserializing {0}", ContentType);
             if (IsTextResponse)
+            {
+                try
+                {
+                    TextResponse = response.GetResponseStream().StreamToString();
+                    // log a warning because a text response usually means something has gone wrong
+                    Logger.Warning(TextResponse);
+                }
+                catch
+                {
+                    Logger.Warning("Failed to convert stream to string");
+                    // do nothing is fine, ex is already logged in the extension method
+                }
+            }
+            else if (IsXmlResponse) // for now just handle like plain text
             {
                 try
                 {
@@ -149,6 +162,13 @@ namespace Agile.Mobile.Web
             get { return ContentType.StartsWith(ContentTypes.TEXT, StringComparison.CurrentCultureIgnoreCase); }
         }
 
+        /// <summary>
+        /// Returns true if ContentType isXML
+        /// </summary>
+        public bool IsXmlResponse
+        {
+            get { return ContentType.StartsWith(ContentTypes.XML, StringComparison.CurrentCultureIgnoreCase); }
+        }
 
         private static JsonSerializer jsonSerializer = new JsonSerializer();
 
@@ -167,12 +187,14 @@ namespace Agile.Mobile.Web
         }
 
         /// <summary>
-        /// Gets the deserialized value returned by the call
+        /// Gets the deserialized value returned by the call.
+        /// Note that if T is a string, value will still not be set, you need to access TextResponse
         /// </summary>
         public T Value { get; private set; }
 
         /// <summary>
-        /// Gets the text response that was returned instead of the expected Json
+        /// Gets the text response that was returned instead of the expected Json.
+        /// If T is string then this gets populated instead of Value
         /// </summary>
         public string TextResponse { get; private set; }
 

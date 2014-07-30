@@ -115,8 +115,9 @@ namespace Agile.Mobile.Web
             return result;
         }
 
-        private static async Task AddBodyToRequest(byte[] data, WebRequest request)
+        protected static async Task AddBodyToRequest(byte[] data, WebRequest request)
         {
+            Logger.Debug("AddBodyToRequest");
             try
             {
                 using (Stream stream = await Task<Stream>.Factory.FromAsync(request.BeginGetRequestStream, request.EndGetRequestStream, null))
@@ -130,6 +131,7 @@ namespace Agile.Mobile.Web
 
             }
         }
+
         /// <summary>
         /// Make a server request, GET or POST or whatever.
         /// This method adds all other required bits for all calls, e.g. Headers and authorization stuff
@@ -146,13 +148,12 @@ namespace Agile.Mobile.Web
                 , Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", HttpHelper.UserName, HttpHelper.Password))));
             request.Headers["Authorization"] = authorizationHeader;
             request.Headers["client"] = HttpHelper.Platform;
-            ServiceCallResult<TR> result;
-
+            
             try
             {
                 using (var response = await Task<WebResponse>.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null))
                 {
-                    result = new ServiceCallResult<TR>(response);
+                    return new ServiceCallResult<TR>(response);
                 }
             }
             catch (Exception ex)
@@ -162,7 +163,6 @@ namespace Agile.Mobile.Web
                 Hub.Publish(HubEvents.ServiceCallException, ex);
                 return new ServiceCallResult<TR>(ex);
             }
-            return result;
         }
 
 

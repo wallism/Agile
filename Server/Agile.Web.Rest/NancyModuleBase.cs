@@ -16,7 +16,6 @@ using Nancy.TinyIoc;
 
 namespace Agile.Web.Rest
 {
-
     /// <summary>
     /// 
     /// </summary>
@@ -101,7 +100,7 @@ namespace Agile.Web.Rest
         /// </summary>
         protected Response PostRoute(Func<TB
             , PrePostSaveResult> preSave = null
-            , Func<TB, PrePostSaveResult> postSave = null) 
+            , Func<TB, bool, PrePostSaveResult> postSave = null) 
         {
             return PostRoute(Repository, preSave, postSave);
         }
@@ -111,7 +110,7 @@ namespace Agile.Web.Rest
         /// </summary>
         protected Response PostRoute<T>(IRepository<T> repo
             , Func<T, PrePostSaveResult> preSave = null
-            , Func<T, PrePostSaveResult> postSave = null) where T : BaseBiz, new()
+            , Func<T, bool, PrePostSaveResult> postSave = null) where T : BaseBiz, new()
         {
             Logger.Debug("POST: bind");
 
@@ -152,7 +151,7 @@ namespace Agile.Web.Rest
                 // If all ok return Created and a location header pointing at the new resource
                 if (postSave != null)
                 {
-                    var result = postSave(instance);
+                    var result = postSave(instance, wasNew);
                     if (result != null)
                     {
                         if (result.Messages.Count > 0)
