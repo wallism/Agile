@@ -144,9 +144,7 @@ namespace Agile.Mobile.Web
                 return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
 
             Logger.Debug("{0}: {1}", request.Method, request.RequestUri);
-            var authorizationHeader = string.Format("Basic {0}"
-                , Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", HttpHelper.UserName, HttpHelper.Password))));
-            request.Headers["Authorization"] = authorizationHeader;
+            // Don't add Authorization headers here, callers need to specifiy 'standard' headers to add (especially Authorization)
             request.Headers["client"] = HttpHelper.Platform;
             
             try

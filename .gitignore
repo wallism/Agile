@@ -16,4 +16,4 @@ _ReSharper*
 *.userprefs
 
 ## logs
-app.log
+*.log
