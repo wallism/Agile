@@ -66,7 +66,7 @@ namespace Agile.Mobile.Web
             return type.Name;
         }
 
-        protected SendQueue BuildQueueRecord<T>(T value
+        protected SendQueue BuildJsonQueueRecord<T>(T value
             , string url = "") where T : class
         {
             var record = new SendQueue();
@@ -80,13 +80,37 @@ namespace Agile.Mobile.Web
             return record;
         }
 
+
+        /// <summary>
+        /// Add PUT of an image to the Q. Images need to be seriailzed at the platform level, therefore byte array is the type
+        /// </summary>
+        protected SendQueue BuildImageQueueRecord(string localPath // maybe don't want to save the image data, maybe just the path?
+            , string contentType
+            , string fileName = "") 
+        {
+            if(string.IsNullOrEmpty(contentType))
+                throw new Exception("Must pass in a content type when saving images. BuildImageQueueRecord");
+            var record = new SendQueue();
+            record.Data = null;
+            record.LocalBlobPath = localPath;
+            record.Url = fileName; 
+
+            record.Method = HttpHelper.PUT;
+            if(contentType != ContentTypes.JPEG) // todo add others as we implement and test
+                throw new Exception("Invalid content type. BuildImageQueueRecord");
+            record.ContentType = contentType;
+            record.DataType = "IMAGE";
+            record.Created = AgileDateTime.UtcNow;
+            return record;
+        }
+
         private IDisposable disposable;
         private bool isSending;
 
         /// <summary>
         /// Start sending every n seconds
         /// </summary>
-        /// <param name="intervalSeconds"></param>
+        /// <param name="intervalSeconds">how regularly the service looks in the Q for items to be sent</param>
         public void Start(int intervalSeconds = 5)
         {
             if(IsStarted)
@@ -146,6 +170,7 @@ namespace Agile.Mobile.Web
             }
         }
 
+
         private async Task SendAllInQueue()
         {
             if (IsSending)
@@ -163,10 +188,10 @@ namespace Agile.Mobile.Web
 
             try
             {
-                var count = Db.GetRecordCount(typeof (SendQueue));
-                if (count == 0)
+                var recordCount = Db.GetRecordCount(typeof (SendQueue));
+                if (recordCount == 0)
                     return;
-                while (count > 0)
+                while (recordCount > 0)
                 {
                     var next = Db.GetFirstRecord<SendQueue>();
                     try
@@ -176,7 +201,6 @@ namespace Agile.Mobile.Web
                         if (!string.IsNullOrEmpty(result))
                         {
                             FlagAsFailed(next, result);
-//                            break; // failed, stop processing
                             // for v1 we only do fifo as long as there are no errors. 
                             // if a record has a problem sending we don't want to stop others from going through.
                             // if it is a connectivity issue, the call to FlagAsFailed refreshed the NetworkConnectionManager.
@@ -186,7 +210,6 @@ namespace Agile.Mobile.Web
                             if (next.Succeeded)
                                 Db.Delete(next);
                         }
-                        count--;
                     }
                     catch (Exception ex)
                     {
@@ -195,6 +218,8 @@ namespace Agile.Mobile.Web
                         // want to stop this send, queue is fifo, if we don't break then the next one could get processed
 //                        break;   see not above about v1
                     }
+                    // we DO want to reduce the count everytime (i.e. with or without an ex), this moves us onto the next record...if we don't do this when an ex occurs then the service will immed try to send again...best to wait before retry
+                    recordCount--;
                 }
             }
             catch (Exception ex)
@@ -220,7 +245,8 @@ namespace Agile.Mobile.Web
 
             if (result == InvalidDatatype)
             {
-                Logger.Testing("this record will never succeed so removing it");
+                // log this as an error because we do not want it happening, logging as an error will give us visibility that it IS happening
+                Logger.Error("InvalidDataType, send will never succeed so removing it. Type:{0}", next.DataType);
                 Db.Delete(next);
                 return;
             }
