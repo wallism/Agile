@@ -35,5 +35,14 @@ namespace Agile.Framework.Server
         /// </summary>
         List<T> GetAll(DbTransaction transaction, IList<DeepLoader> deepLoaders = null);
 
+        /// <summary>
+        /// Returns true if the record exists in the db
+        /// </summary>
+        bool Exists(T item);
+
+        /// <summary>
+        /// Returns true if the record exists in the db
+        /// </summary>
+        bool Exists(T item, DbTransaction trans);
     }
 }

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 
 namespace Agile.Mobile.Web
 {
+
     /// <summary>
     /// Wrapper for all service call results.
     /// </summary>
@@ -65,6 +66,11 @@ namespace Agile.Mobile.Web
                 return;
 
             Logger.Debug("Deserializing {0}", ContentType);
+            if (IsJpegResponse)
+            {
+                throw new NotImplementedException("need to handle jpeg response types");
+            }
+
             if (IsTextResponse)
             {
                 try
@@ -169,6 +175,15 @@ namespace Agile.Mobile.Web
         {
             get { return ContentType.StartsWith(ContentTypes.XML, StringComparison.CurrentCultureIgnoreCase); }
         }
+
+        /// <summary>
+        /// Returns true if ContentType is Jpeg
+        /// </summary>
+        public bool IsJpegResponse
+        {
+            get { return ContentType.StartsWith(ContentTypes.JPEG, StringComparison.CurrentCultureIgnoreCase); }
+        }
+
 
         private static JsonSerializer jsonSerializer = new JsonSerializer();
 

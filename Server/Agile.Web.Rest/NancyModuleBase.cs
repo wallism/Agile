@@ -121,10 +121,11 @@ namespace Agile.Web.Rest
 //                if (instance == null)
 //                    return HttpStatusCode.BadRequest;
 
+                var wasNew = ! repo.Exists(instance);
+                instance.IsNew = wasNew; // don't care what was sent, set it from a call to the db
+
                 Logger.Info("POST: {0}", instance);
-                // Bind to the Generic Type of T
-                var wasNew = instance.GetIsNewItem();
-                
+
                 if (preSave != null)
                 {
                     var result = preSave(instance);
@@ -144,14 +145,14 @@ namespace Agile.Web.Rest
                 // SAVE
                 Logger.Debug("POST: save {0}", instance);
                 var saved = repo.Save(instance);
-
+                
                 if (saved == null) // this should only ever happen in unit tests
                     return ErrorResponse("saved instance was null");
 
                 // If all ok return Created and a location header pointing at the new resource
                 if (postSave != null)
                 {
-                    var result = postSave(instance, wasNew);
+                    var result = postSave(saved, wasNew);
                     if (result != null)
                     {
                         if (result.Messages.Count > 0)

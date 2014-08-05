@@ -163,6 +163,47 @@ namespace Agile.Mobile.Web
             }
         }
 
+        /// <summary>
+        /// Quick light weight check if a resource exists.
+        /// Just gets the header response if it exists, ie. does not download the resource at all.
+        /// This method doesn't throw an ex but if it does handle a thrown ex when a 404 occurs.
+        /// </summary>
+        public async Task<bool?> CheckResourceExists(string uri)
+        {
+            if (!ConnectionManager.CanSend)
+                return null;
+
+            // create the request with the full uri
+            var request = WebRequest.CreateHttp(uri);
+            request.Method = HttpHelper.HEAD;
+
+            try
+            {
+                using (var webResponse = await Task<WebResponse>.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null))
+                {
+                    var response = webResponse as HttpWebResponse;
+                    return response != null && response.StatusCode == HttpStatusCode.OK;
+                }
+            }
+            catch (WebException ex)
+            {
+                var response = ex.Response as HttpWebResponse; // using hasn't done its thing yet so ok to access
+                if (response != null)
+                {
+                    Logger.Debug("Status:{0}", response.StatusCode);
+                    if (response.StatusCode == HttpStatusCode.NotFound)
+                        return false;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // do NOT do Logger.Error
+                Logger.Warning("[{0}]{1}", ex.GetType().Name, ex.Message);
+                return null;
+            }
+        }
+
 
         /// <summary>
         /// Post the given object (type TR) but map it into a new instance of type TP type first 

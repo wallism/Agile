@@ -286,7 +286,7 @@ namespace Agile.DataAccess
             {
                 SaveBefore(transaction);
 
-                if (GetIsNewItem())
+                if (! ExistsInTheDatabase())
                     CreateNew(transaction);
                 else
                 {
@@ -301,14 +301,6 @@ namespace Agile.DataAccess
                 if (TableName != "ErrrorLog") 
                     throw;
             }
-        }
-
-        /// <summary>
-        /// Returns true if the item has never been saved, i.e. the id  is 0 (or equivalent)
-        /// </summary>
-        public virtual bool GetIsNewItem()
-        {
-            return GetId() < 1;
         }
 
         /// <summary>
@@ -404,6 +396,7 @@ namespace Agile.DataAccess
         /// <remarks>Implementation needs some work but is basically functional atm.</remarks>
         protected void CreateNew(DbTransaction transaction)
         {
+            Logger.Debug("CREATE: {0}", GetId());
             var command = GetInsertCommand();
             InternalExecuteNonQuery(Database, command, transaction);
             FillInsertOutputParameters(command);
@@ -424,6 +417,7 @@ namespace Agile.DataAccess
         /// <remarks>Implementation needs some work but is basically functional atm.</remarks>
         protected int UpdateExisting(DbTransaction transaction)
         {
+            Logger.Debug("UPDATE: {0}", GetId());
             var command = GetUpdateCommand();
             try
             {

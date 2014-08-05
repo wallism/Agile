@@ -54,5 +54,12 @@ namespace Agile.Framework.Server
             return item.Delete(transaction);
         }
 
+        public bool Exist(long id, DbTransaction transaction = null)
+        {
+            var item = new T();
+            item.SetId(id);
+            return item.ExistsInTheDatabase(transaction);
+        }
+
     }
 }

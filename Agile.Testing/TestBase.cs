@@ -56,6 +56,17 @@ namespace Agile.Testing
         {
         }
 
+        /// <summary>
+        /// Create a mock with nsubstitute and register it in the Container.
+        /// </summary>
+        protected T RegisterMock<T>() where T : class
+        {
+            Logger.Debug("Register MOCK: {0}", typeof(T).Name);
+            var mock = Substitute.For<T>();
+            Container.RegisterInstance(mock);
+            return mock;
+        }
+
         protected void AssertContains(string contains, string message)
         {
             Assert.IsNotNull(message, "message cannot be null");

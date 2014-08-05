@@ -21,9 +21,9 @@ namespace Agile.Mobile.Logging
 
         public void Write(string message, LogLevel level, LogCategory category, Type exType = null)
         {
-            if (level != LogLevel.Error)
+            // for our first releases we want Warning as well
+            if (level != LogLevel.Error && level != LogLevel.Fatal && level != LogLevel.Warning)
                 return; // only log errors like this
-
 
             try  // make absolutely certain no exs happen from logging exs
             {

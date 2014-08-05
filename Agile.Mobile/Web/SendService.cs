@@ -236,6 +236,7 @@ namespace Agile.Mobile.Web
 
         private void FlagAsFailed(SendQueue next, string result = "")
         {
+            Logger.Debug("FlagAsFailed: {0} : {1}", next, result ?? "");
             // todo: investigate causes of errors and take more appropriate action based on what the hell just happened
             // if the error is some kind of connectivity issue do not save
             // for now, just ensure connection manager is up to date with latest

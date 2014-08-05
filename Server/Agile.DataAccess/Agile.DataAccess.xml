@@ -384,11 +384,6 @@
             Save the record.
             </summary>
         </member>
-        <member name="M:Agile.DataAccess.DatabaseTable.GetIsNewItem">
-            <summary>
-            Returns true if the item has never been saved, i.e. the id  is 0 (or equivalent)
-            </summary>
-        </member>
         <member name="M:Agile.DataAccess.DatabaseTable.GetId">
             <summary>
             Gets the PK Id value

@@ -32,8 +32,9 @@ namespace Agile.Mobile.Web
 
 
         public const string POST = "POST";
-        public const string PUT = "PUT"; 
+        public const string PUT = "PUT";
         public const string GET = "GET";
+        public const string HEAD = "HEAD";
 
         public static string Platform { get; set; }
         public static string UserName { get; set; }

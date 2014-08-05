@@ -25,5 +25,10 @@ namespace Agile.Mobile.Web
 
         Task<ServiceCallResult<TR>> PostFromSendQueueAsync<TR>(SendQueue queueRecord)
             where TR : class;
+
+        /// <summary>
+        /// Returns true if the resource exists, null is returned if the check could not be made or an error occurred.
+        /// </summary>
+        Task<bool?> CheckResourceExists(string uri);
     }
 }

@@ -20,6 +20,14 @@ namespace Agile.Framework
     /// </summary>
     public abstract class BaseBiz : INotifyPropertyChanged
     {
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public BaseBiz()
+        {
+            IsNew = true; // set to true by default
+        }
+
         public override string ToString()
         {
             return string.Format("[{0}]", GetId());
@@ -65,12 +73,9 @@ namespace Agile.Framework
         public abstract void SetId(long id);
 
         /// <summary>
-        /// Returns true if the item has never been saved, i.e. the id  is 0 (or equivalent)
+        /// Gets and sets if the item is new. If null then it has not been set.
         /// </summary>
-        public virtual bool GetIsNewItem()
-        {
-            return GetId() < 1;
-        }
+        public bool IsNew { get; set; }
 
         public abstract void FillShallow<D>(D data) where D : IModelInterface;
         // note: Clone extension methods are in the Helper class.

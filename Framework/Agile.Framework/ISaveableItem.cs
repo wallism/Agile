@@ -10,9 +10,9 @@ namespace Agile.Framework
         Guid AltId { get; set; }
 
         /// <summary>
-        /// Returns true if the item has never been saved, i.e. the id  is 0 (or equivalent)
+        /// Returns true if the item has never been saved
         /// </summary>
-        bool GetIsNewItem();
+        bool IsNew { get; set; }
 
     }
 
