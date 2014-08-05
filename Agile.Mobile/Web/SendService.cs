@@ -84,16 +84,14 @@ namespace Agile.Mobile.Web
         /// <summary>
         /// Add PUT of an image to the Q. Images need to be seriailzed at the platform level, therefore byte array is the type
         /// </summary>
-        protected SendQueue BuildImageQueueRecord(string localPath // maybe don't want to save the image data, maybe just the path?
-            , string contentType
-            , string fileName = "") 
+        protected SendQueue BuildImageQueueRecord(string contentType
+            , string fileName) 
         {
             if(string.IsNullOrEmpty(contentType))
                 throw new Exception("Must pass in a content type when saving images. BuildImageQueueRecord");
             var record = new SendQueue();
             record.Data = null;
-            record.LocalBlobPath = localPath;
-            record.Url = fileName; 
+            record.FileName = fileName;
 
             record.Method = HttpHelper.PUT;
             if(contentType != ContentTypes.JPEG) // todo add others as we implement and test

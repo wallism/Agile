@@ -53,7 +53,7 @@ namespace Agile.Mobile.DAL
         /// <summary>
         /// Local path to the image or sound file. (the actual data doesn't get saved to into the Q)
         /// </summary>
-        public string LocalBlobPath { get; set; }
+        public string FileName { get; set; }
 
         [Ignore]
         public bool Succeeded { get; set; }
