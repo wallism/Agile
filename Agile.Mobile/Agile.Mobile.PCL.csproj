@@ -66,6 +66,7 @@
     <Compile Include="Environments\EndpointDetail.cs" />
     <Compile Include="Environments\MobileEnvironment.cs" />
     <Compile Include="HubEvents.cs" />
+    <Compile Include="ILocalStorageHelper.cs" />
     <Compile Include="Logging\ServerErrorLogger.cs" />
     <Compile Include="LogHelper.cs" />
     <Compile Include="NetworkConnectionManager.cs" />

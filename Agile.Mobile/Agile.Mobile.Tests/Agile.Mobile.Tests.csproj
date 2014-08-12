@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NSubstitute">
+      <HintPath>..\..\..\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -54,11 +57,13 @@
   <ItemGroup>
     <Compile Include="DAL\SQLiteTableTestBase.cs" />
     <Compile Include="DAL\SQLiteTestBase.cs" />
+    <Compile Include="LocalStorageHelperWindows.cs" />
     <Compile Include="Web\HttpTestBase.cs" />
     <Compile Include="Web\MainHttpServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

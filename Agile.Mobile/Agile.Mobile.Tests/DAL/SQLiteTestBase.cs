@@ -20,6 +20,7 @@ namespace Agile.Mobile.Tests.DAL
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
+            Container.Register<ILocalStorageHelper>(() => new LocalStorageHelperWindows());
             Container.Register(RegisterDb());
 
             Logger.Testing("At the start of every fixture DROP and CREATE all tables");
@@ -29,7 +30,6 @@ namespace Agile.Mobile.Tests.DAL
         public override void SetUp()
         {
             base.SetUp();
-            Container.Register(RegisterDb());
         }
 
         protected abstract Func<TDB> RegisterDb();

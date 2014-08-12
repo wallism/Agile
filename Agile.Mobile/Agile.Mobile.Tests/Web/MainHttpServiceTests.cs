@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Agile.Diagnostics.Logging;
+using Agile.Mobile.Environments;
 using Agile.Mobile.Tests;
 using Agile.Mobile.Web;
 using Agile.Shared.IoC;
+using NSubstitute;
 using NUnit.Framework;
 
 namespace Agile.Mobile.PCL.Tests
@@ -15,6 +17,7 @@ namespace Agile.Mobile.PCL.Tests
         public override void TestFixtureSetUp()
         {
             base.TestFixtureSetUp();
+            Container.Register(() => Substitute.For<IMobileEnvironment>());
             // need to register the service (instance is fine)
             Container.RegisterInstance<ISystemHttpService>(new SystemHttpService("Acoustie")); // ideally would not pass in Acoustie here, but it does need a system name and don't want to spend time fixing this right now...
         }
