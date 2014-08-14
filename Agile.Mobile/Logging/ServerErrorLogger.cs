@@ -22,7 +22,7 @@ namespace Agile.Mobile.Logging
         public void Write(string message, LogLevel level, LogCategory category, Type exType = null)
         {
             // for our first releases we want Warning as well
-            if (level != LogLevel.Error && level != LogLevel.Fatal && level != LogLevel.Warning)
+            if (level != LogLevel.Error && level != LogLevel.Fatal && level != LogLevel.Warning) // don't ever include Info, at least not without making sure all ex catches for web service calls log at a lower level!
                 return; // only log errors like this
 
             try  // make absolutely certain no exs happen from logging exs
@@ -48,7 +48,7 @@ namespace Agile.Mobile.Logging
             catch (Exception ex)
             {
                 // just catch and do nothing!
-                Logger.Info(ex.Message);
+                Logger.Info("[ServerErrorLogger] {0}", ex.Message);
             }
 
         }

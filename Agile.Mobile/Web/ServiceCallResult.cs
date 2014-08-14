@@ -38,12 +38,12 @@ namespace Agile.Mobile.Web
                 return;
             }
 
-            Logger.Warning("[{0}] {1}", ex.GetType().Name, ex.Message);
+            Logger.Info("[{0}] {1}", ex.GetType().Name, ex.Message);
             Exception = ex;
 
             if (WebException == null)
             {
-                Logger.Warning("WebException was null");
+                Logger.Info("WebException was null");
                 return;
             }
 
@@ -76,14 +76,21 @@ namespace Agile.Mobile.Web
                 try
                 {
                     TextResponse = response.GetResponseStream().StreamToString();
-                    // log a warning because a text response usually means something has gone wrong
-                    Logger.Warning(TextResponse);
+                    // log because a text response usually means something has gone wrong (only Info level because error might be connecting to server and if log at a higher level it could continually try again, depending on setting in ServerErrorLogger)
+                    Logger.Info(TextResponse);
                 }
                 catch
                 {
-                    Logger.Warning("Failed to convert stream to string");
+                    Logger.Info("Failed to convert stream to string");
                     // do nothing is fine, ex is already logged in the extension method
                 }
+            }
+            if (IsHtmlResponse)
+            {
+                // just show the status code for html for now
+                TextResponse = StatusCode.ToString();
+                Logger.Info(TextResponse);
+                
             }
             else if (IsXmlResponse) // for now just handle like plain text
             {
@@ -91,11 +98,11 @@ namespace Agile.Mobile.Web
                 {
                     TextResponse = response.GetResponseStream().StreamToString();
                     // log a warning because a text response usually means something has gone wrong
-                    Logger.Warning(TextResponse);
+                    Logger.Info(TextResponse);
                 }
                 catch
                 {
-                    Logger.Warning("Failed to convert stream to string");
+                    Logger.Info("Failed to convert stream to string");
                     // do nothing is fine, ex is already logged in the extension method
                 }
             }
@@ -112,13 +119,13 @@ namespace Agile.Mobile.Web
                 catch (Exception ex)
                 {
                     // do NOT Logger.Error! if an ex occurs deserializing, that could trigger another message sent to the server with potentially the same recurring deserialization issue...
-                    Logger.Warning("ServiceCallResult[T:{0}] {1}"
+                    Logger.Info("ServiceCallResult[T:{0}] {1}"
                         , typeof(T).Name, ex.Message);
                 }
             }
             else
             {
-                Logger.Warning("No matching ContentType for Response Deserialization [{0}]", ContentType);
+                Logger.Info("No matching ContentType for Response Deserialization [{0}]", ContentType);
             }
         }
         
@@ -133,7 +140,7 @@ namespace Agile.Mobile.Web
 
             if (response == null)
             {
-                Logger.Warning("Response is NULL");
+                Logger.Info("Response is NULL");
                 return;
             }
             ContentType = response.ContentType;
@@ -165,7 +172,19 @@ namespace Agile.Mobile.Web
         /// </summary>
         public bool IsTextResponse
         {
-            get { return ContentType.StartsWith(ContentTypes.TEXT, StringComparison.CurrentCultureIgnoreCase); }
+            get { return ContentType.StartsWith(ContentTypes.TEXT, StringComparison.CurrentCultureIgnoreCase);
+            }
+        }
+
+        /// <summary>
+        /// Returns true if ContentType is html text
+        /// </summary>
+        public bool IsHtmlResponse
+        {
+            get
+            {
+                return ContentType.StartsWith(ContentTypes.HTML, StringComparison.CurrentCultureIgnoreCase);
+            }
         }
 
         /// <summary>

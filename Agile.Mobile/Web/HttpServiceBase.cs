@@ -71,13 +71,6 @@ namespace Agile.Mobile.Web
         }
 
         
-
-        #region temp solution to point to different environment
-
-
-
-        #endregion
-
         /// <summary>
         /// Gets the web host address (essentially the 'base' address for calls)
         /// </summary>
@@ -118,6 +111,7 @@ namespace Agile.Mobile.Web
         protected static async Task AddBodyToRequest(byte[] data, WebRequest request)
         {
             Logger.Debug("AddBodyToRequest");
+            var uri = request.RequestUri.AbsoluteUri;
             try
             {
                 using (Stream stream = await Task<Stream>.Factory.FromAsync(request.BeginGetRequestStream, request.EndGetRequestStream, null))
@@ -127,8 +121,8 @@ namespace Agile.Mobile.Web
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "AddBodyToRequest");
-
+                Logger.Info(string.Format("[{0}] {1}. AddBodyToRequest [{2}]"
+                    , ex.GetType().Name, ex.Message, uri));
             }
         }
 
@@ -156,9 +150,9 @@ namespace Agile.Mobile.Web
             }
             catch (Exception ex)
             {
-                // do NOT do Logger.Error
-                Logger.Warning("{0}", ex.Message);
-                Hub.Publish(HubEvents.ServiceCallException, ex);
+                // do NOT do Logger.Error or warning
+                Logger.Info("[MSR] {0}", ex.Message);
+//                Hub.Publish(HubEvents.ServiceCallException, ex);
                 return new ServiceCallResult<TR>(ex);
             }
         }
@@ -198,8 +192,8 @@ namespace Agile.Mobile.Web
             }
             catch (Exception ex)
             {
-                // do NOT do Logger.Error
-                Logger.Warning("[{0}]{1}", ex.GetType().Name, ex.Message);
+                // do NOT do Logger.Error or warning 
+                Logger.Info("[{0}]{1}", ex.GetType().Name, ex.Message);
                 return null;
             }
         }
