@@ -16,11 +16,15 @@ namespace Agile.Mobile.Web
     /// <typeparam name="T">Expected type to deserialize json into</typeparam>
     public class ServiceCallResult<T>
     {
+        private ServiceCallResult()
+        {
+            ContentType = "notSet";
+        }
 
         /// <summary>
         /// ctor if you already have deserialized data
         /// </summary>
-        public ServiceCallResult(T data)
+        public ServiceCallResult(T data) : this()
         {
             Logger.Debug("ServiceCallResult {0}", typeof(T).Name);
             Value = data;
@@ -30,6 +34,7 @@ namespace Agile.Mobile.Web
         /// Constuct an 'ERROR' response
         /// </summary>
         public ServiceCallResult(Exception ex)
+            : this()
         {
             Logger.Debug("ServiceCallResult EX:");
             if (ex == null)
@@ -51,6 +56,7 @@ namespace Agile.Mobile.Web
         }
 
         public ServiceCallResult(WebResponse response)
+            : this()
         {
             if (response == null)
                 throw new Exception("Response cannot be null");
@@ -65,10 +71,15 @@ namespace Agile.Mobile.Web
             if(response == null)
                 return;
 
-            Logger.Debug("Deserializing {0}", ContentType);
+            Logger.Debug("Deserializing {0}", ContentType ?? "null");
             if (IsJpegResponse)
             {
                 throw new NotImplementedException("need to handle jpeg response types");
+            }
+            if (ContentType == null && StatusCode == HttpStatusCode.Created)
+            {
+                TextResponse = response.ResponseUri.AbsoluteUri;
+                return;
             }
 
             if (IsTextResponse)
@@ -125,7 +136,7 @@ namespace Agile.Mobile.Web
             }
             else
             {
-                Logger.Info("No matching ContentType for Response Deserialization [{0}]", ContentType);
+                Logger.Info("No matching ContentType for Response Deserialization [{0}]", ContentType ?? "null");
             }
         }
         
@@ -135,7 +146,6 @@ namespace Agile.Mobile.Web
         /// </summary>
         private void SetWebResponseDetails(WebResponse response)
         {
-            ContentType = "";
             StatusCode = HttpStatusCode.HttpVersionNotSupported;
 
             if (response == null)
@@ -150,7 +160,7 @@ namespace Agile.Mobile.Web
                 return;
 
             StatusCode = httpResponse.StatusCode;
-            Logger.Info("Response: {0} | {1}", StatusCode.ToString(), ContentType);
+            Logger.Info("Response: {0} | {1}", StatusCode.ToString(), ContentType ?? "null");
 
             DeserializeResponse(response);
         }
@@ -164,7 +174,7 @@ namespace Agile.Mobile.Web
         /// Returns true if ContentType is json
         /// </summary>
         public bool IsJsonResponse {
-            get { return ContentType.StartsWith(ContentTypes.JSON, StringComparison.CurrentCultureIgnoreCase); }
+            get { return ContentType != null && ContentType.StartsWith(ContentTypes.JSON, StringComparison.CurrentCultureIgnoreCase); }
         }
 
         /// <summary>
@@ -172,7 +182,9 @@ namespace Agile.Mobile.Web
         /// </summary>
         public bool IsTextResponse
         {
-            get { return ContentType.StartsWith(ContentTypes.TEXT, StringComparison.CurrentCultureIgnoreCase);
+            get
+            {
+                return ContentType != null && ContentType.StartsWith(ContentTypes.TEXT, StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
@@ -183,7 +195,7 @@ namespace Agile.Mobile.Web
         {
             get
             {
-                return ContentType.StartsWith(ContentTypes.HTML, StringComparison.CurrentCultureIgnoreCase);
+                return ContentType != null && ContentType.StartsWith(ContentTypes.HTML, StringComparison.CurrentCultureIgnoreCase);
             }
         }
 
@@ -192,7 +204,7 @@ namespace Agile.Mobile.Web
         /// </summary>
         public bool IsXmlResponse
         {
-            get { return ContentType.StartsWith(ContentTypes.XML, StringComparison.CurrentCultureIgnoreCase); }
+            get { return ContentType != null && ContentType.StartsWith(ContentTypes.XML, StringComparison.CurrentCultureIgnoreCase); }
         }
 
         /// <summary>
@@ -200,7 +212,7 @@ namespace Agile.Mobile.Web
         /// </summary>
         public bool IsJpegResponse
         {
-            get { return ContentType.StartsWith(ContentTypes.JPEG, StringComparison.CurrentCultureIgnoreCase); }
+            get { return ContentType != null && ContentType.StartsWith(ContentTypes.JPEG, StringComparison.CurrentCultureIgnoreCase); }
         }
 
 

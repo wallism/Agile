@@ -51,7 +51,7 @@ namespace Agile.Mobile.DAL
         public string Url { get; set; }
 
         /// <summary>
-        /// Local path to the image or sound file. (the actual data doesn't get saved to into the Q)
+        /// Name of the image or sound file, file name only, no path info. (the actual image data doesn't get saved to into the Q)
         /// </summary>
         public string FileName { get; set; }
 

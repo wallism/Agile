@@ -162,17 +162,17 @@ namespace Agile.Mobile.Web
         public bool IsSending
         {
             get { return isSending; }
-            private set { 
-                isSending = value; 
-                Logger.Debug("isSending setTo:{0}", isSending);
-            }
+            private set { isSending = value; }
         }
 
 
         private async Task SendAllInQueue()
         {
             if (IsSending)
+            {
+                Logger.Debug("IsSending is true");
                 return;
+            }
             IsSending = true;
 
             // todo: check users settings for wifi
@@ -188,7 +188,10 @@ namespace Agile.Mobile.Web
             {
                 var recordCount = Db.GetRecordCount(typeof (SendQueue));
                 if (recordCount == 0)
+                {
+                    IsSending = false;
                     return;
+                }
                 while (recordCount > 0)
                 {
                     var next = Db.GetFirstRecord<SendQueue>();

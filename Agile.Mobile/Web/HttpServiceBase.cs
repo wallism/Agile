@@ -110,7 +110,7 @@ namespace Agile.Mobile.Web
 
         protected static async Task AddBodyToRequest(byte[] data, WebRequest request)
         {
-            Logger.Debug("AddBodyToRequest");
+            Logger.Debug("AddBodyToRequest: {0}", request.ContentType);
             var uri = request.RequestUri.AbsoluteUri;
             try
             {
