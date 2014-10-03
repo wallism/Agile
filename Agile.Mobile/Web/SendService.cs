@@ -107,7 +107,7 @@ namespace Agile.Mobile.Web
 
         // delete this later...
         // disable so don't keep sending images to the cloud whilst testing other functionality
-        private bool isSendServiceDisabledByDeveloper = true;
+        private bool isSendServiceDisabledByDeveloper = false;
 
         /// <summary>
         /// Start sending every n seconds
