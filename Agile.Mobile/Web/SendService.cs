@@ -105,6 +105,10 @@ namespace Agile.Mobile.Web
         private IDisposable disposable;
         private bool isSending;
 
+        // delete this later...
+        // disable so don't keep sending images to the cloud whilst testing other functionality
+        private bool isSendServiceDisabledByDeveloper = true;
+
         /// <summary>
         /// Start sending every n seconds
         /// </summary>
@@ -113,6 +117,12 @@ namespace Agile.Mobile.Web
         {
             if(IsStarted)
                 return;
+
+            if (isSendServiceDisabledByDeveloper)
+            {
+                Logger.Debug("************* SendService is DISABLED by developer ****************");
+                return;
+            }
 
             Logger.Debug("Set interval to {0}", intervalSeconds);
             disposable = Observable.Interval(TimeSpan.FromSeconds(intervalSeconds))

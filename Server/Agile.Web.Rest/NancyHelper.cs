@@ -84,9 +84,16 @@ namespace Agile.Web.Rest
         {
             try
             {
-                var assembly = Assembly.GetAssembly(type)
-                    ?? Assembly.GetExecutingAssembly();
-                return assembly.GetName().Version.ToString();
+                Assembly assembly = null;
+                if (type != null)
+                    assembly = Assembly.GetAssembly(type);
+                
+                if (assembly == null)
+                    assembly = Assembly.GetExecutingAssembly();
+
+                return (assembly == null)
+                    ? "noVersion"
+                    : assembly.GetName().Version.ToString();                
             }
             catch (Exception ex)
             {

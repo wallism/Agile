@@ -12,6 +12,11 @@ namespace Agile.Mobile
         void InitializeFolders();
 
         /// <summary>
+        /// Gets the Full Name for the file (i.e. including the path)
+        /// </summary>
+        string GetFileNameWithDirectory(string fileName);
+
+        /// <summary>
         ///  Opens a stream to get the file contents.
         /// Don't forget to Dispose!!
         /// Do check if exists first. Can return null
