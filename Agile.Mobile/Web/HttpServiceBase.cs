@@ -27,8 +27,9 @@ namespace Agile.Mobile.Web
         {
             ServiceName = serviceName;
 
-            Logger.Debug("HttpServiceBase: ctor *** {0} Environment ***", Environment.Name);
-
+            Logger.Debug("[{0}] HttpServiceBase: ctor *** {1} Environment *** "
+                , typeof(T).Name
+                , Environment.Name);
         }
 
         private string ServiceName { get; set; }

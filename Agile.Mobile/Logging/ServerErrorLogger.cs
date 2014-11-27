@@ -36,7 +36,7 @@ namespace Agile.Mobile.Logging
                     , AppVersion = AppDetail.Instance.AppVersion
                     , OS = AppDetail.Instance.OS
                     , OSVersion = AppDetail.Instance.OSVersion
-                    , Device = AppDetail.Instance.Device
+                    , Device = AppDetail.Instance.Device.Name
                     , Country = AppDetail.Instance.Country
                     , Language = AppDetail.Instance.Language
                     , CreatedUtc = AgileDateTime.UtcNow

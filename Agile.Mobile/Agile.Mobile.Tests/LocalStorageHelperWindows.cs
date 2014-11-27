@@ -25,6 +25,12 @@ namespace Agile.Mobile.Tests
         {
             AppFolder = Environment.CurrentDirectory;
         }
+
+        public string GetFileNameWithDirectory(string fileName)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool SaveJpeg(Stream stream, string fileName)
         {
             // again, don't really need for unit testing (not atm anyway)

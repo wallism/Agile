@@ -33,7 +33,13 @@ namespace Agile.Framework.Server
         public List<T> GetAll(DbTransaction transaction, params DeepLoader[] deepLoaders)
         {
 			database = AgileDatabase.GetInstance().GetDatabase(PERSISTENCESTORENAME);
-			var storedProcedureName = typeof(T).Name + "SelectAll";
+            // all of the Types will likely end with 'Table' but the procs names do not include table...so remove it if the name ends with it.
+
+            var name = typeof(T).Name;
+            var start = name.EndsWith("Table")
+                ? name.Remove(name.LastIndexOf("Table"), 5)
+                : name;
+            var storedProcedureName = start + "SelectAll";
 			var command  = database.GetStoredProcCommand(storedProcedureName);
 
 			return DatabaseTable.InternalExecuteDataReader(database, command, transaction, DatabaseTable.CreateList<T>);

@@ -65,7 +65,7 @@ namespace Agile.Mobile
             var changed = newConnectionState != CurrentConnection;
             CurrentConnection = newConnectionState;
 
-            Logger.Debug("CheckConnection={0} ({1})", newConnectionState.ToString(), changed.ToString());
+            Logger.Debug("CheckConnection={0} (changed:{1})", newConnectionState.ToString(), changed.ToString());
             if(changed)
                 Hub.Publish(HubEvents.Network.ConnectionChanged, newConnectionState);
             return changed;

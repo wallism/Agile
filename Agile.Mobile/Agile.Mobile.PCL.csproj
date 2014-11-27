@@ -65,6 +65,9 @@
     <Compile Include="DAL\SendQueue.cs" />
     <Compile Include="Environments\EndpointDetail.cs" />
     <Compile Include="Environments\MobileEnvironment.cs" />
+    <Compile Include="Gestures\FlingDirection.cs" />
+    <Compile Include="Gestures\FlingInfo.cs" />
+    <Compile Include="Helpers\LocalStorageHelperBase.cs" />
     <Compile Include="HubEvents.cs" />
     <Compile Include="ILocalStorageHelper.cs" />
     <Compile Include="Logging\ServerErrorLogger.cs" />
