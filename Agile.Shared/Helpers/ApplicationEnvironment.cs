@@ -71,7 +71,7 @@ namespace Agile.Environments
         {
             try
             {
-                return ConfigurationManager.AppSettings["AgileEnvironment"];
+                return ConfigurationManager.AppSettings["BuildEnvironment"];
             }
             catch (Exception ex)
             {
