@@ -57,13 +57,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Agile.Diagnostics\Agile.Diagnostics.PCL.csproj">
-      <Project>{a5dad6c1-174b-4f3c-a8ea-745824070f40}</Project>
-      <Name>Agile.Diagnostics.PCL</Name>
+    <ProjectReference Include="..\Agile.Diagnostics\Agile.Diagnostics.csproj">
+      <Project>{cfd72dba-bff0-4cb5-92c8-308c877d78b1}</Project>
+      <Name>Agile.Diagnostics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Agile.Shared\Agile.Shared.PCL.csproj">
-      <Project>{2b44cff8-53b1-4422-b556-b8a04944acc9}</Project>
-      <Name>Agile.Shared.PCL</Name>
+    <ProjectReference Include="..\Agile.Shared\Agile.Shared.csproj">
+      <Project>{ebd10f9c-ea99-4205-b8d6-df755aefa14e}</Project>
+      <Name>Agile.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
