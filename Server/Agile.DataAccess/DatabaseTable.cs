@@ -475,7 +475,6 @@ namespace Agile.DataAccess
             DbTransaction testTransaction = ActiveTransaction.GetTestTransaction(database);
             // Use the test transaction if one is there
             if (testTransaction != null)
-
                 transaction = testTransaction;
 
             if (transaction == null)

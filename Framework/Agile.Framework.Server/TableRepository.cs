@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
@@ -12,11 +13,6 @@ namespace Agile.Framework.Server
 {
     public class TableRepository<T> : ITableRepository<T> where T : DatabaseTable, new()
     {
-        /// <summary>
-        /// Gets the name of the persitence store (databse name) that the table is in.
-        /// </summary>
-        private const string PERSISTENCESTORENAME = "Acoustie";
-
         private Database database;
 
 		/// <summary>
@@ -27,12 +23,21 @@ namespace Agile.Framework.Server
 		    return GetAll(null, deepLoaders);
 		}
 
+        private string persistenceStoreName;
+
+        private string PersistenceStoreName
+        {
+            get { return persistenceStoreName 
+                ?? (persistenceStoreName = ConfigurationManager.AppSettings["PersistenceStoreName"]); }
+        }
+
+
         /// <summary>
         /// Gets ALL records from the table.
         /// </summary>
         public List<T> GetAll(DbTransaction transaction, params DeepLoader[] deepLoaders)
         {
-			database = AgileDatabase.GetInstance().GetDatabase(PERSISTENCESTORENAME);
+			database = AgileDatabase.GetInstance().GetDatabase(PersistenceStoreName);
             // all of the Types will likely end with 'Table' but the procs names do not include table...so remove it if the name ends with it.
 
             var name = typeof(T).Name;

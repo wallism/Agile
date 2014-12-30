@@ -76,7 +76,7 @@ namespace Agile.Web.Rest
             }
         }
 
-        private IList<DeepLoader> GetDeepLoaders()
+        protected IList<DeepLoader> GetDeepLoaders()
         {
             if (Request.Body.Length == 0)
                 return null;
