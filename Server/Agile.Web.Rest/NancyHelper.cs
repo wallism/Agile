@@ -70,6 +70,34 @@ namespace Agile.Web.Rest
             }
         }
 
+        public static string GetStringKey(dynamic parameters)
+        {
+            try
+            {
+                string value = parameters.Key;
+                return value;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return "";
+            }
+        }
+
+        public static string GetStringCode(dynamic parameters)
+        {
+            try
+            {
+                string value = parameters.Code;
+                return value;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return "";
+            }
+        }
+
         private static Type type;
 
         /// <summary>
