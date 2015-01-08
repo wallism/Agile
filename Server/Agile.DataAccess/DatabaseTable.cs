@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using Agile.Diagnostics.Logging;
 using Agile.Shared;
+using Agile.Shared.PubSub;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle;
 

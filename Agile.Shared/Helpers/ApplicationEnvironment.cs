@@ -6,6 +6,7 @@ using System.Net;
 using Agile.Common;
 using Agile.Diagnostics.Logging;
 using Agile.Shared;
+using Agile.Shared.PubSub;
 
 namespace Agile.Environments
 {

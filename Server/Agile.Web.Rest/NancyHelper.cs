@@ -129,5 +129,16 @@ namespace Agile.Web.Rest
                 return String.Format("GetVersion: [{0}]", ex.Message);
             }
         }
+
+        public static string GetInfo()
+        {
+            return Info;
+        }
+
+        /// <summary>
+        /// use this if debugging something...but remove any code that sets it.
+        /// Should always be empty in PROD!
+        /// </summary>
+        public static string Info { get; set; }
     }
 }

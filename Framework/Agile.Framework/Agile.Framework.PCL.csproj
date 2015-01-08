@@ -39,7 +39,7 @@
       <Name>Agile.Diagnostics.PCL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Agile.Shared\Agile.Shared.PCL.csproj">
-      <Project>{2b44cff8-53b1-4422-b556-b8a04944acc9}</Project>
+      <Project>{2B44CFF8-53B1-4422-B556-B8A04944ACC9}</Project>
       <Name>Agile.Shared.PCL</Name>
     </ProjectReference>
   </ItemGroup>

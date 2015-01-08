@@ -24,6 +24,7 @@ namespace Agile.Web.Rest
                 return View["main"];
             };
             Get["/version"] = parameters => NancyHelper.GetVersion();
+            Get["/info"] = parameters => NancyHelper.GetInfo();
             Post["/logerror"] = parameters => PostRoute();
         }
         
