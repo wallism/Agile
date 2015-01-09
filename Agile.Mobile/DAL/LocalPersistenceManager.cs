@@ -41,6 +41,9 @@ namespace Acoustie.Mobile.DAL
             where T : class, new()
             where TR : LocalDbRecord, new();
 
+        List<TR> GetAll<TR>()
+            where TR : LocalDbRecord, new();
+
         int Delete<T, TR>(T source)
             where T : class, new()
             where TR : LocalDbRecord, new();
@@ -195,6 +198,12 @@ namespace Acoustie.Mobile.DAL
             return list;
         }
 
+        public List<TR> GetAll<TR>()
+            where TR : LocalDbRecord, new()
+        {
+            var result = Db.GetAll<TR>();
+            return result;
+        }
 
         private TDB db;
         /// <summary>
