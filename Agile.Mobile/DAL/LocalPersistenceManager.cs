@@ -20,20 +20,31 @@ namespace Acoustie.Mobile.DAL
             where T : BaseBiz
             where TR : LocalDbRecord;
 
+        int InsertOrReplace<TR>(TR source)
+            where TR : LocalDbRecord;
+
         int Update<T, TR>(T source)
             where T : BaseBiz
+            where TR : LocalDbRecord;
+
+        int Update<TR>(TR source)
             where TR : LocalDbRecord;
 
         T Find<T, TR>(long id)
             where T : class, new()
             where TR : LocalDbRecord, new();
 
+        TR Find<TR>(long id)
+            where TR : LocalDbRecord, new();
         List<T> FindAllFor<T, TR>(long id, string idFieldName)
             where T : class, new()
             where TR : LocalDbRecord, new();
 
         List<T> GetAll<T, TR>()
             where T : class, new()
+            where TR : LocalDbRecord, new();
+
+        List<TR> GetAll<TR>()
             where TR : LocalDbRecord, new();
 
         int Delete<T, TR>(T source)
@@ -81,7 +92,33 @@ namespace Acoustie.Mobile.DAL
             return result;
         }
 
+        /// <summary>
+        /// Pass in a biz object, auto maps to Record (db) object
+        /// and saves to the database (calls InsertOrReplace on SQLite)
+        /// </summary>
+        /// <remarks>safe to pass in nulls, just ignored.</remarks>
+        public int InsertOrReplace<TR>(TR source)
+            where TR : LocalDbRecord
+        {
+            if (source == null)
+                return 0; // nothing to save, not necessarily an error...
+            MakeSureIdIsNotZero(source);
+
+            // map to a 'Record' 
+            var result = Db.InsertOrReplace(source);
+            Logger.Debug("Save result={0} [{1}]", result, source.ToString());
+            return result;
+        }
+
         private void MakeSureIdIsNotZero<T, TR>(T source) where T : BaseBiz where TR : LocalDbRecord
+        {
+            // Don't save anything with an id of 0!
+            if (source.GetId() == 0)
+                source.SetId(GetNextLocalId<TR>());
+        }
+
+        private void MakeSureIdIsNotZero<TR>(TR source)
+            where TR : LocalDbRecord
         {
             // Don't save anything with an id of 0!
             if (source.GetId() == 0)
@@ -109,6 +146,18 @@ namespace Acoustie.Mobile.DAL
             return result;
         }
 
+        public int Update<TR>(TR source) where TR : LocalDbRecord
+        {
+            if (source == null)
+                return 0; // nothing to save, not necessarily an error...
+            if (source.GetId() == 0) // throw an exception if we are doing an Update, Id can't be 0 if we we're updating!
+                throw new Exception("Id cannot be 0! If it is a new record make sure Id is set using GetNextLocalId first.");
+
+            var result = Db.Update(source);
+            Logger.Debug("Update result={0} [{1}]", result, source.ToString());
+            return result;
+        }
+
         /// <summary>
         /// Load the object from the db
         /// </summary>
@@ -120,6 +169,15 @@ namespace Acoustie.Mobile.DAL
             return record == null 
                 ? null 
                 : Mapper.DynamicMap<TR, T>(record);
+        }
+
+        /// <summary>
+        /// Load the object from the db
+        /// </summary>
+        public TR Find<TR>(long id)
+            where TR : LocalDbRecord, new()
+        {
+            return Db.Find<TR>(id);
         }
 
         /// <summary>
@@ -169,6 +227,12 @@ namespace Acoustie.Mobile.DAL
             return list;
         }
 
+        public List<TR> GetAll<TR>()
+            where TR : LocalDbRecord, new()
+        {
+            var result = Db.GetAll<TR>();
+            return result;
+        }
 
         private TDB db;
         /// <summary>

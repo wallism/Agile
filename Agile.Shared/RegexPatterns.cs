@@ -8,6 +8,7 @@ namespace Agile.Shared
         /// Pattern for matching a string that contains only numeric characters
         /// </summary>
         public static readonly Regex AllNumbers = new Regex(@"^\d+$"); 
+
         /// <summary>
         /// Characters that are valid for a username
         /// </summary>

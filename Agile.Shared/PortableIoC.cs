@@ -117,7 +117,7 @@ namespace Agile.Shared.IoC
             }
 
             // failed to find anything
-            var message = string.Format("IoC: Nothing registered for {0}", interfaceName);
+            var message = string.Format("IoC: Nothing registered for {0}", interfaceName ?? "???");
             Logger.Warning(message);
             throw new Exception(message);
         }

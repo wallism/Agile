@@ -255,7 +255,21 @@ namespace Agile.Mobile.Web
         public WebException WebException {
             get { return Exception as WebException; }
         }
-        
+
+        /// <summary>
+        /// Returns web ex message or ex message if there was an ex.
+        /// </summary>
+        public string ExceptionMessage {
+            get
+            {
+                if (WebException != null)
+                    return WebException.Message;
+                if (Exception != null)
+                    return Exception.Message;
+                return "";
+            }
+        }
+
 
     }
 }
