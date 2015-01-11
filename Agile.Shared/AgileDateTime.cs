@@ -18,6 +18,7 @@ namespace Agile.Shared
     /// </summary>
     public static class AgileDateTime
     {
+        public const string UtcDateFormat = "yyyy-MM-ddTHH:mm:sszz";
         private static IDateTimeProvider provider;
         /// <summary>
         /// ctor

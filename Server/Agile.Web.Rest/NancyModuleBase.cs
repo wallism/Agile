@@ -76,6 +76,29 @@ namespace Agile.Web.Rest
             }
         }
 
+        protected dynamic GetAll(dynamic parameters)
+        {
+            Logger.Debug("GetAll");
+
+            var client = Request.Headers["client"].FirstOrDefault();
+            Logger.Debug("{0}", client ?? "No Client");
+
+            try
+            {
+                var loaded = Repository.GetAll(new List<DeepLoader>()); // don't use deeploaders
+
+                return (loaded != null)
+                    ? Response.AsJson(loaded).WithStatusCode(HttpStatusCode.OK)
+                    : HttpStatusCode.NotFound;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "GetAll");
+                // for now do return the ex details, later make this configurable (possible security risk)
+                return ErrorResponse(ex);
+            }
+        }
+
         protected IList<DeepLoader> GetDeepLoaders()
         {
             if (Request.Body.Length == 0)

@@ -33,6 +33,15 @@ namespace Agile.Web.Rest
                     Logger.Debug("Cannot convert Date Parameter - no value");
                     return null;
                 }
+                // this is a hack but don't want figure out why the + is getting dropped off...
+                // so add it if it is missing and there is a space
+                var lastIndexOfSpace = date.LastIndexOf(" ", StringComparison.InvariantCultureIgnoreCase);
+                if (!date.Contains("+") && lastIndexOfSpace > -1)
+                {
+                    date = date.Remove(lastIndexOfSpace, 1);
+                    date = date.Insert(lastIndexOfSpace, "+");
+                }
+
                 return Safe.NullableDateTimeOffset(date);
             }
             catch (Exception ex)
