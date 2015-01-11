@@ -20,6 +20,9 @@ namespace Acoustie.Mobile.DAL
             where T : BaseBiz
             where TR : LocalDbRecord;
 
+        int InsertOrReplace<TR>(TR source)
+            where TR : LocalDbRecord;
+
         int Update<T, TR>(T source)
             where T : BaseBiz
             where TR : LocalDbRecord;
@@ -89,7 +92,33 @@ namespace Acoustie.Mobile.DAL
             return result;
         }
 
+        /// <summary>
+        /// Pass in a biz object, auto maps to Record (db) object
+        /// and saves to the database (calls InsertOrReplace on SQLite)
+        /// </summary>
+        /// <remarks>safe to pass in nulls, just ignored.</remarks>
+        public int InsertOrReplace<TR>(TR source)
+            where TR : LocalDbRecord
+        {
+            if (source == null)
+                return 0; // nothing to save, not necessarily an error...
+            MakeSureIdIsNotZero(source);
+
+            // map to a 'Record' 
+            var result = Db.InsertOrReplace(source);
+            Logger.Debug("Save result={0} [{1}]", result, source.ToString());
+            return result;
+        }
+
         private void MakeSureIdIsNotZero<T, TR>(T source) where T : BaseBiz where TR : LocalDbRecord
+        {
+            // Don't save anything with an id of 0!
+            if (source.GetId() == 0)
+                source.SetId(GetNextLocalId<TR>());
+        }
+
+        private void MakeSureIdIsNotZero<TR>(TR source)
+            where TR : LocalDbRecord
         {
             // Don't save anything with an id of 0!
             if (source.GetId() == 0)

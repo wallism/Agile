@@ -218,7 +218,6 @@ namespace Agile.Mobile.Web
 
         /// <summary>
         /// Post the given object (use only if you are sure the object doesn't have any dependency issues)
-        /// todo: may want to remove this...
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance"></param>
@@ -228,6 +227,21 @@ namespace Agile.Mobile.Web
         {
             return Post<T, T>(url, instance);
         }
+
+        /// <summary>
+        /// Post the given object (use only if you are sure the object doesn't have any dependency issues)
+        /// </summary>
+        /// <typeparam name="TP">type to post</typeparam>
+        /// <typeparam name="TR">type of result (i.e. deserialize into this)</typeparam>
+        /// <param name="instance"></param>
+        /// <param name="url"></param>
+        /// <returns>The new version of the object returned by the server</returns>
+        public Task<ServiceCallResult<TR>> PostAsync<TP, TR>(TP instance, string url = "")
+            where TP : class // TP should be a Dto (doesn't have to be but it is recommended)
+        {
+            return Post<TP, TR>(url, instance);
+        }
+
 
         /// <summary>
         /// Post an item from the SendQueue
