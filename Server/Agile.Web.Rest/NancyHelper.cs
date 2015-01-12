@@ -64,6 +64,19 @@ namespace Agile.Web.Rest
                 return -1;
             }
         }
+        public static string GetPinId(dynamic parameters)
+        {
+            try
+            {
+                string pin = parameters.Pin;
+                return pin;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return null;
+            }
+        }
 
         public static string GetStringValue(dynamic parameters)
         {
