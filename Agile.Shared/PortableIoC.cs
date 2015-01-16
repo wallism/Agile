@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Agile.Diagnostics.Logging;
 
 namespace Agile.Shared.IoC
@@ -29,6 +30,13 @@ namespace Agile.Shared.IoC
         public static int Count 
         {
             get { return Items.Count; }
+        }
+
+        public static bool HasInstanceOfType<T>() where T : class
+        {
+            var interfaceName = typeof(T).Name;
+
+            return Items.Any(i => i.InterfaceName == interfaceName);
         }
 
         /// <summary>
