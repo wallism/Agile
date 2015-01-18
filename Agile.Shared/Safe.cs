@@ -103,6 +103,8 @@ namespace Agile.Shared
 
             try
             {
+                if (value.GetType().Name == "DBNull")
+                    return null;
                 return (T)value;
             }
             catch
