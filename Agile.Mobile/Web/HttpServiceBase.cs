@@ -82,6 +82,12 @@ namespace Agile.Mobile.Web
         }
 
 
+        protected virtual void AddRequestHeaders(WebRequest request)
+        {            
+            // Don't add Authorization headers here, callers need to specifiy 'standard' headers to add (especially Authorization)
+            request.Headers["client"] = HttpHelper.Platform;
+        }
+
         public Task<ServiceCallResult<T>> GetAsync(long id)
         {
             return GET<T>(string.Format("/{0}", id));
@@ -139,8 +145,8 @@ namespace Agile.Mobile.Web
                 return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
 
             Logger.Debug("{0}: {1}", request.Method, request.RequestUri);
-            // Don't add Authorization headers here, callers need to specifiy 'standard' headers to add (especially Authorization)
-            request.Headers["client"] = HttpHelper.Platform;
+
+            AddRequestHeaders(request);
             
             try
             {
