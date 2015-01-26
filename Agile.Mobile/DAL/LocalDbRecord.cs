@@ -55,13 +55,12 @@ namespace Agile.Mobile.DAL
         public string UpdatedUtc { get; set; }
 
         [Ignore]
-        public DateTimeOffset? Updated
+        public DateTimeOffset Updated
         {
-            get { return Safe.NullableDateTimeOffset(UpdatedUtc); } // adding a second for now, mostly for testing, to ensure the value is geting set properly (shouldn't hit the default)
+            get { return Safe.DateTimeOffset(UpdatedUtc, AgileDateTime.UtcNow.AddSeconds(1)); } // adding a second for now, mostly for testing, to ensure the value is geting set properly (shouldn't hit the default)
             set 
             {
-                UpdatedUtc = (value.HasValue)
-                    ? value.Value.ToString("o") : null; 
+                UpdatedUtc = value.ToString("o"); 
             }
         }
 

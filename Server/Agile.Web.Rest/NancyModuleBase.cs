@@ -236,6 +236,7 @@ namespace Agile.Web.Rest
 
         protected Response ErrorResponse(string message = "", HttpStatusCode statusCode = HttpStatusCode.InternalServerError)
         {
+            Logger.Warning(message);
             return Response.AsText(message).WithStatusCode(statusCode);
         }
     }

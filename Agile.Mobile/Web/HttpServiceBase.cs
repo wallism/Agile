@@ -98,7 +98,16 @@ namespace Agile.Mobile.Web
             return GET<T>(string.Format("/Load/{0}", id), loaders);
         }
 
-        protected async Task<ServiceCallResult<TP>> GET<TP>(string url, IList<DeepLoader> loaders = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TP"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="loaders"></param>
+        /// <param name="doOnSuccess">action to perform on result if successful</param>
+        /// <returns></returns>
+        protected async Task<ServiceCallResult<TP>> GET<TP>(string url, IList<DeepLoader> loaders = null
+            , Action<ServiceCallResult<TP>> doOnSuccess = null)
         {
             Logger.Debug("GetAsync:{0}", url);
             var request = WebRequest.Create(GetUrlBase() + url);
@@ -112,6 +121,18 @@ namespace Agile.Mobile.Web
             }
 
             var result = await MakeServerRequest<TP>(request);
+            // do On Success...make sure it doesn't cause an ex
+            if (result.WasSuccessful && doOnSuccess != null)
+            {
+                try
+                {
+                    doOnSuccess(result);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error(ex, "doOnSuccess: {0}", result);
+                }
+            }
             return result;
         }
 
