@@ -50,6 +50,11 @@ namespace Acoustie.Mobile.DAL
         int Delete<T, TR>(T source)
             where T : class, new()
             where TR : LocalDbRecord, new();
+
+        int DeleteAll<TR>()
+            where TR : LocalDbRecord, new();
+
+        void RecreateCleanDb();
     }
 
     /// <summary>
@@ -64,6 +69,13 @@ namespace Acoustie.Mobile.DAL
         /// </summary>
         public LocalPersistenceManager()
         {
+            Db.CreateAllTables();
+        }
+
+        public void RecreateCleanDb()
+        {
+            // just drop and create
+            Db.DropAllTables();
             Db.CreateAllTables();
         }
 
@@ -191,6 +203,18 @@ namespace Acoustie.Mobile.DAL
             var result = Db.Delete(record);
 
             Logger.Debug("Delete result={0} [{1}]", result, source.ToString());
+            return result;
+        }
+
+        /// <summary>
+        /// Delete the object from the db
+        /// </summary>
+        public int DeleteAll<TR>()
+            where TR : LocalDbRecord, new()
+        {
+            var result = Db.DeleteAllRecords<TR>();
+
+            Logger.Debug("DeleteAll result={0} [{1}]", result, typeof(TR).Name);
             return result;
         }
 

@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{7B37A85B-CC62-467D-964C-D25CDFB848A7}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -14,7 +12,9 @@
     <FileAlignment>512</FileAlignment>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <AndroidUseLatestPlatformSdk>
+    </AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v4.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +33,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
@@ -56,15 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Agile.Diagnostics\Agile.Diagnostics.PCL.csproj">
-      <Project>{a5dad6c1-174b-4f3c-a8ea-745824070f40}</Project>
+      <Project>{A5DAD6C1-174B-4F3C-A8EA-745824070F40}</Project>
       <Name>Agile.Diagnostics.PCL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Agile.Mobile\Agile.Mobile.PCL.csproj">
-      <Project>{3b7665b4-8195-4ad6-9cfa-0314b8190361}</Project>
+      <Project>{3B7665B4-8195-4AD6-9CFA-0314B8190361}</Project>
       <Name>Agile.Mobile.PCL</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Agile.Shared\Agile.Shared.PCL.csproj">
-      <Project>{2b44cff8-53b1-4422-b556-b8a04944acc9}</Project>
+      <Project>{2B44CFF8-53B1-4422-B556-B8A04944ACC9}</Project>
       <Name>Agile.Shared.PCL</Name>
     </ProjectReference>
   </ItemGroup>
