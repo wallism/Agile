@@ -22,11 +22,13 @@ namespace Agile.Shared
         /// <summary>
         /// AlphaNumeric Regex
         /// </summary>
-        public static Regex AlphaNumericRegex = new Regex("[A-Za-z0-9]");
+        public static Regex AlphaNumericRegex = new Regex("^[a-zA-Z0-9]*$");
         /// <summary>
         /// XmlEscape Characters
         /// </summary>
         public static Regex XmlEscapeCharacters = new Regex("\"'<>&");
 
+        public static string ValidEmail =
+            @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z";
     }
 }

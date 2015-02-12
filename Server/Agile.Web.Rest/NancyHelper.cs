@@ -92,6 +92,20 @@ namespace Agile.Web.Rest
             }
         }
 
+        public static int GetIntValue(dynamic parameters)
+        {
+            try
+            {
+                int value = parameters.Value;
+                return value;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "GetIntValue");
+                return -1;
+            }
+        }
+
         public static string GetStringKey(dynamic parameters)
         {
             try

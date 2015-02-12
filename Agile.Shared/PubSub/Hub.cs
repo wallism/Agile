@@ -42,6 +42,7 @@ namespace Agile.Shared.PubSub
         /// </summary>
         public static void UnSubscribe(string owner, string eventName)
         {
+            Logger.Debug("UnSubscribe {0}", owner);
             subscribers.RemoveAll(h =>
                                   h.Owner.Equals(owner, StringComparison.OrdinalIgnoreCase) &&
                                   (string.IsNullOrEmpty(eventName) || h.EventName.Equals(eventName, StringComparison.OrdinalIgnoreCase)));
