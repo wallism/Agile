@@ -96,8 +96,9 @@ namespace Agile.Shared.IoC
                 break;
             }
 
+//            Logger.Debug("IoC: Registered {0}", interfaceName);  // only log when need to
+
             // then just add it
-            Logger.Debug("IoC: Registered {0}", interfaceName);
             Items.Add(newitem);
         }
 

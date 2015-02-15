@@ -71,29 +71,28 @@ namespace Agile.Mobile.DAL
         public abstract void DropAllTables();
 
         /// <summary>
-        /// Create all of the tables required for Acoustie Local.
+        /// Create all of the required tables 
         /// Does nothing if the table already exists.
         /// </summary>
         public void CreateAllTables()
         {
             Logger.Debug("CREATE ALL tables");
             var existing = GetAllTables();
+
+            // we want to always call create table, if the table already exists, existing data 
+            // is preserved but calling Create ensures any new columns are added
             foreach (var table in Tables)
             {
-                if (existing.Any(t => t.name == table.Name))
-                    Logger.Debug(" {0} exists {1} records", table.Name, GetRecordCount(table));
-                else
-                {
-                    CreateTable(table);
-                    Logger.Debug(" CREATED: {0} (name is not mapped)", table.Name);
-                }
+                CreateTable(table);
+                // uncomment when debugging issue with the db...otherwise don't, it slows down startup
+//                Logger.Debug(" {0} exists {1} records", table.Name, GetRecordCount(table));
             }
         }
 
         private void CreateTable(Type table)
         {
             var tableName = table.Name;
-            Logger.Debug("Create Table: {0}", table);
+//            Logger.Debug("Create Table: {0}", table);
             var result = Db.CreateTable(table);
             // usually is 0 but sometimes returns 1
             if (result >= 0)
@@ -121,7 +120,7 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
         {
             var tableName = type.Name;
             var count = ExecuteScalar<int>(string.Format("SELECT COUNT(*) FROM {0}", tableName));
-            Logger.Debug("{0} records in {1}", count, tableName);
+//            Logger.Debug("{0} records in {1}", count, tableName);
             return count;
         }
 
