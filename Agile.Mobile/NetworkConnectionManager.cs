@@ -33,15 +33,6 @@ namespace Agile.Mobile
         public ConnectionState CurrentConnection { get; set; }
         private Func<ConnectionState> GetPlatformNetworkState { get; set; }
         
-        /// <summary>
-        /// Assuming there is an event that fires on the platform, 
-        /// wire this up as the handler for that event so that the
-        ///  current network state stays up to date.
-        /// </summary>
-        public void NetworkChangedHandler(object sender, EventArgs args)
-        {
-            CheckConnection();
-        }
 
         public bool CanSend {
             get
