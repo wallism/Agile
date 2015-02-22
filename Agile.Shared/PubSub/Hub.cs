@@ -150,7 +150,24 @@ namespace Agile.Shared.PubSub
 
     public class Handler
     {
-        public string Owner { get; set; }
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", Owner, EventName);
+        }
+
+        private string owner;
+
+        public string Owner
+        {
+            get { return owner; }
+            set
+            {
+                if(string.IsNullOrEmpty(value))
+                    throw new Exception("Subscription must have an owner.");
+                owner = value;
+            }
+        }
+
         public string EventName { get; set; }
         public object Do { get; set; }
     }

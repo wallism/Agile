@@ -263,9 +263,17 @@ namespace Agile.Mobile.Web
             get
             {
                 if (WebException != null)
-                    return WebException.Message;
+                {
+                    return string.Format("{0}{1}"
+                        , WebException.Message
+                        , WebException.InnerException != null ? WebException.InnerException.Message : "");
+                }
                 if (Exception != null)
-                    return Exception.Message;
+                {
+                    return string.Format("{0}{1}"
+                        , Exception.Message
+                        , Exception.InnerException != null ? Exception.InnerException.Message : "");
+                }
                 return "";
             }
         }
