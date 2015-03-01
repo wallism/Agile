@@ -37,6 +37,8 @@ namespace Agile.Mobile
         public bool CanSend {
             get
             {
+
+
                 return CurrentConnection == ConnectionState.WiFi
                        || CurrentConnection == ConnectionState.Ethernet
                        || CurrentConnection == ConnectionState.Mobile;

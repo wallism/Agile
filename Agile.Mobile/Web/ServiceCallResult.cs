@@ -121,7 +121,9 @@ namespace Agile.Mobile.Web
             {
                 try
                 {
-                    var reader = new StreamReader(response.GetResponseStream());
+                    var reader = SystemHttpService.GetProgramSpecificJsonStreamReader == null
+                        ? new StreamReader(response.GetResponseStream()) // use the default stream to read the json
+                        : SystemHttpService.GetProgramSpecificJsonStreamReader(response.GetResponseStream()); 
                     var jsonReader = new JsonTextReader(reader);
 
                     Value = jsonSerializer.Deserialize<T>(jsonReader);
@@ -139,7 +141,7 @@ namespace Agile.Mobile.Web
                 Logger.Info("No matching ContentType for Response Deserialization [{0}]", ContentType ?? "null");
             }
         }
-        
+
         /// <summary>
         /// extract the info we need because the response gets
         /// disposed almost immediately.

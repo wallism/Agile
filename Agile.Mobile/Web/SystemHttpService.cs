@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,12 @@ namespace Agile.Mobile.Web
             : base(serviceName)
         {            
         }
+
+        /// <summary>
+        /// Set this if you want to do something funky with the json stream
+        /// </summary>
+        /// <remarks>dumped here as a quick, not too awful place to put it</remarks>
+        public static Func<Stream, StreamReader> GetProgramSpecificJsonStreamReader { get; set; }
 
         // Main module does not change the path base, so no override for GeUrlBase...
 
