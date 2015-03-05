@@ -73,7 +73,7 @@ namespace Agile.Shared
         /// </summary>
         public DateTimeOffset UtcNow
         {
-            get { return DateTimeOffset.Now; }
+            get { return DateTimeOffset.UtcNow; }
         }
     }
 }

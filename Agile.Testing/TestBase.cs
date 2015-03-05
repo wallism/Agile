@@ -75,8 +75,12 @@ Value: {0}
 Contains: {1}", message, contains);
             Assert.IsTrue(message.Contains(contains));
         }
-        
-        protected static void SetNowToFuture(int addHours)
+
+        /// <summary>
+        /// Make 'Now' be n mins ahead (or behind with -)
+        /// </summary>
+        /// <remarks>dont' forget to revert to normal time</remarks>
+        public static void SetNowToFuture(int addHours)
         {
             var dateProvider = Substitute.For<IDateTimeProvider>();
             dateProvider.Now.Returns(DateTime.Now.AddHours(addHours));
@@ -84,7 +88,11 @@ Contains: {1}", message, contains);
             AgileDateTime.SetProvider(dateProvider);
         }
 
-        protected static void SetNowToFutureMin(int addMins)
+        /// <summary>
+        /// Make 'Now' be n mins ahead (or behind with -)
+        /// </summary>
+        /// <remarks>dont' forget to revert to normal time</remarks>
+        public static void SetNowToFutureMin(int addMins)
         {
             var dateProvider = Substitute.For<IDateTimeProvider>();
             dateProvider.Now.Returns(DateTime.Now.AddMinutes(addMins));

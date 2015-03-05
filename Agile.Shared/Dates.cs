@@ -36,7 +36,7 @@ namespace Agile.Shared
         /// </summary>
         /// <param name="date">the date to format</param>
         /// <returns>the date as a string</returns>
-        public static string FormatWithTime(DateTime date)
+        public static string FormatWithTime(DateTimeOffset date)
         {
             ArgumentValidation.CheckForNullReference(date, "date");
             return date.ToString("d MMM yyyy HH:mm:ss", CultureInfo.CurrentCulture);
@@ -45,7 +45,7 @@ namespace Agile.Shared
         /// <summary>
         /// Format with time if it has a time (ie if it's not the very end or very start of the day)
         /// </summary>
-        public static string FormatBizzy(this DateTime? date)
+        public static string FormatBizzy(this DateTimeOffset? date)
         {
             if (!date.HasValue)
                 return string.Empty;
@@ -55,15 +55,15 @@ namespace Agile.Shared
         /// <summary>
         /// Format with time if it has a time (ie if it's not the very end or very start of the day)
         /// </summary>
-        public static string FormatBizzy(this DateTime date)
+        public static string FormatBizzy(this DateTimeOffset date)
         {
             // TODAY
-            if (date.Date == AgileDateTime.Now.Date)
+            if (date.Date == AgileDateTime.UtcNow.Date)
             {
-                if (date.IsEndOfDay() || date.IsStartOfDay())
+                if (date.DateTime.IsEndOfDay() || date.DateTime.IsStartOfDay())
                     return "Today";
 
-                var result = date - AgileDateTime.Now;
+                var result = date - AgileDateTime.UtcNow;
                 var hoursTillDue = result.Hours;
 
                 if (hoursTillDue < 0)
@@ -75,27 +75,27 @@ namespace Agile.Shared
             }
 
             // Tomorrow
-            if (date.Date == AgileDateTime.Now.AddDays(1).Date)
+            if (date.Date == AgileDateTime.UtcNow.AddDays(1).Date)
             {
-                if (date.IsEndOfDay() || date.IsStartOfDay())
+                if (date.DateTime.IsEndOfDay() || date.DateTime.IsStartOfDay())
                     return "Tomorrow";
 
                 return string.Format("Tomorrow {0}", date.ToString("HH:mm"));
             }
 
             // Yesterday
-            if (date.Date == AgileDateTime.Now.Subtract(TimeSpan.FromDays(1)).Date)
+            if (date.Date == AgileDateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).Date)
             {
-                if (date.IsEndOfDay() || date.IsStartOfDay())
+                if (date.DateTime.IsEndOfDay() || date.DateTime.IsStartOfDay())
                     return "Yesterday";
 
                 return string.Format("Yesterday {0}", date.ToString("HH:mm"));
             }
 
             // Late
-            if (date < AgileDateTime.Now.Subtract(TimeSpan.FromDays(1)).Date)
+            if (date < AgileDateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).Date)
             {
-                var days = (date - AgileDateTime.Now).Days * -1;
+                var days = (date - AgileDateTime.UtcNow).Days * -1;
                 if(days < 7)
                     return string.Format("{0} Day{1} ago", days, ((days > 1) ? "s" : string.Empty));
 
@@ -104,7 +104,7 @@ namespace Agile.Shared
             }
 
 
-            if (date.IsStartOfDay() || date.IsEndOfDay()) // then dont include time in the string
+            if (date.DateTime.IsStartOfDay() || date.DateTime.IsEndOfDay()) // then dont include time in the string
                 return date.ToString("dd-MMM-yy");
                 
             return date.ToString("dd-MMM-yy HH:mm");

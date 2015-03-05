@@ -51,7 +51,7 @@ namespace Agile.Framework
         }
 
         // default to Now, primarily helps client side syncronization (CacheItem), server should always override this default value to the value from the db.
-        protected DateTimeOffset createdField = AgileDateTime.Now;
+        protected DateTimeOffset createdField = AgileDateTime.UtcNow;
 
         /// <summary>
         /// Gets and sets Created.    
