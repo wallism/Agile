@@ -71,30 +71,30 @@ namespace Agile.Shared.Tests
         public void FormatBizzyToday()
         {
             SetTestingDateTime();
-
+            
             Logger.Testing("ASSERT Today very end of day ");
-            Assert.AreEqual("Today", new DateTime(2011, 4, 15, 23, 59, 59).FormatBizzy());
+            Assert.AreEqual("Today", new DateTimeOffset(new DateTime(2011, 4, 15, 23, 59, 59)).FormatBizzy());
             Logger.Testing("ASSERT Today very beginning of day ");
-            Assert.AreEqual("Today", new DateTime(2011, 4, 15, 0, 0, 0).FormatBizzy());
+            Assert.AreEqual("Today", new DateTimeOffset(new DateTime(2011, 4, 15, 0, 0, 0)).FormatBizzy());
 
             Logger.Testing("because there is a time, then we change the result based on hours");
             Logger.Testing("ASSERT Today due at 16:00 ");
-            Assert.AreEqual("3 Hours", new DateTime(2011, 4, 15, 16, 0, 0).FormatBizzy());
-            Assert.AreEqual("1 Hour", new DateTime(2011, 4, 15, 14, 0, 0).FormatBizzy());
-            Assert.AreEqual("3 Hours", new DateTime(2011, 4, 15, 16, 0, 0).FormatBizzy());
+            Assert.AreEqual("3 Hours", new DateTimeOffset(new DateTime(2011, 4, 15, 16, 0, 0)).FormatBizzy());
+            Assert.AreEqual("1 Hour", new DateTimeOffset(new DateTime(2011, 4, 15, 14, 0, 0)).FormatBizzy());
+            Assert.AreEqual("3 Hours", new DateTimeOffset(new DateTime(2011, 4, 15, 16, 0, 0)).FormatBizzy());
 
             Logger.Testing("ASSERT Today 1pm (so due in 45m))");
-            Assert.AreEqual("NOW", new DateTime(2011, 4, 15, 13, 00, 00).FormatBizzy());
-            Assert.AreEqual("NOW", new DateTime(2011, 4, 15, 12, 24, 00).FormatBizzy());
-            Assert.AreEqual("NOW", new DateTime(2011, 4, 15, 12, 10, 0).FormatBizzy());
-            Assert.AreEqual("1 Hour", new DateTime(2011, 4, 15, 13, 24, 00).FormatBizzy());
+            Assert.AreEqual("NOW", new DateTimeOffset(new DateTime(2011, 4, 15, 13, 00, 00)).FormatBizzy());
+            Assert.AreEqual("NOW", new DateTimeOffset(new DateTime(2011, 4, 15, 12, 24, 00)).FormatBizzy());
+            Assert.AreEqual("NOW", new DateTimeOffset(new DateTime(2011, 4, 15, 12, 10, 0)).FormatBizzy());
+            Assert.AreEqual("1 Hour", new DateTimeOffset(new DateTime(2011, 4, 15, 13, 24, 00)).FormatBizzy());
 
 
             Logger.Testing("ASSERT Today 5pm (an hour after due) ");
-            Assert.AreEqual("1 Hour ago", new DateTime(2011, 4, 15, 11, 12, 0).FormatBizzy());
+            Assert.AreEqual("1 Hour ago", new DateTimeOffset(new DateTime(2011, 4, 15, 11, 12, 0)).FormatBizzy());
 
             Logger.Testing("ASSERT Today 23:58 ");
-            Assert.AreEqual("7 Hours ago", new DateTime(2011, 4, 15, 5, 5, 0).FormatBizzy());
+            Assert.AreEqual("7 Hours ago", new DateTimeOffset(new DateTime(2011, 4, 15, 5, 5, 0)).FormatBizzy());
         }
 
         #endregion
@@ -106,12 +106,12 @@ namespace Agile.Shared.Tests
         {
             SetTestingDateTime();
 
-            Assert.AreEqual("Tomorrow 12:15", AgileDateTime.Now.AddDays(1).FormatBizzy());
-            Assert.AreEqual("Tomorrow", new DateTime(2011, 4, 16, 23, 59, 59).FormatBizzy());
-            Assert.AreEqual("Tomorrow", new DateTime(2011, 4, 16, 0, 0, 0).FormatBizzy());
+            Assert.AreEqual("Tomorrow 12:15", AgileDateTime.UtcNow.AddDays(1).FormatBizzy());
+            Assert.AreEqual("Tomorrow", new DateTimeOffset(new DateTime(2011, 4, 16, 23, 59, 59)).FormatBizzy());
+            Assert.AreEqual("Tomorrow", new DateTimeOffset(new DateTime(2011, 4, 16, 0, 0, 0)).FormatBizzy());
 
-            Assert.AreEqual("Tomorrow 07:45", new DateTime(2011, 4, 16, 7, 45, 0).FormatBizzy());
-            Assert.AreEqual("Tomorrow 23:00", new DateTime(2011, 4, 16, 23, 0, 0).FormatBizzy());
+            Assert.AreEqual("Tomorrow 07:45", new DateTimeOffset(new DateTime(2011, 4, 16, 7, 45, 0)).FormatBizzy());
+            Assert.AreEqual("Tomorrow 23:00", new DateTimeOffset(new DateTime(2011, 4, 16, 23, 0, 0)).FormatBizzy());
 
         }
 
@@ -124,12 +124,12 @@ namespace Agile.Shared.Tests
         {
             SetTestingDateTime();
 
-            Assert.AreEqual("Yesterday 12:15", AgileDateTime.Now.Subtract(TimeSpan.FromDays(1)).FormatBizzy());
-            Assert.AreEqual("Yesterday", new DateTime(2011, 4, 14, 23, 59, 59).FormatBizzy());
-            Assert.AreEqual("Yesterday", new DateTime(2011, 4, 14, 0, 0, 0).FormatBizzy());
+            Assert.AreEqual("Yesterday 12:15", AgileDateTime.UtcNow.Subtract(TimeSpan.FromDays(1)).FormatBizzy());
+            Assert.AreEqual("Yesterday", new DateTimeOffset(new DateTime(2011, 4, 14, 23, 59, 59)).FormatBizzy());
+            Assert.AreEqual("Yesterday", new DateTimeOffset(new DateTime(2011, 4, 14, 0, 0, 0)).FormatBizzy());
 
-            Assert.AreEqual("Yesterday 08:30", new DateTime(2011, 4, 14, 8, 30, 0).FormatBizzy());
-            Assert.AreEqual("Yesterday 16:00", new DateTime(2011, 4, 14, 16, 0, 0).FormatBizzy());
+            Assert.AreEqual("Yesterday 08:30", new DateTimeOffset(new DateTime(2011, 4, 14, 8, 30, 0)).FormatBizzy());
+            Assert.AreEqual("Yesterday 16:00", new DateTimeOffset(new DateTime(2011, 4, 14, 16, 0, 0)).FormatBizzy());
         }
 
         #endregion
@@ -140,13 +140,13 @@ namespace Agile.Shared.Tests
         public void FormatBizzyPastDue()
         {
             SetTestingDateTime();
-            Assert.AreEqual("2 Days ago", new DateTime(2011, 4, 13, 0, 0, 0).FormatBizzy());
+            Assert.AreEqual("2 Days ago", new DateTimeOffset(new DateTime(2011, 4, 13, 0, 0, 0)).FormatBizzy());
 
-            Assert.AreEqual("6 Days ago", new DateTime(2011, 4, 9, 0, 0, 0).FormatBizzy());
+            Assert.AreEqual("6 Days ago", new DateTimeOffset(new DateTime(2011, 4, 9, 0, 0, 0)).FormatBizzy());
 
-            Assert.AreEqual("1 Week ago", new DateTime(2011, 4, 8, 0, 0, 0).FormatBizzy());
-            Assert.AreEqual("2 Weeks ago", new DateTime(2011, 4, 1, 0, 0, 0).FormatBizzy());
-            Assert.AreEqual("5 Weeks ago", new DateTime(2011, 3, 10, 0, 0, 0).FormatBizzy());
+            Assert.AreEqual("1 Week ago", new DateTimeOffset(new DateTime(2011, 4, 8, 0, 0, 0)).FormatBizzy());
+            Assert.AreEqual("2 Weeks ago", new DateTimeOffset(new DateTime(2011, 4, 1, 0, 0, 0)).FormatBizzy());
+            Assert.AreEqual("5 Weeks ago", new DateTimeOffset(new DateTime(2011, 3, 10, 0, 0, 0)).FormatBizzy());
         }
 
         #endregion
