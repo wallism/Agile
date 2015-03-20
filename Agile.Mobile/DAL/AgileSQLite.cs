@@ -194,7 +194,6 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
             catch (Exception ex)
             {
                 Logger.Error(ex, string.Format("Execute: {0}", query));
-                // todo: make an ex logger that writes to a webservice
                 throw;
             }
         }
@@ -329,7 +328,6 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
             catch (Exception ex)
             {
                 Logger.Error(ex, string.Format("Update: {0}", item));
-                // todo: make an ex logger that writes to a webservice
                 throw;
             }
         }
@@ -347,7 +345,6 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
             catch (Exception ex)
             {
                 Logger.Error(ex, string.Format("Delete: {0}", item));
-                // todo: make an ex logger that writes to a webservice
                 throw;
             }
         }
