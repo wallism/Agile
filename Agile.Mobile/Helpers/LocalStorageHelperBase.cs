@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Acoustie.Mobile.Helpers
+namespace Agile.Mobile.Helpers
 {
     /// <summary>
     /// Has some shared xPlatform code

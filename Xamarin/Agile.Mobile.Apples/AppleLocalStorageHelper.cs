@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text;
-using Acoustie.Mobile.Helpers;
+using Agile.Mobile.Helpers;
 using Agile.Diagnostics.Logging;
 
 namespace Agile.Mobile.Apples

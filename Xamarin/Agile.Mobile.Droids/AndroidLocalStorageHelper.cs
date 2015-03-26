@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
-using Acoustie.Mobile.Helpers;
 using Agile.Diagnostics.Logging;
 using Agile.Mobile;
+using Agile.Mobile.Helpers;
 using Android.Graphics;
 
 
