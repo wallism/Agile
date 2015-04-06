@@ -21,15 +21,29 @@ namespace Agile.Shared
         /// <example>'someString' returns 'SomeString'.
         /// NOTE: at the moment 'somestring' should return 'SomeString' but it currently will only return 
         /// 'Somestring' (this should change in the future).</example>
-        /// <param name="convertToPascalCase">the string to be converted to pascal casing.</param>
+        /// <param name="text">the string to be converted to pascal casing.</param>
         /// <returns></returns>
-        public static string ToPascalCase(this string convertToPascalCase)
+        public static string ToPascalCase(this string text)
         {
-            if (convertToPascalCase.Equals(string.Empty))
+            if (string.IsNullOrEmpty(text))
                 return String.Empty;
-            string firstCharacter = convertToPascalCase.Substring(0, 1);
-            var builder = new StringBuilder(convertToPascalCase);
+            string firstCharacter = text.Substring(0, 1);
+            var builder = new StringBuilder(text);
             return builder.Replace(firstCharacter, firstCharacter.ToUpper(), 0, 1).ToString();
+        }
+
+        /// <summary>
+        /// Converts the string to camel casing. ie. changes MyVariableName to myVariableName
+        /// </summary>
+        /// <param name="text">string to convert to camel case.</param>
+        /// <remarks>ToPascalCase is implemented in Agile.Shared</remarks>
+        public static string ToCamelCase(this string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return String.Empty;
+            var firstCharacter = text.Substring(0, 1);
+            var builder = new StringBuilder(text);
+            return builder.Replace(firstCharacter, firstCharacter.ToLower(), 0, 1).ToString();
         }
 
         /// <summary>

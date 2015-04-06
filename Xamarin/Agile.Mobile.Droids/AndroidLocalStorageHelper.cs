@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 using Agile.Diagnostics.Logging;
-using Agile.Mobile;
 using Agile.Mobile.Helpers;
 using Android.Graphics;
 
-
-namespace Acoustie.Helpers
+namespace Agile.Mobile.Droids
 {
 
     /// <summary>

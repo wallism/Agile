@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using Windows.Storage;
 using Agile.Mobile.Helpers;
 using Agile.Diagnostics.Logging;
 
@@ -14,31 +13,33 @@ namespace Agile.Mobile.MS
     /// So change one, do a cut and paste (where possible...80%) to the others.
     /// Should compile the same, it just needs to be in a Xamarin level (because that's where DirectoryInfo etc lives)
     /// </remarks>
-    public class AppleLocalStorageHelper : LocalStorageHelperBase, ILocalStorageHelper
+    public class WinLocalStorageHelper : LocalStorageHelperBase, ILocalStorageHelper
     {
         public void InitializeFolders()
         {
-            var storage = ApplicationData.Current.LocalFolder;
-            
-                try
-                {
-                    CreateDirectory(storage, ImageDirName);
-                    CreateDirectory(storage, AudioDirName);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error(ex, "InitializeFolders");
-                }
+
+//            var storage = ApplicationData.Current.LocalFolder;
+//            
+//                try
+//                {
+//                    CreateDirectory(storage, ImageDirName);
+//                    CreateDirectory(storage, AudioDirName);
+//                }
+//                catch (Exception ex)
+//                {
+//                    Logger.Error(ex, "InitializeFolders");
+//                }
             
         }
 
-        private void CreateDirectory(StorageFolder storage, string name)
-        {
+//        private void CreateDirectory(StorageFolder storage, string name)
+//        {
+            
 //            if (storage.DirectoryExists(name)) 
 //                return;
 //            Logger.Info("Creating IsolatedStorage Dir: {0}", name);
 //            storage.CreateDirectory(name);
-        }
+//        }
 
         public Stream OpenStream(string fileName)
         {

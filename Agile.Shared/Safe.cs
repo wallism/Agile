@@ -26,7 +26,7 @@ namespace Agile.Shared
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "couldn't convert to a DateTimeOffset: {0}", value);
+                Logger.Info("couldn't convert to a DateTimeOffset: {0} [{1}]", value, ex.Message);
                 return defaultValue;
             }
         }
@@ -49,7 +49,7 @@ namespace Agile.Shared
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "couldn't convert to a DateTimeOffset: {0}", value);
+                Logger.Info("couldn't convert to a nullable DateTimeOffset: {0} [{1}]", value, ex.Message);
                 return defaultValue;
             }
         }
