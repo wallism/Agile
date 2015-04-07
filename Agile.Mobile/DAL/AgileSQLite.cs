@@ -280,6 +280,7 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
         }
 
 
+        private object padlockInsert = new object();
         /// <summary>
         /// Wrapper to log exceptions
         /// </summary>
@@ -287,9 +288,13 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
         {
             try
             {
-                return string.IsNullOrEmpty(extra) 
-                    ? Db.Insert(item) 
-                    : Db.Insert(item, extra);
+                // this is CRITICAL! sqlite crashes if multi threads try to insert at the same time!
+                lock (padlockInsert)
+                {
+                    return string.IsNullOrEmpty(extra) 
+                        ? Db.Insert(item) 
+                        : Db.Insert(item, extra);
+                }
             }
             catch (Exception ex)
             {
@@ -298,6 +303,7 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
             }
         }
 
+        private object padlockInsertOrReplace = new object();
         /// <summary>
         /// Wrapper to log exceptions
         /// </summary>
@@ -305,7 +311,12 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
         {
             try
             {
-                return Db.InsertOrReplace(item);
+                // this is CRITICAL! sqlite crashes if multi threads try to insert at the same time!
+                lock (padlockInsertOrReplace)
+                {
+                    return Db.InsertOrReplace(item);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -314,6 +325,7 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
             }
         }
         
+        private object padlockUpdate = new object();
         /// <summary>
         /// Wrapper to log exceptions
         /// </summary>
@@ -321,9 +333,13 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
         {
             try
             {
-                return type == null
-                    ? Db.Update(item)
-                    : Db.Update(item, type);
+                // this is CRITICAL! sqlite crashes if multi threads try to insert at the same time!
+                lock (padlockUpdate)
+                {
+                    return type == null
+                        ? Db.Update(item)
+                        : Db.Update(item, type);
+                }
             }
             catch (Exception ex)
             {
@@ -332,6 +348,7 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
             }
         }
 
+        private object padlockDelete = new object();
         /// <summary>
         /// Wrapper to log exceptions
         /// </summary>
@@ -339,8 +356,12 @@ WHERE type='table' and tbl_name != 'sqlite_sequence'");
         {
             try
             {
-                Logger.Debug("Delete: {0}", item);
-                return Db.Delete(item);
+                // this is CRITICAL! sqlite crashes if multi threads try to insert at the same time!
+                lock (padlockDelete)
+                {
+                    Logger.Debug("Delete: {0}", item);
+                    return Db.Delete(item);
+                }
             }
             catch (Exception ex)
             {
