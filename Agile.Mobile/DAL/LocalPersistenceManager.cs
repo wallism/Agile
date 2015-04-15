@@ -84,6 +84,8 @@ namespace Acoustie.Mobile.DAL
             return Db.GetNextLocalId<T>();
         }
 
+        private static object padlock = new object();
+
         /// <summary>
         /// Pass in a biz object, auto maps to Record (db) object
         /// and saves to the database (calls InsertOrReplace on SQLite)
@@ -98,10 +100,22 @@ namespace Acoustie.Mobile.DAL
             MakeSureIdIsNotZero<T, TR>(source);
 
             // map to a 'Record' 
-            var record = Mapper.DynamicMap<T, TR>(source);
-            var result = Db.InsertOrReplace(record);
-            Logger.Debug("Save result={0} [{1}]", result, source.ToString());
-            return result;
+            try
+            {
+                // lock is required because it 'seems' AutoMapper can get its nickers in a knot with multi threading...putting the lock here stopped ALOT exs that were being thrown after I opened up session to load all data at once.
+                lock (padlock)
+                {
+                    var record = Mapper.DynamicMap<T, TR>(source);
+                    var result = Db.InsertOrReplace(record);
+                    Logger.Debug("Save result={0} [{1}]", result, source.ToString());
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return -1;
+            }
         }
 
         /// <summary>

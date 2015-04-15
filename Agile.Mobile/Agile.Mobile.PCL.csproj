@@ -93,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AutoMapper">
-      <HintPath>..\..\packages\AutoMapper.4.0.0-ci1031\lib\portable-windows8+net40+wp8+wpa81+sl5+MonoAndroid+MonoTouch+Xamarin.iOS10\AutoMapper.dll</HintPath>
+      <HintPath>..\..\packages\AutoMapper.4.0.0-ci1036\lib\portable-windows8+net40+wp8+wpa81+sl5+MonoAndroid+MonoTouch+Xamarin.iOS10\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll</HintPath>
