@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Agile.Diagnostics.Loggers;
 using Agile.Diagnostics.Logging;
 using Agile.Shared;
 using Agile.Shared.IoC;
@@ -16,6 +18,11 @@ namespace Agile.Testing
         [TestFixtureSetUp]
         public virtual void TestFixtureSetUp()
         {
+            Logger.InitializeLogging(new List<ILogger>
+            {
+                new ConsoleLogger()
+            }, LogLevel.All);
+
             Logger.Debug("TestFixtureSetUp...");
 
         }

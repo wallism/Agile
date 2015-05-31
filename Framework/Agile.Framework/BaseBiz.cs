@@ -77,7 +77,10 @@ namespace Agile.Framework
         /// </summary>
         public bool IsNew { get; set; }
 
-        public abstract void FillShallow<D>(D data) where D : IModelInterface;
+        public virtual void FillShallow<D>(D data) where D : IModelInterface
+        {
+        }
+
         // note: Clone extension methods are in the Helper class.
 
         /// <summary>
@@ -155,12 +158,15 @@ namespace Agile.Framework
         {
             InternalDefineRules();
         }
+
         /// <summary>
         /// Generated rules.
         /// </summary>
         /// <remarks>TODO: investigate, should these rules be checked in the Service layer? as
         /// they are mainly data specific type rules like 'length is less than column.length'</remarks>
-        protected abstract void InternalDefineRules();
+        protected virtual void InternalDefineRules()
+        {
+        }
 
         public virtual bool IsValid()
         {
@@ -210,7 +216,10 @@ namespace Agile.Framework
         /// <summary>
         /// Validate the object
         /// </summary>
-        public abstract bool Validate();
+        public virtual bool Validate()
+        {
+            return true;
+        }
 
     }
 }

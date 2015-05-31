@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Agile.Shared.IoC;
 
 namespace Agile.Mobile.Environments
 {
@@ -38,5 +39,17 @@ namespace Agile.Mobile.Environments
         /// (really just used for display purposes)
         /// </summary>
         public string Name { get; set; }
+
+
+        private static IMobileEnvironment registeredEnvironment;
+
+        public static IMobileEnvironment RegisteredEnvironment
+        {
+            get { return registeredEnvironment ?? (registeredEnvironment = Container.Resolve<IMobileEnvironment>()); }
+        }
+
+        public static bool IsProd {
+            get { return RegisteredEnvironment.Name == PROD; }
+        }
     }
 }
