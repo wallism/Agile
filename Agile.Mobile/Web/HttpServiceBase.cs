@@ -88,26 +88,30 @@ namespace Agile.Mobile.Web
             request.Headers["client"] = HttpHelper.Platform;
         }
 
-        public Task<ServiceCallResult<T>> GetAsync(long id)
+        public async Task<ServiceCallResult<TR>> GetAsync<TR>(long id)
         {
-            return GET<T>(string.Format("/{0}", id));
+            return await GET<TR>(string.Format("/{0}", id));
         }
 
-        public Task<ServiceCallResult<T>> GetAsync(long id, IList<DeepLoader> loaders)
+        public async Task<ServiceCallResult<T>> GetAsync(long id)
         {
-            return GET<T>(string.Format("/Load/{0}", id), loaders);
+            return await GET<T>(string.Format("/{0}", id));
+        }
+
+        public async Task<ServiceCallResult<T>> GetAsync(long id, IList<DeepLoader> loaders)
+        {
+            return await GET<T>(string.Format("/Load/{0}", id), loaders);
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <typeparam name="TP"></typeparam>
+        /// <typeparam name="TR">response type</typeparam>
         /// <param name="url"></param>
         /// <param name="loaders"></param>
         /// <param name="doOnSuccess">action to perform on result if successful</param>
-        /// <returns></returns>
-        protected async Task<ServiceCallResult<TP>> GET<TP>(string url, IList<DeepLoader> loaders = null
-            , Action<ServiceCallResult<TP>> doOnSuccess = null)
+        public async Task<ServiceCallResult<TR>> GET<TR>(string url, IList<DeepLoader> loaders = null
+            , Action<ServiceCallResult<TR>> doOnSuccess = null)
         {
             Logger.Debug("GetAsync:{0}", url);
             var request = WebRequest.Create(GetUrlBase() + url);
@@ -120,7 +124,7 @@ namespace Agile.Mobile.Web
                 await AddBodyToRequest(HttpHelper.SerializeToJsonThenByteArray(loaders), request);
             }
 
-            var result = await MakeServerRequest<TP>(request);
+            var result = await MakeServerRequest<TR>(request);
             // do On Success...make sure it doesn't cause an ex
             if (result.WasSuccessful && doOnSuccess != null)
             {
@@ -250,9 +254,9 @@ namespace Agile.Mobile.Web
         /// <param name="instance"></param>
         /// <param name="url"></param>
         /// <returns>The new version of the object returned by the server</returns>
-        public Task<ServiceCallResult<T>> PostAsync(T instance, string url = "")
+        public async Task<ServiceCallResult<T>> PostAsync(T instance, string url = "")
         {
-            return Post<T, T>(url, instance);
+            return await Post<T, T>(url, instance);
         }
 
         /// <summary>
@@ -263,10 +267,10 @@ namespace Agile.Mobile.Web
         /// <param name="instance"></param>
         /// <param name="url"></param>
         /// <returns>The new version of the object returned by the server</returns>
-        public Task<ServiceCallResult<TR>> PostAsync<TP, TR>(TP instance, string url = "")
+        public async Task<ServiceCallResult<TR>> PostAsync<TP, TR>(TP instance, string url = "")
             where TP : class // TP should be a Dto (doesn't have to be but it is recommended)
         {
-            return Post<TP, TR>(url, instance);
+            return await Post<TP, TR>(url, instance);
         }
 
 

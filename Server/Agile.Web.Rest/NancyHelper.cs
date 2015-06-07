@@ -64,6 +64,21 @@ namespace Agile.Web.Rest
                 return -1;
             }
         }
+
+        public static long GetLongId2(dynamic parameters)
+        {
+            try
+            {
+                long id = parameters.Id2;
+                return id;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return -1;
+            }
+        }
+
         public static string GetPinId(dynamic parameters)
         {
             try
