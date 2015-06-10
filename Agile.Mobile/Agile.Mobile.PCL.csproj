@@ -70,6 +70,7 @@
     <Compile Include="Gestures\FlingInfo.cs" />
     <Compile Include="Helpers\LocalStorageHelperBase.cs" />
     <Compile Include="HubEvents.cs" />
+    <Compile Include="ILocalizer.cs" />
     <Compile Include="ILocalStorageHelper.cs" />
     <Compile Include="Logging\ServerErrorLogger.cs" />
     <Compile Include="LogHelper.cs" />
