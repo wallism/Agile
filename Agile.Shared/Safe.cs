@@ -301,10 +301,13 @@ namespace Agile.Shared
         {
             if (value == null)
                 return defaultValue;
-            
-            bool parsed;
-            var result = bool.TryParse(value.ToString(), out parsed);
-            return result ? parsed : defaultValue;
+            var s = value.ToString().ToLower();
+
+            return (s.Equals("t")
+                    || s.Equals("true")
+                    || s.Equals("y")
+                    || s.Equals("yes")
+                    || s.Equals("1"));
         }
 
         /// <summary>
