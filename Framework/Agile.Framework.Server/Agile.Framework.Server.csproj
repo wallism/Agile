@@ -103,16 +103,19 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ITableRepository.cs" />
     <Compile Include="MessageSecurityHeaderInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepositoryBase.cs" />
     <Compile Include="TableRepository.cs" />
   </ItemGroup>
   <ItemGroup>

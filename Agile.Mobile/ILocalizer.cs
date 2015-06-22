@@ -11,6 +11,6 @@ namespace Agile.Mobile
     /// </summary>
     public interface ILocalizer
     {
-        string Get(string name);
+        string Get(string name, string resourceName = null);
     }
 }
