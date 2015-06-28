@@ -19,6 +19,7 @@ namespace Agile.Shared
     public static class AgileDateTime
     {
         public const string ShortMonthDayTime = "MMM dd @ HH:mm";
+        public const string MonthNameDayYear = "MMM dd yyyy";
 
         private static IDateTimeProvider provider;
         /// <summary>
