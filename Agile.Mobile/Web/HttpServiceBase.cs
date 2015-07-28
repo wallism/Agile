@@ -82,10 +82,12 @@ namespace Agile.Mobile.Web
         }
 
 
-        protected virtual void AddRequestHeaders(WebRequest request)
+        protected virtual async Task AddRequestHeaders(WebRequest request)
         {            
             // Don't add Authorization headers here, callers need to specifiy 'standard' headers to add (especially Authorization)
             request.Headers["client"] = HttpHelper.Platform;
+
+            // nothing to await in the base, but there may be in override
         }
 
         public async Task<ServiceCallResult<TR>> GetAsync<TR>(long id)
@@ -171,7 +173,7 @@ namespace Agile.Mobile.Web
 
             Logger.Debug("{0}: {1}", request.Method, request.RequestUri);
 
-            AddRequestHeaders(request);
+            await AddRequestHeaders(request);
             
             try
             {
