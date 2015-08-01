@@ -542,6 +542,7 @@ namespace Agile.DataAccess
                     if(!reader.IsClosed)
                         reader.Close();
                     reader.Dispose();
+                    command.Dispose();
                 }
             }
             catch (Exception ex)
