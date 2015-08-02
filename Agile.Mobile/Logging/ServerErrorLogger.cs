@@ -32,7 +32,7 @@ namespace Agile.Mobile.Logging
                 var log = new ErrorLog
                 {
                     ErrorType = exType == null ? null : exType.Name
-                    , Message = message
+                    , Message = message.Substring(0, Math.Min(message.Length, 4096))
                     , PersonId = AppDetail.Instance.UserId
                     , Username = AppDetail.Instance.Username
                     , AppVersion = AppDetail.Instance.AppVersion
