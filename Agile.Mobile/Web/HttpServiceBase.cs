@@ -169,8 +169,12 @@ namespace Agile.Mobile.Web
         protected async Task<ServiceCallResult<TR>> MakeServerRequest<TR>(WebRequest request)
         {
             if (!ConnectionManager.CanSend)
-                return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
-
+            {
+                // Double check...
+                ConnectionManager.CheckConnection();
+                if (!ConnectionManager.CanSend)
+                    return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
+            }
             Logger.Debug("{0}: {1}", request.Method, request.RequestUri);
 
             await AddRequestHeaders(request);

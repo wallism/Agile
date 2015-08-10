@@ -9,6 +9,7 @@ using Agile.Shared;
 using Agile.Shared.PubSub;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using Microsoft.Practices.EnterpriseLibrary.Data.Oracle;
+using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 
 namespace Agile.DataAccess
 {
@@ -523,11 +524,22 @@ namespace Agile.DataAccess
             if (testTransaction != null)
                 transaction = testTransaction;
 
+            var retryStrategy = new FixedInterval(3, TimeSpan.FromSeconds(1));
+            // Define your retry policy using the retry strategy and the Azure storage
+            // transient fault detection strategy.
+            var retryPolicy = new RetryPolicy<SqlDatabaseTransientErrorDetectionStrategy>(retryStrategy);
+
             try
             {
-                var reader = (transaction == null)
-                                 ? database.ExecuteReader(command)
-                                 : database.ExecuteReader(command, transaction);
+                IDataReader reader = null;
+                retryPolicy.ExecuteAction(() =>
+                {
+                    reader = (transaction == null)
+                        ? database.ExecuteReader(command)
+                        : database.ExecuteReader(command, transaction);
+
+                });
+
 
                 try
                 {
@@ -535,19 +547,22 @@ namespace Agile.DataAccess
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.Error(ex, "func call failed! T:{0} C:{1}", typeof(T).Name, command.CommandText);
                 }
                 finally
                 {
-                    if(!reader.IsClosed)
-                        reader.Close();
-                    reader.Dispose();
+                    if (reader != null)
+                    {
+                        if (!reader.IsClosed)
+                            reader.Close();
+                        reader.Dispose();
+                    }
                     command.Dispose();
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.Error(ex, "All retries failed. T:{0} C:{1}", typeof(T).Name, command.CommandText);
             }
             return null;
         }
