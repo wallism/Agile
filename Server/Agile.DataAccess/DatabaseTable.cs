@@ -501,6 +501,10 @@ namespace Agile.DataAccess
             return InternalExecuteDataReader(database, command, transaction, false, func);
         }
 
+
+        private static readonly FixedInterval RetryStrategy = new FixedInterval(3, TimeSpan.FromSeconds(1));
+        private static readonly RetryPolicy RetryPolicy = new RetryPolicy<SqlDatabaseTransientErrorDetectionStrategy>(RetryStrategy);
+
         /// <summary>
         /// Executes the given command as an ExecuteDataSet, within the given transaction
         /// (if the transaction is not null). Executed without a transaction if it is null.
@@ -524,15 +528,10 @@ namespace Agile.DataAccess
             if (testTransaction != null)
                 transaction = testTransaction;
 
-            var retryStrategy = new FixedInterval(3, TimeSpan.FromSeconds(1));
-            // Define your retry policy using the retry strategy and the Azure storage
-            // transient fault detection strategy.
-            var retryPolicy = new RetryPolicy<SqlDatabaseTransientErrorDetectionStrategy>(retryStrategy);
-
             try
             {
                 IDataReader reader = null;
-                retryPolicy.ExecuteAction(() =>
+                RetryPolicy.ExecuteAction(() =>
                 {
                     reader = (transaction == null)
                         ? database.ExecuteReader(command)
