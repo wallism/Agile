@@ -379,6 +379,11 @@
             <param name="transaction">The Save transaction</param>
             <remarks>REMEMBER, their id's need to get back into this record! somehow</remarks>
         </member>
+        <member name="M:Agile.DataAccess.DatabaseTable.IsNeverSaved">
+            <summary>
+            Override and return true if you NEVER want 'something' saved
+            </summary>
+        </member>
         <member name="M:Agile.DataAccess.DatabaseTable.Save(System.Data.Common.DbTransaction)">
             <summary>
             Save the record.

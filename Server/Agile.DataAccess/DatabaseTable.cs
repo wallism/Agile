@@ -276,6 +276,14 @@ namespace Agile.DataAccess
         }
 
         /// <summary>
+        /// Override and return true if you NEVER want 'something' saved
+        /// </summary>
+        protected virtual bool IsNeverSaved()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Save the record.
         /// </summary>
         public virtual void Save(DbTransaction transaction)
@@ -286,6 +294,11 @@ namespace Agile.DataAccess
 
             try
             {
+                if (IsNeverSaved())
+                {
+                    Logger.Info("NeverSaved! [{0}] {1}", GetId(), GetType().Name);
+                    return;
+                }
                 SaveBefore(transaction);
 
                 if (! ExistsInTheDatabase())
