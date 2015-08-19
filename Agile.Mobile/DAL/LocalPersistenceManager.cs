@@ -97,24 +97,24 @@ namespace Acoustie.Mobile.DAL
         {
             if (source == null)
                 return 0; // nothing to save, not necessarily an error...
-            MakeSureIdIsNotZero<T, TR>(source);
-
-            // map to a 'Record' 
-            try
-            {
                 // lock is required because it 'seems' AutoMapper can get its nickers in a knot with multi threading...putting the lock here stopped ALOT exs that were being thrown after I opened up session to load all data at once.
-                lock (padlock)
+            lock (padlock)
+            {
+                MakeSureIdIsNotZero<T, TR>(source);
+
+                // map to a 'Record' 
+                try
                 {
                     var record = Mapper.DynamicMap<T, TR>(source);
                     var result = Db.InsertOrReplace(record);
                     Logger.Debug("Save result={0} [{1}]", result, source.ToString());
                     return result;
                 }
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex);
-                return -1;
+                catch (Exception ex)
+                {
+                    Logger.Error(ex);
+                    return -1;
+                }
             }
         }
 
@@ -167,9 +167,12 @@ namespace Acoustie.Mobile.DAL
 
             // map to a 'Record' 
             var record = Mapper.DynamicMap<T, TR>(source);
-            var result = Db.Update(record);
-            Logger.Debug("Update result={0} [{1}]", result, source.ToString());
-            return result;
+            lock (padlock)
+            {
+                var result = Db.Update(record);
+                Logger.Debug("Update result={0} [{1}]", result, source.ToString());
+                return result;
+            }
         }
 
         public int Update<TR>(TR source) where TR : LocalDbRecord
@@ -178,10 +181,12 @@ namespace Acoustie.Mobile.DAL
                 return 0; // nothing to save, not necessarily an error...
             if (source.GetId() == 0) // throw an exception if we are doing an Update, Id can't be 0 if we we're updating!
                 throw new Exception("Id cannot be 0! If it is a new record make sure Id is set using GetNextLocalId first.");
-
-            var result = Db.Update(source);
-            Logger.Debug("Update result={0} [{1}]", result, source.ToString());
-            return result;
+            lock (padlock)
+            {
+                var result = Db.Update(source);
+                Logger.Debug("Update result={0} [{1}]", result, source.ToString());
+                return result;
+            }
         }
 
         /// <summary>
@@ -213,11 +218,14 @@ namespace Acoustie.Mobile.DAL
             where T : class, new()
             where TR : LocalDbRecord, new()
         {
-            var record = Mapper.DynamicMap<T, TR>(source);
-            var result = Db.Delete(record);
+            lock (padlock)
+            {
+                var record = Mapper.DynamicMap<T, TR>(source);
+                var result = Db.Delete(record);
 
-            Logger.Debug("Delete result={0} [{1}]", result, source.ToString());
-            return result;
+                Logger.Debug("Delete result={0} [{1}]", result, source.ToString());
+                return result;
+            }
         }
 
         /// <summary>
@@ -226,10 +234,13 @@ namespace Acoustie.Mobile.DAL
         public int DeleteAll<TR>()
             where TR : LocalDbRecord, new()
         {
-            var result = Db.DeleteAllRecords<TR>();
+            lock (padlock)
+            {
+                var result = Db.DeleteAllRecords<TR>();
 
-            Logger.Debug("DeleteAll result={0} [{1}]", result, typeof(TR).Name);
-            return result;
+                Logger.Debug("DeleteAll result={0} [{1}]", result, typeof (TR).Name);
+                return result;
+            }
         }
 
         /// <summary>

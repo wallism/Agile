@@ -100,7 +100,7 @@ namespace Agile.Shared
         /// <param name="searchIn">Search in this string</param>
         /// <param name="start">Starting from the end of this string</param>
         /// <param name="finish">Get the contents up the start of this string</param>
-        /// <remarks>Does not return any of the start and finish strings</remarks>
+        /// <remarks>Does NOT return any of the start and finish strings</remarks>
         public static string GetStringBetween(this string searchIn, string start, string finish)
         {
             if (!searchIn.Contains(start))
@@ -122,6 +122,20 @@ namespace Agile.Shared
                                       , lengthOfStringToReturn);
         }
 
+        /// <summary>
+        /// Gets the string that is between the start and finish strings.
+        /// NOTE: Always works from the FIRST OCCURENCE of start and finish
+        /// </summary>
+        /// <param name="searchIn">Search in this string</param>
+        /// <param name="start">Starting from the end of this string</param>
+        /// <param name="finish">Get the contents up the start of this string</param>
+        /// <remarks>DOES return any of the start and finish strings</remarks>
+        public static string GetStringBetweenInclusive(this string searchIn, string start, string finish)
+        {
+            var between = searchIn.GetStringBetween(start, finish);
+            // just return between with the start and finish tacked back on
+            return string.Format("{0}{1}{2}", start, between, finish);
+        }
 
         /// <summary>
         /// Removes all values from all fields that match the given field name.
