@@ -40,6 +40,10 @@ namespace Acoustie.Mobile.DAL
             where T : class, new()
             where TR : LocalDbRecord, new();
 
+        List<T> FindAll<T, TR>(string where)
+            where T : class, new()
+            where TR : LocalDbRecord, new();
+
         List<T> GetAll<T, TR>()
             where T : class, new()
             where TR : LocalDbRecord, new();
@@ -255,6 +259,24 @@ namespace Acoustie.Mobile.DAL
             var list = new List<T>();
             var result = Db.Query<TR>(string.Format("SELECT * FROM {0} WHERE {1} = {2}"
                 , typeof(TR).Name, idFieldName, id));
+
+            if (result == null || result.Count == 0)
+                return list;
+
+            result.ForEach(record => list.Add(Mapper.DynamicMap<TR, T>(record)));
+            return list;
+        }
+
+        /// <summary>
+        /// Find all records in a table matching on the given where clause.
+        /// </summary>
+        public List<T> FindAll<T, TR>(string where)
+            where T : class, new()
+            where TR : LocalDbRecord, new()
+        {
+            var list = new List<T>();
+            var result = Db.Query<TR>(string.Format("SELECT * FROM {0} WHERE {1}"
+                , typeof(TR).Name, where));
 
             if (result == null || result.Count == 0)
                 return list;
