@@ -65,6 +65,20 @@ namespace Agile.Web.Rest
             }
         }
 
+        public static long GetKid(dynamic parameters)
+        {
+            try
+            {
+                long id = parameters.Kid;
+                return id;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                return -1;
+            }
+        }
+
         public static long GetLongId2(dynamic parameters)
         {
             try
