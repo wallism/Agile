@@ -52,16 +52,24 @@ namespace Agile.Mobile
         /// <returns>true if the connection changed</returns>
         public bool CheckConnection()
         {
-            if (GetPlatformNetworkState == null)
-                throw new Exception("need to register a method that returns the network connection state (platform specific)");
-            var newConnectionState = GetPlatformNetworkState();
-            var changed = newConnectionState != CurrentConnection;
-            CurrentConnection = newConnectionState;
+            try
+            {
+                if (GetPlatformNetworkState == null)
+                    throw new Exception("need to register a method that returns the network connection state (platform specific)");
+                var newConnectionState = GetPlatformNetworkState();
+                var changed = newConnectionState != CurrentConnection;
+                CurrentConnection = newConnectionState;
 
-            Logger.Debug("CheckConnection={0} (changed:{1})", newConnectionState.ToString(), changed.ToString());
-            if(changed)
-                Hub.Publish(HubEvents.Network.ConnectionChanged, newConnectionState);
-            return changed;
+                Logger.Debug("CheckConnection={0} (changed:{1})", newConnectionState.ToString(), changed.ToString());
+                if(changed)
+                    Hub.Publish(HubEvents.Network.ConnectionChanged, newConnectionState);
+                return changed;
+            }
+            catch (Exception ex)
+            {
+                Logger.Info("ERROR: {0}", ex.Message);
+                return false;
+            }
         }
     }
 }

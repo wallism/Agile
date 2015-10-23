@@ -115,6 +115,8 @@ namespace Agile.Mobile.Web
         public async Task<ServiceCallResult<TR>> GET<TR>(string url, IList<DeepLoader> loaders = null
             , Action<ServiceCallResult<TR>> doOnSuccess = null)
         {
+            if (!url.EndsWith("/"))
+                url = string.Format("{0}/", url);
             Logger.Debug("GetAsync:{0}", url);
             var request = WebRequest.Create(GetUrlBase() + url);
             if (loaders != null)
@@ -173,7 +175,7 @@ namespace Agile.Mobile.Web
                 // Double check...
                 ConnectionManager.CheckConnection();
                 if (!ConnectionManager.CanSend)
-                    return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
+                    return new ServiceCallResult<TR>(new Exception("MSR: No Connection"));
             }
             Logger.Debug("{0}: {1}", request.Method, request.RequestUri);
 
@@ -183,13 +185,22 @@ namespace Agile.Mobile.Web
             {
                 using (var response = await Task<WebResponse>.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null))
                 {
-                    return new ServiceCallResult<TR>(response);
+                    try
+                    {
+                        return new ServiceCallResult<TR>(response);
+                    }
+                    catch (Exception ex)
+                    {
+                        // do NOT do Logger.Error or warning
+                        Logger.Info("[MSR1] {0}", ex.Message);
+                        return new ServiceCallResult<TR>(ex);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 // do NOT do Logger.Error or warning
-                Logger.Info("[MSR] {0}", ex.Message);
+                Logger.Info("[MSR2] {0}", ex.Message);
 //                Hub.Publish(HubEvents.ServiceCallException, ex);
                 return new ServiceCallResult<TR>(ex);
             }
@@ -316,6 +327,8 @@ namespace Agile.Mobile.Web
             if (!ConnectionManager.CanSend)
                 return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
 
+            if (!url.EndsWith("/"))
+                url = string.Format("{0}/", url);
             var request = WebRequest.CreateHttp(GetUrlBase() + url);
             request.Method = method;
             request.ContentType = contentType;
