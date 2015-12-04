@@ -79,7 +79,7 @@ namespace Agile.Web.Rest
             }
         }
 
-        public static long GetLongId2(dynamic parameters)
+        public static long GetLongId2(dynamic parameters, bool logError = true)
         {
             try
             {
@@ -88,7 +88,8 @@ namespace Agile.Web.Rest
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                if(logError)
+                    Logger.Error(ex);
                 return -1;
             }
         }

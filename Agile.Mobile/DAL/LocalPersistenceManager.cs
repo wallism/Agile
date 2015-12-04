@@ -36,6 +36,11 @@ namespace Acoustie.Mobile.DAL
 
         TR Find<TR>(long id)
             where TR : LocalDbRecord, new();
+
+        T FindFor<T, TR>(long id, string idFieldName)
+            where T : class, new()
+            where TR : LocalDbRecord, new();
+
         List<T> FindAllFor<T, TR>(long id, string idFieldName)
             where T : class, new()
             where TR : LocalDbRecord, new();
@@ -111,7 +116,8 @@ namespace Acoustie.Mobile.DAL
                 {
                     var record = Mapper.DynamicMap<T, TR>(source);
                     var result = Db.InsertOrReplace(record);
-                    Logger.Debug("Save result={0} [{1}]", result, source.ToString());
+                    // only uncomment if needed
+//                    Logger.Info("--- Save result={0} [{1}]", result, source.ToString());
                     return result;
                 }
                 catch (Exception ex)
@@ -265,6 +271,27 @@ namespace Acoustie.Mobile.DAL
 
             result.ForEach(record => list.Add(Mapper.DynamicMap<TR, T>(record)));
             return list;
+        }
+
+        /// <summary>
+        /// Find ONE (or none) records in a table matching on the given id (can only search by ids atm)
+        /// on the given field name. 
+        /// </summary>
+        public T FindFor<T, TR>(long id, string idFieldName)
+            where T : class, new()
+            where TR : LocalDbRecord, new()
+        {
+            var result = Db.Query<TR>(string.Format("SELECT * FROM {0} WHERE {1} = {2}"
+                , typeof(TR).Name, idFieldName, id));
+
+            if (result == null || result.Count == 0)
+                return null;
+
+            if (result.Count > 1)
+                Logger.Warning("FindFor expected ONE record returned, got {0}. {1} {2}. Will return first.", result.Count, idFieldName, id);
+
+            var item = result.First();
+            return Mapper.DynamicMap<TR, T>(item);
         }
 
         /// <summary>

@@ -81,11 +81,14 @@ namespace Agile.Mobile.Web
             return Endpoint.BaseUrl;
         }
 
-
+        /// <summary>
+        /// Override to add headers to every request from the concrete class
+        /// </summary>
         protected virtual async Task AddRequestHeaders(WebRequest request)
         {            
             // Don't add Authorization headers here, callers need to specifiy 'standard' headers to add (especially Authorization)
             request.Headers["client"] = HttpHelper.Platform;
+
 
             // nothing to await in the base, but there may be in override
         }
@@ -310,19 +313,21 @@ namespace Agile.Mobile.Web
         /// <typeparam name="TR">type of result (i.e. deserialize into this)</typeparam>
         /// <param name="url">additional path info beyond the baseUrl</param>
         /// <param name="instance"></param>
+        /// <param name="addCustomHeaders">add headers that are specific to this post method/call</param>
         /// <returns>The new version of the object returned by the server</returns>
-        protected async Task<ServiceCallResult<TR>> Post<TP, TR>(string url, TP instance) 
+        protected async Task<ServiceCallResult<TR>> Post<TP, TR>(string url, TP instance, Action<WebRequest> addCustomHeaders = null) 
             where TP : class // TP should be a Dto (doesn't have to be but it is recommended)
         {
             byte[] data = HttpHelper.SerializeToJsonThenByteArray(instance);
-            return await Post<TR>(data, HttpHelper.POST, ContentTypes.JSON, url);
+            return await Post<TR>(data, HttpHelper.POST, ContentTypes.JSON, url, addCustomHeaders);
         }
 
         protected async Task<ServiceCallResult<TR>> Post<TR>(
             byte[] data
             , string method
             , string contentType
-            , string url = "") // post usually doesn't have any extra url info
+            , string url = ""
+            , Action<WebRequest> addCustomHeaders = null) // post usually doesn't have any extra url info
         {
             if (!ConnectionManager.CanSend)
                 return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
@@ -334,6 +339,8 @@ namespace Agile.Mobile.Web
             request.ContentType = contentType;
 
             await AddBodyToRequest(data, request);
+            if (addCustomHeaders != null)
+                addCustomHeaders(request);
 
             var result = await MakeServerRequest<TR>(request);
             return result;
