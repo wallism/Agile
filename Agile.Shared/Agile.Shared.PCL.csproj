@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;MOBILE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -32,13 +32,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-    <ProjectReference Include="..\Agile.Diagnostics\Agile.Diagnostics.PCL.csproj">
-      <Project>{A5DAD6C1-174B-4F3C-A8EA-745824070F40}</Project>
-      <Name>Agile.Diagnostics.PCL</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="AgileActionResult.cs" />
@@ -56,6 +49,12 @@
     <Compile Include="Properties\PCL\AssemblyInfo.cs" />
     <Compile Include="RegexPatterns.cs" />
     <Compile Include="Safe.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Agile.Diagnostics\Agile.Diagnostics.PCL.csproj">
+      <Project>{A5DAD6C1-174B-4F3C-A8EA-745824070F40}</Project>
+      <Name>Agile.Diagnostics.PCL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
