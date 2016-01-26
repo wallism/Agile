@@ -29,6 +29,7 @@ namespace Agile.Mobile.DAL
             try
             {
                 Db = new SQLiteConnection(platform, fullPath);
+                
                 var tables = GetAllTables();
                 Logger.Debug("{0} existing tables:", tables.Count);
                 // log all existing if there are some
