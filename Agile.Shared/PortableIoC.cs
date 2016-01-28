@@ -165,8 +165,15 @@ namespace Agile.Shared.IoC
             var factory = Factory as Func<T>;
             if (factory == null)
                 throw new Exception(string.Format("failed to cast Factory T {0} : {1}", typeof(T).Name, InterfaceName));
-            Instance = factory.Invoke();
-            Logger.Debug("Created instance of {0}", InterfaceName);
+            try
+            {
+                Instance = factory.Invoke();
+                Logger.Debug("Created instance of {0}", InterfaceName);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "RunFactory:{0}", typeof(T).Name);
+            }
         }
     }
 
