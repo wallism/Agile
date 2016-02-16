@@ -32,7 +32,7 @@ namespace Agile.Diagnostics.AzureDb
             {
                 try
                 {
-                    return connectionString ?? (connectionString = ConfigurationManager.AppSettings["LoggingConnString"]);
+                    return connectionString ?? (connectionString = ConfigurationManager.ConnectionStrings["LoggingConnString"].ConnectionString);
                 }
                 catch (Exception ex)
                 {
