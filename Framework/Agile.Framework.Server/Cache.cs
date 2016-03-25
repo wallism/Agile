@@ -104,7 +104,7 @@ namespace Agile.Framework.Server
                 var loaded = loadDataFunc();
                 if (loaded == null || !loaded.Any())
                     return new List<T>();
-                Logger.Debug("[key:{0}] Adding {1} new {2} to cache", listKey, loaded.Count, typeof(T).Name);
+                Logger.Debug("(key:{0}) Adding {1} new {2} to cache", listKey, loaded.Count, typeof(T).Name);
                 MemoryCache.Default.Add(listKey, loaded, DateTimeOffset.Now.AddMinutes(expiryMins));
 
                 return loaded;
