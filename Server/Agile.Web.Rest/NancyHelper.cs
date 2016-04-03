@@ -65,6 +65,24 @@ namespace Agile.Web.Rest
             }
         }
 
+        /// <summary>
+        /// Get the CallId from the ViewBag (for metrics)
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static string GetCallId(dynamic parameters)
+        {
+            try
+            {
+                string id = parameters.CallId;
+                return id;
+            }
+            catch
+            {
+//                Logger.Error(ex); // do NOT log these errors
+                return "";
+            }
+        }
         public static long GetKid(dynamic parameters)
         {
             try
@@ -72,10 +90,10 @@ namespace Agile.Web.Rest
                 long id = parameters.Kid;
                 return id;
             }
-            catch (Exception ex)
+            catch
             {
-                Logger.Error(ex);
-                return -1;
+//                Logger.Error(ex);
+                return 0;
             }
         }
 

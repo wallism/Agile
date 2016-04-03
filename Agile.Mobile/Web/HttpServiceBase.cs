@@ -186,7 +186,9 @@ namespace Agile.Mobile.Web
             
             try
             {
-                using (var response = await Task<WebResponse>.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null))
+                // 10s seems like a good amount of time, any more than that is dodgy for an app.
+                // todo add override of timeout and allow default to be configurable
+                using (var response = await request.GetResponseAsync(TimeSpan.FromSeconds(10)))
                 {
                     try
                     {
@@ -347,4 +349,26 @@ namespace Agile.Mobile.Web
         }
 
     }
+
+    /// <summary>
+    /// http://matthamilton.net/pcl-webrequest-getresponseasync
+    /// </summary>
+    internal static class WebRequestExtensions
+    {
+        internal static Task<WebResponse> GetResponseAsync(this WebRequest request, TimeSpan timeout)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                var t = Task.Factory.FromAsync<WebResponse>(
+                    request.BeginGetResponse,
+                    request.EndGetResponse,
+                    null);
+
+                if (!t.Wait(timeout)) throw new TimeoutException();
+
+                return t.Result;
+            });
+        }
+    }
+
 }
