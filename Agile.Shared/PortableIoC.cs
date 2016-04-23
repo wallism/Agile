@@ -168,7 +168,7 @@ namespace Agile.Shared.IoC
             try
             {
                 Instance = factory.Invoke();
-                Logger.Debug("Created instance of {0}", InterfaceName);
+//                Logger.Debug("Created instance of {0}", InterfaceName); // makes for very noisy log for some things
             }
             catch (Exception ex)
             {

@@ -187,8 +187,9 @@ namespace Agile.Mobile.Web
             try
             {
                 // 10s seems like a good amount of time, any more than that is dodgy for an app.
+                // battles sometime take longer, allow 16s
                 // todo add override of timeout and allow default to be configurable
-                using (var response = await request.GetResponseAsync(TimeSpan.FromSeconds(10)))
+                using (var response = await request.GetResponseAsync(TimeSpan.FromSeconds(16)))
                 {
                     try
                     {
