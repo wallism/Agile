@@ -19,7 +19,7 @@ namespace Agile.Mobile.Logging
             get { return service ?? (service = Container.Resolve<ISystemHttpService>());}
         }
 
-        public void Write(string message, LogLevel level, LogCategory category, Type exType = null)
+        public void Write(string message, LogLevel level, LogCategory category, Type exType = null, int threadId = 0) // threadId not used in app loggers
         {
             // for our first releases we want Warning as well
             if (level != LogLevel.Error 

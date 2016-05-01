@@ -45,7 +45,7 @@ namespace Agile.Diagnostics.AzureDb
         protected abstract string GetStoredProcName();
 
 
-        public void Write(string message, LogLevel level, LogCategory category, Type exType = null)
+        public void Write(string message, LogLevel level, LogCategory category, Type exType = null, int threadId = 0)
         {
             try
             {

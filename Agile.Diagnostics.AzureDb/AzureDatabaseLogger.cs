@@ -27,7 +27,7 @@ namespace Agile.Diagnostics.AzureDb
         {
             base.InitializeParameters(message, level, category, command);
 
-            command.Parameters.Add(new SqlParameter("@ThreadId", SqlDbType.VarChar, 4)).Value = Logger.GetCurrentManagedThreadId();
+            command.Parameters.Add(new SqlParameter("@ThreadId", SqlDbType.VarChar, 4)).Value = Logger.GetCurrentManagedThreadId().ToString();
 
             command.Parameters.Add(new SqlParameter("@LoggingId", SqlDbType.Int) { Direction = ParameterDirection.Output });
         }
