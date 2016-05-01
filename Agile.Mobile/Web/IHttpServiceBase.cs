@@ -13,17 +13,17 @@ namespace Agile.Mobile.Web
         /// <summary>
         /// Post simple objects
         /// </summary>
-        Task<ServiceCallResult<T>> PostAsync(T instance, string url = "");
+        Task<ServiceCallResult<T>> PostAsync(T instance, string url = "", int timeout = 10);
 
         /// <summary>
         /// Auto maps to the TP object (which is also returned)
         /// Definitely use this rather the PostAsync for objects with all but the simplest object maps.
         /// </summary>
-        Task<ServiceCallResult<TR>> PostDtoAsync<TR, TP>(TR instance, string url = "") 
+        Task<ServiceCallResult<TR>> PostDtoAsync<TR, TP>(TR instance, string url = "", int timeout = 10) 
             where TR : class 
             where TP : class;
 
-        Task<ServiceCallResult<TR>> PostFromSendQueueAsync<TR>(SendQueue queueRecord)
+        Task<ServiceCallResult<TR>> PostFromSendQueueAsync<TR>(SendQueue queueRecord, int timeout = 10)
             where TR : class;
 
         /// <summary>

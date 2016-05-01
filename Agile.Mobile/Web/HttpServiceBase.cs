@@ -115,8 +115,9 @@ namespace Agile.Mobile.Web
         /// <param name="url"></param>
         /// <param name="loaders"></param>
         /// <param name="doOnSuccess">action to perform on result if successful</param>
+        /// <param name="timeout">seconds before the request times out</param>
         public async Task<ServiceCallResult<TR>> GET<TR>(string url, IList<DeepLoader> loaders = null
-            , Action<ServiceCallResult<TR>> doOnSuccess = null)
+            , Action<ServiceCallResult<TR>> doOnSuccess = null, int timeout = 10)
         {
             if (!url.EndsWith("/"))
                 url = string.Format("{0}/", url);
@@ -131,7 +132,7 @@ namespace Agile.Mobile.Web
                 await AddBodyToRequest(HttpHelper.SerializeToJsonThenByteArray(loaders), request);
             }
 
-            var result = await MakeServerRequest<TR>(request);
+            var result = await MakeServerRequest<TR>(request, timeout);
             // do On Success...make sure it doesn't cause an ex
             if (result.WasSuccessful && doOnSuccess != null)
             {
@@ -171,7 +172,8 @@ namespace Agile.Mobile.Web
         /// </summary>
         /// <typeparam name="TR">Result type</typeparam>
         /// <param name="request"></param>
-        protected async Task<ServiceCallResult<TR>> MakeServerRequest<TR>(WebRequest request)
+        /// <param name="timeout">seconds before request times out</param>
+        protected async Task<ServiceCallResult<TR>> MakeServerRequest<TR>(WebRequest request, int timeout)
         {
             if (!ConnectionManager.CanSend)
             {
@@ -186,10 +188,7 @@ namespace Agile.Mobile.Web
             
             try
             {
-                // 10s seems like a good amount of time, any more than that is dodgy for an app.
-                // battles sometime take longer, allow 16s
-                // todo add override of timeout and allow default to be configurable
-                using (var response = await request.GetResponseAsync(TimeSpan.FromSeconds(16)))
+                using (var response = await request.GetResponseAsync(TimeSpan.FromSeconds(timeout)))
                 {
                     try
                     {
@@ -261,25 +260,24 @@ namespace Agile.Mobile.Web
         /// <typeparam name="TP">post type (usually a dto, method will convert to this type and send the conveted object)</typeparam>
         /// <typeparam name="TR">response type (usually a biz object, the response will be deserialized into this type)</typeparam>
         /// <param name="instance"></param>
+        /// <param name="url"></param>
+        /// <param name="timeout">seconds before the request times out</param>
         /// <returns>The new version of the object returned by the server</returns>
-        public async Task<ServiceCallResult<TR>> PostDtoAsync<TR, TP>(TR instance, string url = "") 
+        public async Task<ServiceCallResult<TR>> PostDtoAsync<TR, TP>(TR instance, string url = "", int timeout = 10) 
             where TR : class
             where TP : class
         {
             var dto = Mapper.DynamicMap<TR, TP>(instance);
-            return await Post<TP, TR>(url, dto);
+            return await Post<TP, TR>(url, dto, null, timeout);
         }
 
         /// <summary>
         /// Post the given object (use only if you are sure the object doesn't have any dependency issues)
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="instance"></param>
-        /// <param name="url"></param>
         /// <returns>The new version of the object returned by the server</returns>
-        public async Task<ServiceCallResult<T>> PostAsync(T instance, string url = "")
+        public async Task<ServiceCallResult<T>> PostAsync(T instance, string url = "", int timeout = 10)
         {
-            return await Post<T, T>(url, instance);
+            return await Post<T, T>(url, instance, null, timeout);
         }
 
         /// <summary>
@@ -289,11 +287,12 @@ namespace Agile.Mobile.Web
         /// <typeparam name="TR">type of result (i.e. deserialize into this)</typeparam>
         /// <param name="instance"></param>
         /// <param name="url"></param>
+        /// <param name="timeout">seconds before the request times out</param>
         /// <returns>The new version of the object returned by the server</returns>
-        public async Task<ServiceCallResult<TR>> PostAsync<TP, TR>(TP instance, string url = "")
+        public async Task<ServiceCallResult<TR>> PostAsync<TP, TR>(TP instance, string url = "", int timeout = 10)
             where TP : class // TP should be a Dto (doesn't have to be but it is recommended)
         {
-            return await Post<TP, TR>(url, instance);
+            return await Post<TP, TR>(url, instance, null, timeout);
         }
 
 
@@ -302,11 +301,12 @@ namespace Agile.Mobile.Web
         /// </summary>
         /// <typeparam name="TR">return type the returned data will be serialized into</typeparam>
         /// <param name="queueRecord">make sure the Data component is a dto (if it needs to be)</param>
+        /// <param name="timeout">seconds before the request times out</param>
         /// <returns></returns>
-        public async Task<ServiceCallResult<TR>> PostFromSendQueueAsync<TR>(SendQueue queueRecord)
+        public async Task<ServiceCallResult<TR>> PostFromSendQueueAsync<TR>(SendQueue queueRecord, int timeout = 10)
             where TR : class
         {
-            return await Post<TR>(queueRecord.Data, queueRecord.Method, queueRecord.ContentType, queueRecord.Url);
+            return await Post<TR>(queueRecord.Data, queueRecord.Method, queueRecord.ContentType, queueRecord.Url, null, timeout);
         }
 
         /// <summary>
@@ -317,12 +317,13 @@ namespace Agile.Mobile.Web
         /// <param name="url">additional path info beyond the baseUrl</param>
         /// <param name="instance"></param>
         /// <param name="addCustomHeaders">add headers that are specific to this post method/call</param>
+        /// <param name="timeout">seconds before the request times out</param>
         /// <returns>The new version of the object returned by the server</returns>
-        protected async Task<ServiceCallResult<TR>> Post<TP, TR>(string url, TP instance, Action<WebRequest> addCustomHeaders = null) 
+        protected async Task<ServiceCallResult<TR>> Post<TP, TR>(string url, TP instance, Action<WebRequest> addCustomHeaders = null, int timeout = 10) 
             where TP : class // TP should be a Dto (doesn't have to be but it is recommended)
         {
             byte[] data = HttpHelper.SerializeToJsonThenByteArray(instance);
-            return await Post<TR>(data, HttpHelper.POST, ContentTypes.JSON, url, addCustomHeaders);
+            return await Post<TR>(data, HttpHelper.POST, ContentTypes.JSON, url, addCustomHeaders, timeout);
         }
 
         protected async Task<ServiceCallResult<TR>> Post<TR>(
@@ -330,7 +331,8 @@ namespace Agile.Mobile.Web
             , string method
             , string contentType
             , string url = ""
-            , Action<WebRequest> addCustomHeaders = null) // post usually doesn't have any extra url info
+            , Action<WebRequest> addCustomHeaders = null
+            , int timeout = 10) // post usually doesn't have any extra url info
         {
             if (!ConnectionManager.CanSend)
                 return new ServiceCallResult<TR>(new Exception("MakeServerRequest: No Connection"));
@@ -345,7 +347,7 @@ namespace Agile.Mobile.Web
             if (addCustomHeaders != null)
                 addCustomHeaders(request);
 
-            var result = await MakeServerRequest<TR>(request);
+            var result = await MakeServerRequest<TR>(request, timeout);
             return result;
         }
 
@@ -365,7 +367,8 @@ namespace Agile.Mobile.Web
                     request.EndGetResponse,
                     null);
 
-                if (!t.Wait(timeout)) throw new TimeoutException();
+                if (!t.Wait(timeout)) 
+                    throw new TimeoutException();
 
                 return t.Result;
             });

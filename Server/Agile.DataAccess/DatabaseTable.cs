@@ -411,7 +411,7 @@ namespace Agile.DataAccess
         /// <remarks>Implementation needs some work but is basically functional atm.</remarks>
         protected void CreateNew(DbTransaction transaction)
         {
-            Logger.Debug("CREATE: {0}", GetId());
+            Logger.Debug("CREATE {0}: {1}", GetType().Name, GetId());
             var command = GetInsertCommand();
             InternalExecuteNonQuery(Database, command, transaction);
             FillInsertOutputParameters(command);
