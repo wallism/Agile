@@ -90,7 +90,7 @@ namespace Agile.Mobile.Web.Logging
         /// (ie not including collections or other referenced objects).
         /// If it is a new object (ie not loaded from somewhere) then this will always be true.
         /// </summary>
-        public bool IsDirtyThis()
+        public override bool IsDirtyThis()
         {
             if (originalData == null)
                 return true;

@@ -25,7 +25,7 @@ namespace Agile.Web.Rest
         <TR, TB>
         : NancyModule
         where TR : class, IRepository<TB>
-        where TB : BaseBiz, new()
+        where TB : IBaseBiz
     {
         /// <summary>
         /// ctor
@@ -133,7 +133,7 @@ namespace Agile.Web.Rest
         /// </summary>
         protected Response PostRoute<T>(IRepository<T> repo
             , Func<T, PrePostSaveResult> preSave = null
-            , Func<T, bool, PrePostSaveResult> postSave = null) where T : BaseBiz, new()
+            , Func<T, bool, PrePostSaveResult> postSave = null) where T : IBaseBiz
         {
             Logger.Debug("POST: bind");
 
@@ -211,7 +211,7 @@ namespace Agile.Web.Rest
         /// Create the Response for a successful save.
         /// </summary>
         protected virtual Response PostResponse<T>(T saved, bool wasNew)
-             where T : BaseBiz, new()
+             where T : IBaseBiz
         {
             return Response.AsJson(saved)
                 .WithStatusCode(wasNew ? HttpStatusCode.Created : HttpStatusCode.OK)

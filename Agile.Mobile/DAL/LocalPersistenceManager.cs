@@ -17,14 +17,14 @@ namespace Acoustie.Mobile.DAL
         long GetNextLocalId<T>() where T : LocalDbRecord;
 
         int InsertOrReplace<T, TR>(T source)
-            where T : BaseBiz
+            where T : IBaseBiz
             where TR : LocalDbRecord;
 
         int InsertOrReplace<TR>(TR source)
             where TR : LocalDbRecord;
 
         int Update<T, TR>(T source)
-            where T : BaseBiz
+            where T : IBaseBiz
             where TR : LocalDbRecord;
 
         int Update<TR>(TR source)
@@ -41,23 +41,23 @@ namespace Acoustie.Mobile.DAL
             where T : class, new()
             where TR : LocalDbRecord, new();
 
-        List<T> FindAllFor<T, TR>(long id, string idFieldName)
-            where T : class, new()
+        List<TI> FindAllFor<T, TI, TR>(long id, string idFieldName)
+            where T : class, TI, new()
             where TR : LocalDbRecord, new();
 
-        List<T> FindAll<T, TR>(string where)
-            where T : class, new()
+        List<TI> FindAll<T, TI, TR>(string where)
+            where T : class, TI, new()
             where TR : LocalDbRecord, new();
 
-        List<T> GetAll<T, TR>()
-            where T : class, new()
+        List<TI> GetAll<T, TI, TR>()
+            where T : class, TI, new()
             where TR : LocalDbRecord, new();
 
         List<TR> GetAll<TR>()
             where TR : LocalDbRecord, new();
 
         int Delete<T, TR>(T source)
-            where T : class, new()
+            where T : class
             where TR : LocalDbRecord, new();
 
         int DeleteAll<TR>()
@@ -101,7 +101,7 @@ namespace Acoustie.Mobile.DAL
         /// </summary>
         /// <remarks>safe to pass in nulls, just ignored.</remarks>
         public int InsertOrReplace<T, TR>(T source) 
-            where T : BaseBiz
+            where T : IBaseBiz
             where TR : LocalDbRecord
         {
             if (source == null)
@@ -146,7 +146,8 @@ namespace Acoustie.Mobile.DAL
             return result;
         }
 
-        private void MakeSureIdIsNotZero<T, TR>(T source) where T : BaseBiz where TR : LocalDbRecord
+        private void MakeSureIdIsNotZero<T, TR>(T source) 
+            where T : IBaseBiz where TR : LocalDbRecord
         {
             // Don't save anything with an id of 0!
             if (source.GetId() == 0)
@@ -167,7 +168,7 @@ namespace Acoustie.Mobile.DAL
         /// </summary>
         /// <remarks>safe to pass in nulls, just ignored.</remarks>
         public int Update<T, TR>(T source)
-            where T : BaseBiz
+            where T : IBaseBiz
             where TR : LocalDbRecord
         {
             if (source == null)
@@ -225,7 +226,7 @@ namespace Acoustie.Mobile.DAL
         /// Delete the object from the db
         /// </summary>
         public int Delete<T, TR>(T source)
-            where T : class, new()
+            where T : class  // used to have new() but don't think needed on Delete and now passing interface. mw 20160529
             where TR : LocalDbRecord, new()
         {
             lock (padlock)
@@ -258,11 +259,11 @@ namespace Acoustie.Mobile.DAL
         /// on the given field name. 
         /// E.g. find all Photos for a given CaptureId matching on fieldName CaptureId
         /// </summary>
-        public List<T> FindAllFor<T, TR>(long id, string idFieldName)
-            where T : class, new()
+        public List<TI> FindAllFor<T, TI, TR>(long id, string idFieldName)
+            where T : class, TI, new()
             where TR : LocalDbRecord, new()
         {
-            var list = new List<T>();
+            var list = new List<TI>();
             var result = Db.Query<TR>(string.Format("SELECT * FROM {0} WHERE {1} = {2}"
                 , typeof(TR).Name, idFieldName, id));
 
@@ -297,11 +298,11 @@ namespace Acoustie.Mobile.DAL
         /// <summary>
         /// Find all records in a table matching on the given where clause.
         /// </summary>
-        public List<T> FindAll<T, TR>(string where)
-            where T : class, new()
+        public List<TI> FindAll<T, TI, TR>(string where)
+            where T : class, TI, new()
             where TR : LocalDbRecord, new()
         {
-            var list = new List<T>();
+            var list = new List<TI>();
             var result = Db.Query<TR>(string.Format("SELECT * FROM {0} WHERE {1}"
                 , typeof(TR).Name, where));
 
@@ -312,11 +313,11 @@ namespace Acoustie.Mobile.DAL
             return list;
         }
 
-        public List<T> GetAll<T, TR>() 
-            where T : class, new()
+        public List<TI> GetAll<T, TI, TR>()
+            where T : class, TI, new()
             where TR : LocalDbRecord, new()
         {
-            var list = new List<T>();
+            var list = new List<TI>();
             var result = Db.GetAll<TR>();
             if (result == null || result.Count == 0)
                 return list;
@@ -324,6 +325,22 @@ namespace Acoustie.Mobile.DAL
             result.ForEach(record => list.Add(Mapper.DynamicMap<TR, T>(record)));
             return list;
         }
+
+        /// <summary>
+        /// Old getAll. Use the one that returns a list of the interface
+        /// </summary>
+//        public List<T> GetAll<T, TR>() 
+//            where T : class, new()
+//            where TR : LocalDbRecord, new()
+//        {
+//            var list = new List<T>();
+//            var result = Db.GetAll<TR>();
+//            if (result == null || result.Count == 0)
+//                return list;
+//            
+//            result.ForEach(record => list.Add(Mapper.DynamicMap<TR, T>(record)));
+//            return list;
+//        }
 
         public List<TR> GetAll<TR>()
             where TR : LocalDbRecord, new()

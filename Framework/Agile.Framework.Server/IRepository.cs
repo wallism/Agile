@@ -6,7 +6,7 @@ namespace Agile.Framework.Server
     /// <summary>
     /// Base interface for all Biz server services
     /// </summary>
-    public interface IRepository<T> where T : BaseBiz, new()
+    public interface IRepository<T> where T : IBaseBiz
     {
         /// <summary>
         /// Load the T

@@ -12,10 +12,23 @@ using Agile.Shared;
 
 namespace Agile.Framework
 {
+    public interface IBaseBiz : INotifyPropertyChanged
+    {
+        bool IsNew { get; set; }
+        bool IsValid();
+        bool IsDirtyThis();
+        string GetValidationMessages();
+        void FillShallow<D>(D data) where D : IModelInterface;
+        long GetId();
+//        Guid AltId { get; set; }
+        void SetId(long id);
+
+    }
+
     /// <summary>
     /// Base class for business objects
     /// </summary>
-    public abstract class BaseBiz : INotifyPropertyChanged
+    public abstract class BaseBiz : IBaseBiz
     {
         /// <summary>
         /// ctor
@@ -23,6 +36,7 @@ namespace Agile.Framework
         public BaseBiz()
         {
             IsNew = true; // set to true by default
+            AltId = Guid.NewGuid(); // set by default
         }
 
         public override string ToString()
@@ -164,6 +178,8 @@ namespace Agile.Framework
         protected virtual void InternalDefineRules()
         {
         }
+
+        public abstract bool IsDirtyThis();
 
         public virtual bool IsValid()
         {

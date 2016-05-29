@@ -34,7 +34,7 @@ namespace Agile.Framework
         /// a method on the base class, because the generics works better
         /// when the item in passed in as a parameter (with my understanding 
         /// of generics anyway...maybe I'm missing something)</remarks>
-        public static T Clone<T>(this T item) where T : BaseBiz
+        public static T Clone<T>(this T item) where T : class, IBaseBiz
         {
             using (MemoryStream stream = new MemoryStream())
             {
