@@ -13,10 +13,19 @@ using Microsoft.Practices.EnterpriseLibrary.TransientFaultHandling;
 
 namespace Agile.DataAccess
 {
+    public interface ICanFillFromReader
+    {
+        /// <summary>
+        /// Fill the data from the data row into the properties.
+        /// </summary>
+        /// <param name="reader">The datareader that contains the data.</param>
+        void FillFromReader(IDataReader reader);
+    }
+
     /// <summary>
     /// Summary description for DALBase.
     /// </summary>
-    public abstract class DatabaseTable
+    public abstract class DatabaseTable : ICanFillFromReader
     {
         /// <summary>
         /// Constructor.
@@ -699,8 +708,8 @@ namespace Agile.DataAccess
         /// <summary>
         /// Create a generic list from the reader
         /// </summary>
-        public static List<T> CreateList<T>(IDataReader reader, DbTransaction transaction) 
-            where T : DatabaseTable, new()
+        public static List<T> CreateList<T>(IDataReader reader, DbTransaction transaction)
+            where T : ICanFillFromReader, new()
         {
             var items = new List<T>();
             while (reader.Read())
@@ -713,10 +722,10 @@ namespace Agile.DataAccess
         }
 
         /// <summary>
-        /// Create a generic list from the reader
+        /// Create a single instance from the reader
         /// </summary>
         public static T CreateFromDb<T>(IDataReader reader, DbTransaction transaction)
-            where T : DatabaseTable, new()
+            where T : class, ICanFillFromReader, new()
         {
             if (reader == null || !reader.Read()) 
                 return null; // just return null, nothing found

@@ -252,6 +252,12 @@
             </summary>
             <remarks>Throws an exception if the column does not exist in the collection.</remarks>
         </member>
+        <member name="M:Agile.DataAccess.ICanFillFromReader.FillFromReader(System.Data.IDataReader)">
+            <summary>
+            Fill the data from the data row into the properties.
+            </summary>
+            <param name="reader">The datareader that contains the data.</param>
+        </member>
         <member name="T:Agile.DataAccess.DatabaseTable">
             <summary>
             Summary description for DALBase.
@@ -569,7 +575,7 @@
         </member>
         <member name="M:Agile.DataAccess.DatabaseTable.CreateFromDb``1(System.Data.IDataReader,System.Data.Common.DbTransaction)">
             <summary>
-            Create a generic list from the reader
+            Create a single instance from the reader
             </summary>
         </member>
         <member name="P:Agile.DataAccess.DatabaseTable.Database">
